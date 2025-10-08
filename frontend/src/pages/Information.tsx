@@ -1,4 +1,4 @@
- import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -25,8 +25,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.7,
     description:
       "One of the world's oldest and most prestigious universities, Oxford offers exceptional academic programs in a historic setting. Known for its tutorial system and rigorous academics.",
-    courses: ['Computer Science','Business','Literature','History','Mathematics','Engineering'],
-    attractions: ['Bodleian Library','Christ Church College','Oxford Castle','Ashmolean Museum','Oxford Botanic Garden'],
+    courses: ['Computer Science', 'Business', 'Literature', 'History', 'Mathematics', 'Engineering'],
+    attractions: ['Bodleian Library', 'Christ Church College', 'Oxford Castle', 'Ashmolean Museum', 'Oxford Botanic Garden'],
   },
   {
     id: 1,
@@ -36,8 +36,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.8,
     description:
       'Historic collegiate university renowned for research-led teaching and supervision-based learning across sciences and humanities.',
-    courses: ['Computer Science','Natural Sciences','Engineering','Economics','Law','Linguistics'],
-    attractions: ['King’s College Chapel','The Backs','Fitzwilliam Museum','Mathematical Bridge','Cam River Punting'],
+    courses: ['Computer Science', 'Natural Sciences', 'Engineering', 'Economics', 'Law', 'Linguistics'],
+    attractions: ['King’s College Chapel', 'The Backs', 'Fitzwilliam Museum', 'Mathematical Bridge', 'Cam River Punting'],
   },
 
   // United States
@@ -49,8 +49,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.8,
     description:
       'An Ivy League university renowned for research excellence, leadership development, and a global network of alumni.',
-    courses: ['Computer Science','Business','Law','Medicine','Political Science','Philosophy'],
-    attractions: ['Harvard Yard','Harvard Art Museums','Cambridge Common','Charles River','Harvard Square'],
+    courses: ['Computer Science', 'Business', 'Law', 'Medicine', 'Political Science', 'Philosophy'],
+    attractions: ['Harvard Yard', 'Harvard Art Museums', 'Cambridge Common', 'Charles River', 'Harvard Square'],
   },
   {
     id: 1,
@@ -60,8 +60,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.8,
     description:
       'Private research university with strong ties to Silicon Valley, entrepreneurship, and interdisciplinary innovation.',
-    courses: ['Computer Science','Management Science & Engineering','Human-Centered Design','Biology','Data Science','Aerospace'],
-    attractions: ['Hoover Tower','Cantor Arts Center','Stanford Dish','Palm Drive','Rodin Sculpture Garden'],
+    courses: ['Computer Science', 'Management Science & Engineering', 'Human-Centered Design', 'Biology', 'Data Science', 'Aerospace'],
+    attractions: ['Hoover Tower', 'Cantor Arts Center', 'Stanford Dish', 'Palm Drive', 'Rodin Sculpture Garden'],
   },
 
   // Singapore
@@ -73,8 +73,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.6,
     description:
       'Singapore’s top university offering innovative research programs and strong industry partnerships across Asia.',
-    courses: ['Computer Science','Business','Engineering','Pharmacy','Architecture','Public Health'],
-    attractions: ['Singapore Botanic Gardens','Marina Bay Sands','Sentosa Island','Gardens by the Bay','Chinatown'],
+    courses: ['Computer Science', 'Business', 'Engineering', 'Pharmacy', 'Architecture', 'Public Health'],
+    attractions: ['Singapore Botanic Gardens', 'Marina Bay Sands', 'Sentosa Island', 'Gardens by the Bay', 'Chinatown'],
   },
   {
     id: 1,
@@ -84,8 +84,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.6,
     description:
       'Young research-intensive university known for engineering, sustainability, and AI/robotics.',
-    courses: ['Computer Science','Electrical & Electronic Engineering','Materials Science','Business','Communication Studies','Education'],
-    attractions: ['Jurong Lake Gardens','Chinese Garden','Science Centre Singapore','Haw Par Villa','NTU Chinese Heritage Centre'],
+    courses: ['Computer Science', 'Electrical & Electronic Engineering', 'Materials Science', 'Business', 'Communication Studies', 'Education'],
+    attractions: ['Jurong Lake Gardens', 'Chinese Garden', 'Science Centre Singapore', 'Haw Par Villa', 'NTU Chinese Heritage Centre'],
   },
 
   // Japan
@@ -97,8 +97,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.7,
     description:
       "Japan's leading institution for higher learning, known for scientific research, cultural contributions, and global exchange programs.",
-    courses: ['Computer Science','Economics','Literature','Physics','Law','Medicine'],
-    attractions: ['Tokyo Tower','Ueno Park','Tokyo National Museum','Shinjuku Gyoen','Meiji Shrine'],
+    courses: ['Computer Science', 'Economics', 'Literature', 'Physics', 'Law', 'Medicine'],
+    attractions: ['Tokyo Tower', 'Ueno Park', 'Tokyo National Museum', 'Shinjuku Gyoen', 'Meiji Shrine'],
   },
   {
     id: 1,
@@ -108,8 +108,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.7,
     description:
       'Prominent national university emphasizing fundamental research and academic freedom.',
-    courses: ['Informatics','Chemical Engineering','Agriculture','Philosophy','Mathematics','Earth Sciences'],
-    attractions: ['Fushimi Inari Shrine','Kiyomizu-dera','Arashiyama Bamboo Grove','Nijo Castle','Philosopher’s Path'],
+    courses: ['Informatics', 'Chemical Engineering', 'Agriculture', 'Philosophy', 'Mathematics', 'Earth Sciences'],
+    attractions: ['Fushimi Inari Shrine', 'Kiyomizu-dera', 'Arashiyama Bamboo Grove', 'Nijo Castle', 'Philosopher’s Path'],
   },
 
   // Australia
@@ -121,8 +121,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.6,
     description:
       'A leading Australian university emphasizing research innovation, cultural diversity, and entrepreneurial skills.',
-    courses: ['Computer Science','Business','Fine Arts','Biology','Education','Environmental Science'],
-    attractions: ['Royal Botanic Gardens','Federation Square','National Gallery of Victoria','Queen Victoria Market','Yarra River'],
+    courses: ['Computer Science', 'Business', 'Fine Arts', 'Biology', 'Education', 'Environmental Science'],
+    attractions: ['Royal Botanic Gardens', 'Federation Square', 'National Gallery of Victoria', 'Queen Victoria Market', 'Yarra River'],
   },
   {
     id: 1,
@@ -132,8 +132,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.6,
     description:
       'Research university noted for public policy, earth sciences, and Asia-Pacific studies.',
-    courses: ['Computer Science','Public Policy','International Security','Astronomy','Linguistics','Statistics'],
-    attractions: ['Australian War Memorial','Lake Burley Griffin','National Gallery of Australia','Mount Ainslie Lookout','Parliament House'],
+    courses: ['Computer Science', 'Public Policy', 'International Security', 'Astronomy', 'Linguistics', 'Statistics'],
+    attractions: ['Australian War Memorial', 'Lake Burley Griffin', 'National Gallery of Australia', 'Mount Ainslie Lookout', 'Parliament House'],
   },
 
   // Switzerland
@@ -145,8 +145,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.8,
     description:
       'A world-leading institute in science and technology, known for cutting-edge research and a strong startup culture.',
-    courses: ['Computer Science','Mechanical Engineering','Physics','Architecture','Mathematics','Robotics'],
-    attractions: ['Lake Zurich','Swiss National Museum','Old Town Zurich','Uetliberg Mountain','Bahnhofstrasse'],
+    courses: ['Computer Science', 'Mechanical Engineering', 'Physics', 'Architecture', 'Mathematics', 'Robotics'],
+    attractions: ['Lake Zurich', 'Swiss National Museum', 'Old Town Zurich', 'Uetliberg Mountain', 'Bahnhofstrasse'],
   },
   {
     id: 1,
@@ -156,8 +156,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.8,
     description:
       'Swiss federal institute with strengths in engineering, life sciences, and computational research.',
-    courses: ['Computer Science','Microengineering','Data Science','Life Sciences Engineering','Civil Engineering','Cybersecurity'],
-    attractions: ['Ouchy Promenade','Lausanne Cathedral','Olympic Museum','Lavaux Vineyards','Sauvabelin Tower'],
+    courses: ['Computer Science', 'Microengineering', 'Data Science', 'Life Sciences Engineering', 'Civil Engineering', 'Cybersecurity'],
+    attractions: ['Ouchy Promenade', 'Lausanne Cathedral', 'Olympic Museum', 'Lavaux Vineyards', 'Sauvabelin Tower'],
   },
 
   // Canada
@@ -169,8 +169,8 @@ const schoolsData: School[] = [
     gpaRequired: 3.7,
     description:
       'One of Canada’s most prestigious public universities, offering diverse programs and a vibrant multicultural student environment.',
-    courses: ['Computer Science','Economics','Psychology','Chemistry','Law','Music'],
-    attractions: ['Mount Royal Park','Old Montreal','Montreal Museum of Fine Arts','Jean-Talon Market','Botanical Garden'],
+    courses: ['Computer Science', 'Economics', 'Psychology', 'Chemistry', 'Law', 'Music'],
+    attractions: ['Mount Royal Park', 'Old Montreal', 'Montreal Museum of Fine Arts', 'Jean-Talon Market', 'Botanical Garden'],
   },
   {
     id: 1,
@@ -180,18 +180,18 @@ const schoolsData: School[] = [
     gpaRequired: 3.7,
     description:
       'Large research university famous for AI, biomedical research, and a tri-campus system.',
-    courses: ['Computer Science','Neuroscience','Finance','Urban Studies','Mechanical Engineering','Public Health'],
-    attractions: ['CN Tower','Royal Ontario Museum','Kensington Market','Harbourfront','St. Lawrence Market'],
+    courses: ['Computer Science', 'Neuroscience', 'Finance', 'Urban Studies', 'Mechanical Engineering', 'Public Health'],
+    attractions: ['CN Tower', 'Royal Ontario Museum', 'Kensington Market', 'Harbourfront', 'St. Lawrence Market'],
   },
 ];
 
 
- function Information() {
+function Information() {
   const [query, setQuery] = useState('');
   const [country, setCountry] = useState('');
   const [selectedSchool, setSelectedSchool] = useState<School | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
-   const filtersRef = useRef<HTMLDivElement | null>(null);
+  const filtersRef = useRef<HTMLDivElement | null>(null);
 
   const countries = useMemo(() => {
     return Array.from(new Set(schoolsData.map((s) => s.country))).sort();
@@ -210,16 +210,16 @@ const schoolsData: School[] = [
     });
   }, [query, country]);
 
-   useEffect(() => {
-     if (selectedSchool && cardRef.current) {
-       cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-     }
-   }, [selectedSchool]);
+  useEffect(() => {
+    if (selectedSchool && cardRef.current) {
+      cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [selectedSchool]);
 
-   return (
+  return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Information</h1>
-        <div ref={filtersRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div ref={filtersRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">Search school or city</label>
           <input
@@ -247,57 +247,57 @@ const schoolsData: School[] = [
         </div>
       </div>
 
-        {selectedSchool && (
-          <div ref={cardRef} className="w-full bg-white border border-gray-200 rounded-lg p-6 shadow-sm mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">{selectedSchool.name}</h2>
-                <div className="text-gray-700 font-medium">Country: {selectedSchool.country}</div>
-                <div className="text-gray-700 font-medium">City: {selectedSchool.city}</div>
-                <div className="text-gray-700 font-medium">GPA Required: {selectedSchool.gpaRequired}+</div>
-              </div>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setSelectedSchool(null);
-                  if (filtersRef.current) {
-                    filtersRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                  }
-                }}
-              >
-                Back to results
-              </Button>
+      {selectedSchool && (
+        <div ref={cardRef} className="w-full bg-white border border-gray-200 rounded-lg p-6 shadow-sm mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">{selectedSchool.name}</h2>
+              <div className="text-gray-700 font-medium">Country: {selectedSchool.country}</div>
+              <div className="text-gray-700 font-medium">City: {selectedSchool.city}</div>
+              <div className="text-gray-700 font-medium">GPA Required: {selectedSchool.gpaRequired}+</div>
             </div>
-
-            <div className="mb-4">
-              <p className="text-gray-800">{selectedSchool.description}</p>
-            </div>
-
-            <div className="mb-4">
-              <div className="font-semibold mb-2">Courses</div>
-              <ul className="list-disc pl-5 space-y-1 text-gray-800">
-                {selectedSchool.courses.map((c) => (
-                  <li key={c}>{c}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="mb-6">
-              <div className="font-semibold mb-2">Attractions</div>
-              <ul className="list-disc pl-5 space-y-1 text-gray-800">
-                {selectedSchool.attractions.map((a) => (
-                  <li key={a}>{a}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link to="/mappable" className="w-full sm:w-auto">
-                <Button className="w-full">Map to course</Button>
-              </Link>
-            </div>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSelectedSchool(null);
+                if (filtersRef.current) {
+                  filtersRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+            >
+              Back to results
+            </Button>
           </div>
-        )}
+
+          <div className="mb-4">
+            <p className="text-gray-800">{selectedSchool.description}</p>
+          </div>
+
+          <div className="mb-4">
+            <div className="font-semibold mb-2">Courses</div>
+            <ul className="list-disc pl-5 space-y-1 text-gray-800">
+              {selectedSchool.courses.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mb-6">
+            <div className="font-semibold mb-2">Attractions</div>
+            <ul className="list-disc pl-5 space-y-1 text-gray-800">
+              {selectedSchool.attractions.map((a) => (
+                <li key={a}>{a}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link to="/mappable" className="w-full sm:w-auto">
+              <Button className="w-full">Map to course</Button>
+            </Link>
+          </div>
+        </div>
+      )}
 
       {!selectedSchool && (
         <>
@@ -319,7 +319,7 @@ const schoolsData: School[] = [
           </div>
         </>
       )}
-      
+
     </div>
   );
 }
