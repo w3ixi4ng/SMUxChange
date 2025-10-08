@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home.tsx';
 import Mappable from './pages/Mappable.tsx';
+import Information from './pages/Information.tsx';
 
 function App() {
   return (
@@ -21,6 +22,12 @@ function App() {
                     Home
                   </Link>
                   <Link 
+                    to="/information" 
+                    className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    Information
+                  </Link>
+                  <Link 
                     to="/mappable" 
                     className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
                   >
@@ -35,6 +42,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/information" element={<Information />} />
             <Route path="/mappable" element={<Mappable />} />
           </Routes>
         </main>
