@@ -26,32 +26,23 @@ const PORT = process.env.PORT;
 
 // Middleware
 app.use(express.json());
+app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.static(path.join(__dirname, '../'))); // Serve files from parent directory
 
 // Use route files
 app.use('/api/events', eventsRoutes);
 app.use('/api/distance', distanceRoutes);
+app.use('/api/apartments', apartmentRoutes);
 app.use('/database', databaseRoutes);
-app.use('/apartments', apartmentRoutes);
 
-// Serve school_info.html
-app.get('/school-info', (req, res) => {
-    res.sendFile(path.join(__dirname, 'school_info.html'));
-});
-
-// Serve school_info.js as a static file
-app.get('/school_info.js', (req, res) => {
-    res.sendFile(path.join(__dirname, 'school_info.js'));
-});
-
-// Serve the main page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
-});
 
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Backend server running on http://localhost:${PORT}`);
-    console.log(`📚 School info page: http://localhost:${PORT}/school-info`);
-    console.log(`🌐 Main page: http://localhost:${PORT}/`);
 });

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const router = express.Router();
 
-// GET /api/events/:city/:country - Fetch events for a specific city and country
+
 router.get('/:query', async (req, res) => {
     try {
         const { query } = req.params;
