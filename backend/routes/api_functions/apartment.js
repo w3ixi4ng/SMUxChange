@@ -8,8 +8,6 @@ router.get('/:query', async (req, res) => {
     try {
         const { query } = req.params;
         const decodedquery= decodeURIComponent(query);
-
-        console.log('🔑 Using API key:', process.env.SERPAPI_API_KEY ? 'Present' : 'Missing');
         
         const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
             params: {
