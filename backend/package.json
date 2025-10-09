@@ -20,7 +20,7 @@
     "express": "^4.18.2",
     "firebase-admin": "^13.5.0",
     "openai": "^4.67.3",
-    "require": "^2.4.20"
+    "require": "^0.4.4"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
