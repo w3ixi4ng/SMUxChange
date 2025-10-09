@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import type { Pill } from "@/types/Pill";
+import axios from "axios";
+import {useEffect } from "react";
 
 interface ModuleCategory {
   id: string;
@@ -8,42 +10,110 @@ interface ModuleCategory {
   pills: Pill[];
 }
 
-function Mappable() {
-  // Multiple stacks/containers on the right side
-  const [moduleCategories, setModuleCategories] = useState<ModuleCategory[]>([
-    {
-      id: "business",
-      name: "SMU Business Electives",
-      pills: [
-        { id: 1, text: "Marketing Strategy", width: 120 },
-        { id: 2, text: "Financial Management", width: 130 },
-        { id: 3, text: "Operations Management", width: 140 },
-        { id: 4, text: "Business Analytics", width: 120 },
-        { id: 5, text: "Strategic Planning", width: 120 },
-      ]
-    },
-    {
-      id: "free",
-      name: "Free Electives",
-      pills: [
-        { id: 6, text: "Psychology", width: 100 },
-        { id: 7, text: "Art History", width: 90 },
-        { id: 8, text: "Creative Writing", width: 110 },
-        { id: 9, text: "Photography", width: 100 },
-        { id: 10, text: "Music Theory", width: 100 },
-      ]
-    },
-    {
-      id: "tech",
-      name: "Technology Electives",
-      pills: [
-        { id: 11, text: "Web Development", width: 120 },
-        { id: 12, text: "Data Science", width: 100 },
-        { id: 13, text: "AI & Machine Learning", width: 140 },
-        { id: 14, text: "Cybersecurity", width: 110 },
-      ]
+
+//testing functions
+async function fetch_mappable(faculty_name: string, major_name: string, track_name: string, second_major:boolean) {
+    let arr : {[key:string]: any} = {};
+    try {
+        const response = await axios.get(`http://localhost:3001/database/getFaculty/${faculty_name}`);
+        var mappable_mods =  response.data[0].Mappable;
+        var mods_json = JSON.parse(mappable_mods)[0];
+        console.log(mods_json)
+        for (let type_mods in mods_json) {
+            if (type_mods == "Majors") {
+                get_mappable_majors(mods_json[type_mods], second_major,major_name,track_name,arr);
+            } else {
+                arr[type_mods] = mods_json[type_mods];
+            }
+        }
+    } catch(err) {
+        console.log(err)
     }
-  ]);
+    return arr;
+}
+
+function get_mappable_majors(major_object: {[key:string]:any}, second_major:boolean, major_name:string, track_name:string, final_object: {[key:string]:any}) {
+    var first_major_obj = major_object["First Major"];
+    get_mappable_helper(first_major_obj,major_name,track_name,final_object);
+    if (second_major == true) {
+        get_mappable_helper(major_object["Second Major"], major_name, track_name, final_object);
+    }
+}
+
+function get_mappable_helper(major_object: {[key:string]:any}, major_name:string, track_name:string, final_object: {[key:string]:any}) {
+    for (let majors in major_object) {
+        if (majors == major_name) {
+            var major_obj = major_object[majors];
+            for (let major_mods in major_obj) {
+                if ( major_mods== "Track") {
+                    var track_mods = major_obj[major_mods];
+                    for (let tracks in track_mods) {
+                        if (tracks == track_name) {
+                            final_object[track_mods[tracks][1]] = track_mods[tracks][0];
+                        }
+                    }
+                } else {
+                    final_object[major_obj[major_mods][1]] = major_obj[major_mods][0];
+                }
+            }
+        }
+    }
+}
+
+async function get_specific_mods(mappable_mods: {[key:string]:any}, university_chosen: string) {
+    var return_obj = [];
+    var id = 1;
+    for (let keys in mappable_mods) {
+        var return_object : {[key:string]:any} = {}
+        return_object.id = keys;
+        return_object.name = keys;
+        try {
+            var response = await axios.get(`http://localhost:3001/database/getByCourseAreaAndUniversity/${keys}/${university_chosen}`);
+            var mod_details = response.data;
+            var pill_data = []
+            for (let values in mod_details) {
+                pill_data.push({
+                id: id,
+                text: mod_details[values]["Course Title"],
+                width: "auto" // Use a string for auto width
+            });
+            id++;
+            }
+            return_object.pills = pill_data;
+
+        } catch(err) {
+            console.log(err);
+        }
+        if (return_object.pills.length >0) {
+            return_obj.push(return_object);
+        }
+    }
+    return return_obj;
+}
+
+
+
+
+function Mappable() {
+    
+  // Multiple stacks/containers on the right side
+  const [moduleCategories, setModuleCategories] = useState([]);
+
+    useEffect(() => {
+    async function fetchData() {
+      const mappable = await fetch_mappable(
+        "Lee Kong Chian School of Business",
+        "No Major",
+        "No Track",
+        false
+      );
+      const get_val = await get_specific_mods(mappable, "University of Toronto");
+      setModuleCategories(get_val);
+    }
+    fetchData();
+  }, []);
+
+    
 
   // Dropped pills (left side - empty zone)
   const [droppedPills, setDroppedPills] = useState<Pill[]>([]);

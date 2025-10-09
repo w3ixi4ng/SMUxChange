@@ -14,9 +14,9 @@ async function fetchEvents() {
     return null;
   }
 }
-// testing
-const data = await fetchEvents();
-console.log(data);
+
+
+
 
 
 function Home() {
