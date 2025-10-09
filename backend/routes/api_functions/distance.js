@@ -10,9 +10,6 @@ router.get('/:origin/:destination/:mode', async (req, res) => {
         const decodedOrigin = decodeURIComponent(origin);
         const decodedDestination = decodeURIComponent(destination);
         
-        console.log('🚗 Calculating distance from:', decodedOrigin, 'to:', decodedDestination, 'mode:', mode);
-        console.log('🔑 Using Google Maps API key:', process.env.GOOGLE_MAPS_API_KEY ? 'Present' : 'Missing');
-        
         const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
             params: {
                 origins: decodedOrigin,

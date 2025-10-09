@@ -7,9 +7,7 @@ const router = express.Router();
 router.get('/:city/:country', async (req, res) => {
     try {
         const { city, country } = req.params;
-        
-        console.log('🔍 Fetching events for:', city, country);
-        console.log('🔑 Using API key:', process.env.SERPAPI_API_KEY ? 'Present' : 'Missing');
+
         
         const response = await axios.get('https://serpapi.com/search.json', {
             params: {
