@@ -1,22 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import axios from "axios";
-
-
-// testing
-async function fetchEvents() {
-  try {
-    const response = await axios.get(`http://localhost:3001/database/getByCourseAreaAndCountry/Asian Studies/China`);
-    return response.data;
-  }
-  catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
-
-
 
 
 function Home() {

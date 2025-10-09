@@ -81,6 +81,22 @@ router.get('/getAllFaculty', async(req,res) => {
     }
 })
 
+// get tracks by faculty name
+router.get('/getTracksByMajor/:faculty_name', async(req,res) => {
+    try {
+        const { faculty_name } = req.params;
+        const ref = await db.collection("Faculty Info").where("Faculty_Name","==", faculty_name).get();
+        let records = [];
+        // Loop through documents
+        ref.forEach(doc => {
+            records.push(doc.data());
+        });
+        res.json(records);
+    } catch(err) {
+        console.log(err);
+    }
+})
+
 //get by course
 router.get('/getFaculty/:facultyname', async(req,res) => {
     try {
