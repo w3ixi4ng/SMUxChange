@@ -192,7 +192,7 @@ function MapSearch() {
                     </div>
                     <div className="col-lg-6 col-12 mb-2">
                         <p className="text-start mb-1 ml-1">Select Major</p>
-                        <select disabled={toggleMajor} className="form-select" onChange={(e) => setMajor(e.target.value)}>
+                        <select disabled={toggleMajor} className="form-select" onChange={(e) => {setMajor(e.target.value); setSelectedTrack("");}}>
                             <option selected value="">Choose a major...</option>
                             {allMajors.map((major) => (
                                 <option key={major} value={major}>{major}</option>))}

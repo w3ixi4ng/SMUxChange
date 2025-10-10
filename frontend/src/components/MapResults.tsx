@@ -18,7 +18,8 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     const [trackElectives, setTrackElectives] = useState<string>("");
     const [secondMajorElectives, setSecondMajorElectives] = useState<string>("");
     const [allSecondMajors, setAllSecondMajors] = useState<{ [key: string]: string }>({});
-
+    const [availableCourses, setAvailableCourses] = useState<boolean>(false);
+    const errorMessage = "No courses mapped before. Find out more from host university.";
 
     const fetchSchoolCores = async (faculty: string, major: string, track: string) => {
         try {
@@ -83,15 +84,18 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
     useEffect(() => {
         fetchSchoolCores(faculty, major, track);
-    }, [university, country, faculty, major, track]);
+    }, [university, faculty, major, track, secondMajor, country]);
 
     useEffect(() => {
-
         fetchSecondMajors(secondMajor);
-    }, [secondMajor])
+    }, [university, secondMajor, faculty, major, track, country])
+
+    useEffect(() => {
+        setAvailableCourses(false);
+    }, [university, faculty, major, track, secondMajor, country]);
 
 
-    const allElectives = [];
+    const allElectives = [] as any[];
     if (schoolCourses.length > 0) {
         for (let course of schoolCourses) {
             allElectives.push(course);
@@ -108,16 +112,25 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     }
 
 
-    
     return (
         <>
             <div className="container col-12 mx-auto mt-5 mb-1">
                 <h1>Available Courses at {university}</h1>
             </div>
-            <div id="courses-mapped">
-                {allElectives.map((elective) => (
-                    <CoursesMapped key={elective[1]} courseArea={elective} university={university}/>
-                ))}
+            <div id="courses-mapped" className="container mx-auto mt-5 mb-1">
+                <div className="row">
+                    {allElectives.map((elective) => (
+                        <CoursesMapped key={elective[1]} courseArea={elective} university={university} setAvailableCourses={setAvailableCourses}/>
+                    ))}
+                </div>
+            </div>
+            <div
+                id="error-message"
+                className={`container col-12 mx-auto bg-red-100 py-3 rounded shadow-md font-semibold ${
+                    !availableCourses ? "visible" : "hidden"
+                  }`}
+                >
+                {errorMessage}
             </div>
 
 
