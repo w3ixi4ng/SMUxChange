@@ -160,7 +160,7 @@ function MapSearch() {
 
     return (
         <>
-            <div className="container col-12 mx-auto mt-5 mb-1">
+            <div className="container col-12 mx-auto mt-5 mb-1 bg-">
                 <h1>Mappable</h1>
             </div>
             <div className="container col-12 mx-auto bg-blue-100 py-3 rounded shadow-md font-semibold">
