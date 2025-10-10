@@ -3,6 +3,7 @@ import Home from '../pages/Home.tsx';
 import Information from '../pages/Information.tsx';
 import Home2 from '../pages/Home2.tsx';
 import MappableV3 from '../pages/MappableV3.tsx';
+import Information2 from '../pages/Information2.tsx';
 import { Plane, House, MapIcon, GraduationCap } from 'lucide-react';
 
 function RouterView() {
@@ -38,6 +39,7 @@ function RouterView() {
                         <Route path="/information" element={<Information />} />
                         <Route path="/home2" element={<Home2 />} />
                         <Route path="/mappablev3" element={<MappableV3 />} />
+                        <Route path="/information2" element={<Information2 />} />
                     </Routes>
                 </main>
             </div>
