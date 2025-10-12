@@ -14,9 +14,7 @@ type School = {
 };
 
 // Hardcoded School dataset
-
 const schoolsData: School[] = [
-  // United Kingdom
   {
     id: 1,
     name: 'University of Oxford',
@@ -29,7 +27,7 @@ const schoolsData: School[] = [
     attractions: ['Bodleian Library', 'Christ Church College', 'Oxford Castle', 'Ashmolean Museum', 'Oxford Botanic Garden'],
   },
   {
-    id: 1,
+    id: 2,
     name: 'University of Cambridge',
     country: 'United Kingdom',
     city: 'Cambridge',
@@ -39,10 +37,8 @@ const schoolsData: School[] = [
     courses: ['Computer Science', 'Natural Sciences', 'Engineering', 'Economics', 'Law', 'Linguistics'],
     attractions: ['King’s College Chapel', 'The Backs', 'Fitzwilliam Museum', 'Mathematical Bridge', 'Cam River Punting'],
   },
-
-  // United States
   {
-    id: 1,
+    id: 3,
     name: 'Harvard University',
     country: 'United States',
     city: 'Cambridge',
@@ -53,7 +49,7 @@ const schoolsData: School[] = [
     attractions: ['Harvard Yard', 'Harvard Art Museums', 'Cambridge Common', 'Charles River', 'Harvard Square'],
   },
   {
-    id: 1,
+    id: 4,
     name: 'Stanford University',
     country: 'United States',
     city: 'Stanford',
@@ -63,10 +59,8 @@ const schoolsData: School[] = [
     courses: ['Computer Science', 'Management Science & Engineering', 'Human-Centered Design', 'Biology', 'Data Science', 'Aerospace'],
     attractions: ['Hoover Tower', 'Cantor Arts Center', 'Stanford Dish', 'Palm Drive', 'Rodin Sculpture Garden'],
   },
-
-  // Singapore
   {
-    id: 1,
+    id: 5,
     name: 'National University of Singapore',
     country: 'Singapore',
     city: 'Singapore',
@@ -77,7 +71,7 @@ const schoolsData: School[] = [
     attractions: ['Singapore Botanic Gardens', 'Marina Bay Sands', 'Sentosa Island', 'Gardens by the Bay', 'Chinatown'],
   },
   {
-    id: 1,
+    id: 6,
     name: 'Nanyang Technological University',
     country: 'Singapore',
     city: 'Singapore',
@@ -87,10 +81,8 @@ const schoolsData: School[] = [
     courses: ['Computer Science', 'Electrical & Electronic Engineering', 'Materials Science', 'Business', 'Communication Studies', 'Education'],
     attractions: ['Jurong Lake Gardens', 'Chinese Garden', 'Science Centre Singapore', 'Haw Par Villa', 'NTU Chinese Heritage Centre'],
   },
-
-  // Japan
   {
-    id: 1,
+    id: 7,
     name: 'University of Tokyo',
     country: 'Japan',
     city: 'Tokyo',
@@ -101,7 +93,7 @@ const schoolsData: School[] = [
     attractions: ['Tokyo Tower', 'Ueno Park', 'Tokyo National Museum', 'Shinjuku Gyoen', 'Meiji Shrine'],
   },
   {
-    id: 1,
+    id: 8,
     name: 'Kyoto University',
     country: 'Japan',
     city: 'Kyoto',
@@ -111,10 +103,8 @@ const schoolsData: School[] = [
     courses: ['Informatics', 'Chemical Engineering', 'Agriculture', 'Philosophy', 'Mathematics', 'Earth Sciences'],
     attractions: ['Fushimi Inari Shrine', 'Kiyomizu-dera', 'Arashiyama Bamboo Grove', 'Nijo Castle', 'Philosopher’s Path'],
   },
-
-  // Australia
   {
-    id: 1,
+    id: 9,
     name: 'University of Melbourne',
     country: 'Australia',
     city: 'Melbourne',
@@ -125,7 +115,7 @@ const schoolsData: School[] = [
     attractions: ['Royal Botanic Gardens', 'Federation Square', 'National Gallery of Victoria', 'Queen Victoria Market', 'Yarra River'],
   },
   {
-    id: 1,
+    id: 10,
     name: 'Australian National University',
     country: 'Australia',
     city: 'Canberra',
@@ -135,56 +125,7 @@ const schoolsData: School[] = [
     courses: ['Computer Science', 'Public Policy', 'International Security', 'Astronomy', 'Linguistics', 'Statistics'],
     attractions: ['Australian War Memorial', 'Lake Burley Griffin', 'National Gallery of Australia', 'Mount Ainslie Lookout', 'Parliament House'],
   },
-
-  // Switzerland
-  {
-    id: 1,
-    name: 'ETH Zurich',
-    country: 'Switzerland',
-    city: 'Zurich',
-    gpaRequired: 3.8,
-    description:
-      'A world-leading institute in science and technology, known for cutting-edge research and a strong startup culture.',
-    courses: ['Computer Science', 'Mechanical Engineering', 'Physics', 'Architecture', 'Mathematics', 'Robotics'],
-    attractions: ['Lake Zurich', 'Swiss National Museum', 'Old Town Zurich', 'Uetliberg Mountain', 'Bahnhofstrasse'],
-  },
-  {
-    id: 1,
-    name: 'EPFL',
-    country: 'Switzerland',
-    city: 'Lausanne',
-    gpaRequired: 3.8,
-    description:
-      'Swiss federal institute with strengths in engineering, life sciences, and computational research.',
-    courses: ['Computer Science', 'Microengineering', 'Data Science', 'Life Sciences Engineering', 'Civil Engineering', 'Cybersecurity'],
-    attractions: ['Ouchy Promenade', 'Lausanne Cathedral', 'Olympic Museum', 'Lavaux Vineyards', 'Sauvabelin Tower'],
-  },
-
-  // Canada
-  {
-    id: 1,
-    name: 'McGill University',
-    country: 'Canada',
-    city: 'Montreal',
-    gpaRequired: 3.7,
-    description:
-      'One of Canada’s most prestigious public universities, offering diverse programs and a vibrant multicultural student environment.',
-    courses: ['Computer Science', 'Economics', 'Psychology', 'Chemistry', 'Law', 'Music'],
-    attractions: ['Mount Royal Park', 'Old Montreal', 'Montreal Museum of Fine Arts', 'Jean-Talon Market', 'Botanical Garden'],
-  },
-  {
-    id: 1,
-    name: 'University of Toronto',
-    country: 'Canada',
-    city: 'Toronto',
-    gpaRequired: 3.7,
-    description:
-      'Large research university famous for AI, biomedical research, and a tri-campus system.',
-    courses: ['Computer Science', 'Neuroscience', 'Finance', 'Urban Studies', 'Mechanical Engineering', 'Public Health'],
-    attractions: ['CN Tower', 'Royal Ontario Museum', 'Kensington Market', 'Harbourfront', 'St. Lawrence Market'],
-  },
 ];
-
 
 function Information() {
   const [query, setQuery] = useState('');
@@ -202,10 +143,7 @@ function Information() {
     const c = country.trim().toLowerCase();
     return schoolsData.filter((s) => {
       const matchesCountry = !c || s.country.toLowerCase().includes(c);
-      const matchesQuery =
-        !q ||
-        s.name.toLowerCase().includes(q) ||
-        s.city.toLowerCase().includes(q);
+      const matchesQuery = !q || s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q);
       return matchesCountry && matchesQuery;
     });
   }, [query, country]);
@@ -216,9 +154,28 @@ function Information() {
     }
   }, [selectedSchool]);
 
+  // ✈️ Plane scroll animation
+  useEffect(() => {
+    const handleScroll = () => {
+      const plane = document.getElementById('plane');
+      if (!plane) return;
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = scrollTop / docHeight;
+
+      const maxY = window.innerHeight - 100;
+      const offsetX = Math.sin(scrollPercent * 6) * 30; // gentle wave
+      plane.style.transform = `translate(${offsetX}px, ${scrollPercent * maxY}px)`; // no rotation
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 relative">
       <h1 className="text-3xl font-bold text-gray-900 mb-6">Information</h1>
+
+      {/* Filters */}
       <div ref={filtersRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">Search school or city</label>
@@ -247,7 +204,8 @@ function Information() {
         </div>
       </div>
 
-      {selectedSchool && (
+      {/* Details Section */}
+      {selectedSchool ? (
         <div ref={cardRef} className="w-full bg-white border border-gray-200 rounded-lg p-6 shadow-sm mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -260,9 +218,7 @@ function Information() {
               variant="outline"
               onClick={() => {
                 setSelectedSchool(null);
-                if (filtersRef.current) {
-                  filtersRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                filtersRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
             >
               Back to results
@@ -297,9 +253,7 @@ function Information() {
             </Link>
           </div>
         </div>
-      )}
-
-      {!selectedSchool && (
+      ) : (
         <>
           <div className="mb-6 text-sm text-gray-600">
             Showing {filtered.length} result{filtered.length === 1 ? '' : 's'}
@@ -310,20 +264,57 @@ function Information() {
               <button
                 key={`${s.name}-${s.city}`}
                 onClick={() => setSelectedSchool(s)}
-                className={"text-left p-4 rounded-lg border bg-white hover:shadow transition focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-200"}
+                className="text-left p-4 rounded-lg border bg-white hover:shadow transition focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-200"
               >
                 <div className="font-semibold text-gray-900">{s.name}</div>
-                <div className="mt-1 text-sm text-gray-600">{s.city}, {s.country} • GPA: {s.gpaRequired}+</div>
+                <div className="mt-1 text-sm text-gray-600">
+                  {s.city}, {s.country} • GPA: {s.gpaRequired}+
+                </div>
               </button>
             ))}
           </div>
         </>
       )}
 
+      {/* ✈️ Scrolling plane icon */}
+      <div
+        id="plane-scroll"
+        style={{
+          position: 'fixed',
+          right: '110px',
+          top: '64px', // ⬅️ start BELOW navbar (adjust if your navbar is taller)
+          height: 'calc(100vh - 64px)', // ⬅️ keep the plane within the visible area below navbar
+          pointerEvents: 'none',
+          zIndex: 20, // keep below navbar if navbar z-index is higher (e.g. 50)
+        }}
+      >
+        <svg
+          id="plane"
+          xmlns="http://www.w3.org/2000/svg"
+          width="60"
+          height="60"
+          viewBox="0 0 24 24"
+          fill="white"
+          stroke="black"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{
+            position: 'absolute',
+            transition: 'transform 0.2s ease-out',
+            color: '#1d4ed8', // Tailwind blue-700 tone
+            transform: 'rotate(-10deg)', // stays upright but tilted forward slightly
+          }}
+        >
+          <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+        </svg>
+      </div>
     </div>
   );
 }
 
+
 export default Information;
+
 
 

@@ -1,50 +1,90 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Home from '../pages/Home.tsx';
-import Information from '../pages/Information.tsx';
-import Home2 from '../pages/Home2.tsx';
-import MappableV3 from '../pages/MappableV3.tsx';
-import Information2 from '../pages/Information2.tsx';
-import { Plane, House, MapIcon, GraduationCap } from 'lucide-react';
+import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
+import Home from "../pages/Home.tsx";
+import Information from "../pages/Information.tsx";
+import MappableV3 from "../pages/MappableV3.tsx";
+import { Plane, House, MapIcon, GraduationCap } from "lucide-react";
 
 function RouterView() {
-    return (
-        <Router>
-            <div className="min-h-screen bg-neutral-500">
-                <nav className="bg-neutral-800 shadow-sm">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ fontFamily: 'Roboto' }}>
-                        <div className="flex h-16">
-                            <div className="flex items-center justify-between w-full space-x-8">
-                                <Link to="/" className="text-2xl font-bold text-white text-decoration-none">
-                                    <Plane className="inline-block" /> SMUxChange
-                                </Link>
-                                <div className="flex space-x-4">
-                                    <Link to="/" className="text-xl font-bold text-white text-decoration-none">
-                                    <House className="inline-block" /> Home
-                                    </Link>
-                                    <Link to="/mappablev3" className="text-xl font-bold text-white text-decoration-none">
-                                        <MapIcon className="inline-block" /> Map
-                                    </Link>
-                                    <Link to="/information" className="text-xl font-bold text-white text-decoration-none">
-                                        <GraduationCap className="inline-block" /> Schools
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+  return (
+    <Router>
+      {/* ===== Navigation Bar ===== */}
+      <nav
+        className="shadow-sm w-full"
+        style={{
+          background: "linear-gradient(to right, #2D6A6A, #4BA6A6)",
+          fontFamily: "Roboto, sans-serif",
+        }}
+      >
+        <div className="flex flex-col lg:flex-row items-stretch w-full">
+          {/* Logo */}
+          <div className="flex items-center px-6 py-3 text-white text-2xl font-bold gap-2">
+            <Plane size={26} color="white" />
+            <span>SMUxChange</span>
+          </div>
 
-                <main>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/information" element={<Information />} />
-                        <Route path="/home2" element={<Home2 />} />
-                        <Route path="/mappablev3" element={<MappableV3 />} />
-                        <Route path="/information2" element={<Information2 />} />
-                    </Routes>
-                </main>
-            </div>
-        </Router>
-    );
+          {/* Nav links */}
+          <div className="flex flex-1 flex-col lg:flex-row text-center">
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                  isActive
+                    ? "bg-[#A7E3E3] text-yellow-400"
+                    : "text-white hover:bg-[#A7E3E330]"
+                }`
+              }
+            >
+              <House size={20} color="currentColor" />
+              <span>Home</span>
+            </NavLink>
+
+            <NavLink
+              to="/mappablev3"
+              className={({ isActive }) =>
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                  isActive
+                    ? "bg-[#A7E3E3] text-yellow-400"
+                    : "text-white hover:bg-[#A7E3E330]"
+                }`
+              }
+            >
+              <MapIcon size={20} color="currentColor" />
+              <span>Map</span>
+            </NavLink>
+
+            <NavLink
+              to="/information"
+              className={({ isActive }) =>
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                  isActive
+                    ? "bg-[#A7E3E3] text-yellow-400"
+                    : "text-white hover:bg-[#A7E3E330]"
+                }`
+              }
+            >
+              <GraduationCap size={20} color="currentColor" />
+              <span>Schools</span>
+            </NavLink>
+          </div>
+        </div>
+      </nav>
+
+      {/* ===== Page Content ===== */}
+      <main
+        style={{
+          background: "linear-gradient(160deg, #A6D3C8 0%, #E8F2EF 100%)",
+          minHeight: "calc(100vh - 64px)",
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/information" element={<Information />} />
+          <Route path="/mappablev3" element={<MappableV3 />} />
+        </Routes>
+      </main>
+    </Router>
+  );
 }
 
 export default RouterView;

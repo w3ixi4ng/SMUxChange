@@ -1,6 +1,31 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@layer base {
+  /* === FIX NAVBAR VISIBILITY === */
+  /* Force visibility on desktop */
+  @media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse {
+      display: flex !important;
+      flex-basis: auto !important;
+      justify-content: flex-end !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+    }
+  }
+
+  /* Ensure it doesn’t vanish on load due to collapse class */
+  .navbar-collapse.collapse {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Optional: transition polish */
+  .navbar-collapse.collapse.show {
+    transition: all 0.3s ease !important;
+  }
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -117,4 +142,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+a {
+  color: #2D6A6A!important;
+  text-decoration: none !important;
+}
+a:hover {
+  color: #FFFFFF !important;
 }
