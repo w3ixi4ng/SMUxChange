@@ -97,6 +97,13 @@ function Information2() {
                     ))}
                 </div>
             </div>
+            <div className="container mx-auto mt-5 mb-1 text-center">
+                {schools.length === 0 && (
+                    <div className="alert alert-danger" role="alert">
+                        Module Unavailable. Try a different Course Area or Country.
+                    </div>
+                )}
+            </div>
         </>
     );
 }

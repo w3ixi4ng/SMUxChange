@@ -107,6 +107,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
 
     const allElectives = [] as any[];
+    
     if (schoolCourses.length > 0) {
         for (let course of schoolCourses) {
             allElectives.push(course);
