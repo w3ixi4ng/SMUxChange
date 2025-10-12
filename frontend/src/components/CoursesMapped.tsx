@@ -69,7 +69,7 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
                             <h1 className='text-center'>{courseArea[1]}</h1>
                             <h3 className='text-center'><span className="badge text-bg-secondary">{selectedCount}/{courseArea[0]} selected</span></h3>
                         </div>
-                        <div className="col-1 text-end fw-bold">
+                        <div className="col-1 text-end fw-bold d-flex justify-content-end">
                             {isExpanded ? 
                             <ChevronUp className="cursor-pointer" onClick={() => {
                                 setIsExpanded(!isExpanded)
