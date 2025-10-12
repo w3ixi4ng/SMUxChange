@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
 import Home from "../pages/Home.tsx";
-import Information from "../pages/Information.tsx";
+import Information from "../pages/Information2.tsx";
 import MappableV3 from "../pages/MappableV3.tsx";
 import { Plane, House, MapIcon, GraduationCap } from "lucide-react";
 
@@ -81,6 +81,7 @@ function RouterView() {
           <Route path="/" element={<Home />} />
           <Route path="/information" element={<Information />} />
           <Route path="/mappablev3" element={<MappableV3 />} />
+          <Route path="/mappablev3/:school/:country" element={<MappableV3 />} />
         </Routes>
       </main>
     </Router>

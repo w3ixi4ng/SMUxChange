@@ -113,11 +113,9 @@ router.get('/getFaculty/:facultyname', async(req,res) => {
     }
 })
 
-// by course area
-router.get('/getByCourseArea/:course_area', async(req,res) => {
+router.get('/getAllCourseAreas', async(req,res) => {
     try {
-        const { course_area } = req.params;
-        const ref = await db.collection(course_area).get();
+        const ref = await db.collection("Course Areas").get();
         let records = [];
         // Loop through documents
         ref.forEach(doc => {

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 type ChildProps = {
     school: any;
 };
@@ -35,14 +37,14 @@ function SchoolCard({ school }: ChildProps) {
                                 {school['mappable_basket'].length === 0 && (
                                     <span className="badge rounded-pill bg-danger mb-1 mx-auto">No mappable baskets</span>
                                 )}
-        
+
                                 {school['mappable_basket'].slice(randomNumber, randomNumber + 3).map(
                                     (basket: any, counter: number) => (
                                         <span key={basket} className={`badge rounded-pill bg-${getRandomColor(counter)} text-wrap mb-1 mx-auto`}>{basket}</span>
                                     )
                                 )}
                                 {school['mappable_basket'].length > 5 && (
-                                    <span className={`badge rounded-pill bg-${getRandomColor(5)} mb-1 mx-auto`}>+{school['mappable_basket'].length -3} more</span>
+                                    <span className={`badge rounded-pill bg-${getRandomColor(5)} mb-1 mx-auto`}>+{school['mappable_basket'].length - 3} more</span>
                                 )}
                             </div>
 
@@ -51,7 +53,12 @@ function SchoolCard({ school }: ChildProps) {
                                 <small className="text-muted">(110 reviews)</small>
                             </p>
                             <div className="d-flex justify-content-between gap-2">
-                                <a href="#" className="btn btn-outline-primary btn-sm w-100">Try Map</a>
+                                <Link
+                                    to={`/mappablev3/${school['host_university']}/${school['country']}`}
+                                    className="btn btn-outline-primary btn-sm w-100"
+                                >
+                                    Try Map
+                                </Link>
                                 <a href="#" className="btn btn-outline-success btn-sm w-100">Learn More</a>
                             </div>
                         </div>

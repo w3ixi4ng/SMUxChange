@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MapResults from "./MapResults";
-
-
-
+import { useParams } from "react-router-dom";
 
 
 function MapSearch() {
+
+    const { school: schoolParam, country: countryParam } = useParams();
+
+    
+
     const [countries, setCountries] = useState<string[]>([]);
-    const [country, setCountry] = useState<string>("");
+    const [selectedCountry, setSelectedCountry] = useState<string>("");
     const [university, setUniversity] = useState<string[]>([]);
     const [selectedUniversity, setSelectedUniversity] = useState<string>("");
     const [faculties, setFaculties] = useState<string[]>([]);
@@ -30,7 +33,13 @@ function MapSearch() {
 
     const [paramsAreValid, setParamsAreValid] = useState(true);
 
-
+    useEffect(() => {
+        if (schoolParam && countryParam) {
+            setSelectedCountry(countryParam);
+            setSelectedUniversity(schoolParam);
+            setToggleUniversity(false);
+        }
+    }, [schoolParam, countryParam])
 
     const fetchCountries = async () => {
         try {
@@ -123,11 +132,11 @@ function MapSearch() {
     }, []);
 
     useEffect(() => {
-        if (country) {
-            fetchUniversities(country);
+        if (selectedCountry) {
+            fetchUniversities(selectedCountry);
             setToggleUniversity(false);
         }
-    }, [country]);
+    }, [selectedCountry]);
 
     useEffect(() => {
         if (faculty) {
@@ -150,12 +159,12 @@ function MapSearch() {
     }, [secondMajor]);
 
     useEffect(() => {
-        if (country && selectedUniversity && faculty && major) {
+        if (selectedCountry && selectedUniversity && faculty && major) {
             setParamsAreValid(false);
         } else {
             setParamsAreValid(true);
         }
-    }, [selectedUniversity, country, faculty, major, selectedTrack, selectedSecondMajor]);
+    }, [selectedUniversity, selectedCountry, faculty, major, selectedTrack, selectedSecondMajor]);
 
 
     return (
@@ -167,19 +176,19 @@ function MapSearch() {
                 <div className="row justify-content-center">
                     <div className="col-lg-6 col-12 mb-2">
                         <p className="text-start mb-1 ml-1">Select Country</p>
-                        <select className="form-select" onChange={(e) => setCountry(e.target.value)}>
+                        <select className="form-select" onChange={(e) => setSelectedCountry(e.target.value)} id="country">
                             <option selected value="">Choose a country...</option>
                             {countries.map((country) => (
-                                <option key={country} value={country}>{country}</option>
+                                <option key={country} value={country} selected={country === selectedCountry}>{country}</option>
                             ))}
                         </select>
                     </div>
                     <div className="col-lg-6 col-12 mb-2">
                         <p className="text-start mb-1 ml-1">Select University</p>
-                        <select className="form-select" disabled={toggleUniversity} onChange={(e) => setSelectedUniversity(e.target.value)}>
+                        <select className="form-select" disabled={toggleUniversity} onChange={(e) => setSelectedUniversity(e.target.value)} id="university">
                             <option selected value="">Choose a university...</option>
                             {university.map((uni) => (
-                                <option key={uni} value={uni}>{uni}</option>))}
+                                <option key={uni} value={uni} selected={uni === selectedUniversity}>{uni}</option>))}
                         </select>
                     </div>
                     <div className="col-lg-6 col-12 mb-2">
@@ -230,7 +239,7 @@ function MapSearch() {
             </div>
 
             {mapResults && (
-                <MapResults university={selectedUniversity} country={country} faculty={faculty} major={major} track={selectedTrack} secondMajor={selectedSecondMajor} />
+                <MapResults university={selectedUniversity} country={selectedCountry} faculty={faculty} major={major} track={selectedTrack} secondMajor={selectedSecondMajor} />
             )}
         </>
     )

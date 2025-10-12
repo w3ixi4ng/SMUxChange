@@ -28,9 +28,23 @@ function Information2() {
     }
 
     const getAllCourseAreas = async () => {
-        const response = await axios.get('http://localhost:3001/database/getAllExchangeSchools');
+        const response = await axios.get('http://localhost:3001/database/getAllCourseAreas');
+        const courseAreas = response.data;
+        setCourseAreas(Object.keys(courseAreas[0]));
+    }
+
+    const getSchoolsByCourseArea = async (courseArea: string) => {
+        const response = await axios.get(`http://localhost:3001/database/getAllExchangeSchools/`);
         const schools = response.data;
-        console.log(schools);
+        const schoolsByCourseArea = schools.filter((school: any) => school['mappable_basket'].includes(courseArea));
+        setSchools(schoolsByCourseArea.sort((a: any, b: any) => b['mappable_basket'].length - a['mappable_basket'].length));
+    }
+
+    const getSchoolsByCourseAreaAndCountry = async (courseArea: string, country: string) => {
+        const response = await axios.get(`http://localhost:3001/database/getAllExchangeSchoolsByCountry/${country}`);
+        const schools = response.data;
+        const schoolsByCourseArea = schools.filter((school: any) => school['mappable_basket'].includes(courseArea));
+        setSchools(schoolsByCourseArea.sort((a: any, b: any) => b['mappable_basket'].length - a['mappable_basket'].length));
     }
 
     useEffect(() => {
@@ -40,12 +54,16 @@ function Information2() {
 
 
     useEffect(() => {
-        if (country !== '') {
+        if (courseArea !== '' && country !== '') {
+            getSchoolsByCourseAreaAndCountry(courseArea, country);
+        } else if (courseArea !== '') {
+            getSchoolsByCourseArea(courseArea);
+        } else if (country !== '') {
             getSchoolsByCountry(country);
         } else {
             getAllSchools();
         }
-    }, [country]);
+    }, [country, courseArea]);
 
     return (
         <>
@@ -62,7 +80,7 @@ function Information2() {
                         </select>
                     </div>
                     <div className="col-lg-6 col-12 mb-2">
-                        <p className="text-start mb-1 ml-1">Select City</p>
+                        <p className="text-start mb-1 ml-1">Select Course Area</p>
                         <select className="form-select" onChange={(e) => setCourseArea(e.target.value)}>
                             <option selected value="">Choose a course area...</option>
                             {courseAreas.map((courseArea) => (
