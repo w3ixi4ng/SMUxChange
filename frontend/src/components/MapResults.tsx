@@ -18,7 +18,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     const [majorElectives, setMajorElectives] = useState<string>("");
     const [trackElectives, setTrackElectives] = useState<string>("");
     const [secondMajorElectives, setSecondMajorElectives] = useState<string>("");
-    const [allSecondMajors, setAllSecondMajors] = useState<{ [key: string]: string }>({});
+    // const [allSecondMajors, setAllSecondMajors] = useState<{ [key: string]: string }>({});
     const [availableCourses, setAvailableCourses] = useState<boolean>(false);
     const [selectedCourses, setSelectedCourses] = useState<{ [courseArea: string]: string[] }>({});
     const errorMessage = "No courses mapped before. Find out more from host university here.";
@@ -74,7 +74,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                 }
             }
 
-            setAllSecondMajors(records);
+            // setAllSecondMajors(records);
             if (secondMajor != "") {
                 setSecondMajorElectives(records[secondMajor]);
             }
@@ -107,7 +107,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
 
     const allElectives = [] as any[];
-    
+
     if (schoolCourses.length > 0) {
         for (let course of schoolCourses) {
             allElectives.push(course);
@@ -134,7 +134,10 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
     return (
         <>
-            <div className={`container mx-auto mt-5 mb-1 bg-dark-subtle p-3 rounded-lg ${availableCourses ? "visible" : "hidden"}`}>
+            <div className="col-12 text-center mt-4">
+                <h1>{university}</h1>
+            </div>
+            <div className={`container mx-auto mt-2 mb-1 bg-dark-subtle p-3 rounded-lg ${availableCourses ? "visible" : "hidden"}`}>
                 <div className="row align-items-start overflow-visible">
                     <div className="col-lg-6 col-md-4 col-12 mx-auto mb-1 text-center sticky-lg-top sticky-md-top bg">
                         <div className="d-lg-flex justify-content-evenly d-md-block">
@@ -168,7 +171,9 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                         <div id="courses-mapped" className="container mx-auto mb-1">
                             <div className="row d-flex justify-content-center">
                                 {allElectives.map((elective) => (
-                                    <CoursesMapped key={elective[1]} courseArea={elective} university={university} setAvailableCourses={setAvailableCourses} onSelectedCoursesChange={handleSelectedCoursesChange} />
+                                    <CoursesMapped key={elective[1]} courseArea={elective} university={university}
+                                        setAvailableCourses={setAvailableCourses} onSelectedCoursesChange={handleSelectedCoursesChange}
+                                        selectedTotalCount={selectedCount} maxTotalCount={maxCount} />
                                 ))}
                             </div>
                         </div>
@@ -179,7 +184,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                 id="error-message"
                 className={`text-center container col-12 mx-auto bg-red-100 py-3 rounded shadow-md font-semibold ${!availableCourses ? "visible" : "hidden"
                     }`}>
-                {errorMessage} 
+                {errorMessage}
             </div>
 
 

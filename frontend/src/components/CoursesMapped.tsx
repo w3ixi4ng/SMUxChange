@@ -8,9 +8,11 @@ type ChildProps = {
     university: string
     setAvailableCourses: (availableCourses: boolean) => void
     onSelectedCoursesChange?: (courseArea: string, selectedCourses: string[]) => void
+    selectedTotalCount: number
+    maxTotalCount: number
 };
 
-function CoursesMapped({ courseArea, university, setAvailableCourses, onSelectedCoursesChange }: ChildProps) {
+function CoursesMapped({ courseArea, university, setAvailableCourses, onSelectedCoursesChange, selectedTotalCount, maxTotalCount }: ChildProps) {
     const [courses, setCourses] = useState([]);
 
     const fetchMappableCourses = async (courseArea: string, university: string) => {
@@ -40,12 +42,12 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
     }, [courseArea, university]);
 
     useEffect(() => {
-        if (selectedCount >= maxCount) {
+        if (selectedCount >= maxCount || selectedTotalCount >= maxTotalCount) {
             setIsDisabled(true);
         } else {
             setIsDisabled(false);
         }
-    }, [selectedCount]);
+    }, [selectedCount, selectedTotalCount, maxTotalCount]);
 
     const [isExpanded, setIsExpanded] = useState(true);
 
