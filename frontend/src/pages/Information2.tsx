@@ -78,7 +78,7 @@ function Information2() {
                     <div className="col-lg-6 col-12 mb-2">
                         <p className="text-start mb-1 ml-1">Select Country</p>
                         <select className="form-select" onChange={(e) => setCountry(e.target.value)}>
-                            <option selected value="">Choose a country...</option>
+                            <option selected value="">All countries</option>
                             {countries.map((country) => (
                                 <option key={country} value={country}>{country}</option>
                             ))}
@@ -87,7 +87,7 @@ function Information2() {
                     <div className="col-lg-6 col-12 mb-2">
                         <p className="text-start mb-1 ml-1">Select Course Area</p>
                         <select className="form-select" onChange={(e) => setCourseArea(e.target.value)}>
-                            <option selected value="">Choose a course area...</option>
+                            <option selected value="">All course areas</option>
                             {courseAreas.map((courseArea) => (
                                 <option key={courseArea} value={courseArea}>{courseArea}</option>
                             ))}
