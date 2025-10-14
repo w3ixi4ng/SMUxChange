@@ -86,7 +86,7 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
                         {courses.map((course: any) => (
                             <div key={course['Course Title']} className="d-flex justify-content-between mb-2 col-lg-4 col-md-4 col-4" id={course['Course Title']}>
                                 <button className={`text-wrap text-start badge hover:cursor-pointer h-100 w-100 text-wrap overflow-hidden text-center
-                                ${!selectedButtons[course['Course Title']] && !isDisabled ? 'bg-primary' : ''}
+                                ${!selectedButtons[course['Course Title']] && !isDisabled ? 'bg-dark' : ''}
                                 ${selectedButtons[course['Course Title']] ? 'bg-success' : ''}
                                 ${!selectedButtons[course['Course Title']] && isDisabled ? 'bg-danger' : ''}`}
                                     disabled={isDisabled && !selectedButtons[course['Course Title']] ? true : false}

@@ -137,7 +137,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
             <div className="col-12 text-center mt-4">
                 <h1>{university}</h1>
             </div>
-            <div className={`container mx-auto mt-2 mb-1 bg-dark-subtle p-3 rounded-lg ${availableCourses ? "visible" : "hidden"}`}>
+            <div className={`container mx-auto mt-2 mb-1 bg-light p-3 rounded-lg ${availableCourses ? "visible" : "hidden"}`}>
                 <div className="row align-items-start overflow-visible">
                     <div className="col-lg-6 col-md-4 col-12 mx-auto mb-1 text-center sticky-lg-top sticky-md-top bg">
                         <div className="d-lg-flex justify-content-evenly d-md-block">

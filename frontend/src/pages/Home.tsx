@@ -22,10 +22,10 @@ function Home() {
 
   return (
     <div
-      className="relative min-h-screen flex flex-col items-center justify-center text-[#1E4D4D] bg-cover bg-center"
+      className="relative min-h-screen flex flex-col items-center justify-center text-[#1E4D4D] bg-cover bg-center bg-dark"
       style={{
-        backgroundImage: "url('/images/travel.png')", // <-- put your image here
-        backgroundSize: "cover",
+        // backgroundImage: "url('/images/bg.jpg')", // <-- put your image here
+        backgroundSize: "fit",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
@@ -68,7 +68,7 @@ function Home() {
           ))}
         </div>
 
-        <Link to="/mappable">
+        <Link to="/mappablev3">
           <Button className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 text-lg rounded-full shadow-md">
             Explore the Map
           </Button>

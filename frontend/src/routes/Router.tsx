@@ -9,9 +9,8 @@ function RouterView() {
     <Router>
       {/* ===== Navigation Bar ===== */}
       <nav
-        className="shadow-sm w-full"
+        className="shadow-sm w-full, bg-neutral-800"
         style={{
-          background: "linear-gradient(to right, #2D6A6A, #4BA6A6)",
           fontFamily: "Roboto, sans-serif",
         }}
       >
@@ -30,8 +29,8 @@ function RouterView() {
               className={({ isActive }) =>
                 `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
                   isActive
-                    ? "bg-[#A7E3E3] text-yellow-400"
-                    : "text-white hover:bg-[#A7E3E330]"
+                    ? "bg-neutral-600"
+                    : "text-white hover:bg-neutral-600"
                 }`
               }
             >
@@ -44,8 +43,8 @@ function RouterView() {
               className={({ isActive }) =>
                 `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
                   isActive
-                    ? "bg-[#A7E3E3] text-yellow-400"
-                    : "text-white hover:bg-[#A7E3E330]"
+                    ? "bg-neutral-600"
+                    : "text-white hover:bg-neutral-600"
                 }`
               }
             >
@@ -58,8 +57,8 @@ function RouterView() {
               className={({ isActive }) =>
                 `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
                   isActive
-                    ? "bg-[#A7E3E3] text-yellow-400"
-                    : "text-white hover:bg-[#A7E3E330]"
+                    ? "bg-neutral-600"
+                    : "text-white hover:bg-neutral-600"
                 }`
               }
             >

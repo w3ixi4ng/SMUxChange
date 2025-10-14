@@ -70,8 +70,10 @@ function Information2() {
 
     return (
         <>
-            <div className="container mx-auto mt-5 mb-1 bg-light text-center">
+            <div className="container col-12 mx-auto mb-1-">
                 <h1>Schools</h1>
+            </div>
+            <div className="container col-12 mx-auto bg-light py-3 rounded shadow-md font-semibold">
                 <div className="row justify-content-center">
                     <div className="col-lg-6 col-12 mb-2">
                         <p className="text-start mb-1 ml-1">Select Country</p>
