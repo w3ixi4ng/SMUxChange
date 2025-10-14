@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Infinity } from "lucide-react";
 
 
 type ChildProps = {
@@ -69,7 +69,7 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
                     <div className="d-flex justify-content-start">
                         <div className="col-11">
                             <h1 className='text-center'>{courseArea[1]}</h1>
-                            <h3 className='text-center'><span className="badge text-bg-secondary">{selectedCount}/{courseArea[0]} selected</span></h3>
+                            <h3 className='text-center'><span className="badge text-bg-secondary">{courseArea[0] === 'None' ? `${selectedCount} selected (No Limits)` : `${selectedCount}/${courseArea[0]} selected`}</span></h3>
                         </div>
                         <div className="col-1 text-end fw-bold d-flex justify-content-end">
                             {isExpanded ? 
