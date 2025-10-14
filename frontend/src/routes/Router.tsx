@@ -1,12 +1,28 @@
-import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  NavLink,
+} from "react-router-dom";
 import Home from "../pages/Home.tsx";
 import Information from "../pages/Information2.tsx";
 import MappableV3 from "../pages/MappableV3.tsx";
-import { Plane, House, MapIcon, GraduationCap, User } from "lucide-react";
+import {
+  Plane,
+  House,
+  MapIcon,
+  GraduationCap,
+  User,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react";
 import Login from "../pages/Login.tsx";
 import Profile from "../pages/Profile.tsx";
+import Logout from "../pages/Logout.tsx";
+import { useState } from "react";
 
 function RouterView() {
+  const [isExpanded, setIsExpanded] = useState(false);
   return (
     <Router>
       {/* ===== Navigation Bar ===== */}
@@ -79,6 +95,31 @@ function RouterView() {
             >
               <User size={20} color="currentColor" />
               <span>Profile</span>
+              {isExpanded ? (
+                <>
+                <ChevronUp
+                  size={20}
+                  color="currentColor"
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setIsExpanded(!isExpanded);
+                  }}
+                />
+                <NavLink to="/logout">
+                  <span>Logout</span>
+                </NavLink>
+
+                </>
+              ) : (
+                <ChevronDown
+                  size={20}
+                  color="currentColor"
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setIsExpanded(!isExpanded);
+                  }}
+                />
+              )}
             </NavLink>
           </div>
         </div>
@@ -98,6 +139,7 @@ function RouterView() {
           <Route path="/mappablev3/:school/:country" element={<MappableV3 />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </main>
     </Router>
