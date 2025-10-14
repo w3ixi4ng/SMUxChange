@@ -55,11 +55,11 @@ function SchoolCard({ school }: ChildProps) {
                             <div className="d-flex justify-content-between gap-2">
                                 <Link
                                     to={`/mappablev3/${school['host_university']}/${school['country']}`}
-                                    className="btn btn-outline-primary btn-sm w-100"
+                                    className="btn btn-outline-primary btn-sm w-100 text-primary"
                                 >
                                     Try Map
                                 </Link>
-                                <a href="#" className="btn btn-outline-success btn-sm w-100">Learn More</a>
+                                <a href="#" className="btn btn-outline-success btn-sm w-100 text-success">Learn More</a>
                             </div>
                         </div>
                     </div>

@@ -95,20 +95,20 @@ function Information2() {
                     </div>
                 </div>
             </div>
-            <div className="container mx-auto mt-5 mb-1 text-center">
+            <div className="container mx-auto mt-5 text-center">
                 <div className="row justify-content-center">
                     {schools.map((school: any) => (
                         <SchoolCard key={school['host_university']} school={school} />
                     ))}
                 </div>
             </div>
-            <div className="container mx-auto mt-5 mb-1 text-center">
-                {(schools.length === 0 && !isLoading) && (
+            {(schools.length === 0 && !isLoading) && (
+                <div className="container mx-auto mt-5 mb-1 text-center">
                     <div className="alert alert-danger" role="alert">
                         Module Unavailable. Try a different Course Area or Country.
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </>
     );
 }
