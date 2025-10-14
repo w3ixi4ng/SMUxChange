@@ -18,7 +18,7 @@ npm run dev
 ## Key Features
 - Exchange course Mapping
 - Exchange School Information
-- School reviews
+- Community reviews 
 
 ## Frontend Techstack
 - React Typescript
