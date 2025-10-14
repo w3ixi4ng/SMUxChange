@@ -2,7 +2,9 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-do
 import Home from "../pages/Home.tsx";
 import Information from "../pages/Information2.tsx";
 import MappableV3 from "../pages/MappableV3.tsx";
-import { Plane, House, MapIcon, GraduationCap } from "lucide-react";
+import { Plane, House, MapIcon, GraduationCap, User } from "lucide-react";
+import Login from "../pages/Login.tsx";
+import Profile from "../pages/Profile.tsx";
 
 function RouterView() {
   return (
@@ -65,6 +67,19 @@ function RouterView() {
               <GraduationCap size={20} color="currentColor" />
               <span>Schools</span>
             </NavLink>
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                  isActive
+                    ? "bg-neutral-600"
+                    : "text-white hover:bg-neutral-600"
+                }`
+              }
+            >
+              <User size={20} color="currentColor" />
+              <span>Profile</span>
+            </NavLink>
           </div>
         </div>
       </nav>
@@ -81,6 +96,8 @@ function RouterView() {
           <Route path="/information" element={<Information />} />
           <Route path="/mappablev3" element={<MappableV3 />} />
           <Route path="/mappablev3/:school/:country" element={<MappableV3 />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </main>
     </Router>
