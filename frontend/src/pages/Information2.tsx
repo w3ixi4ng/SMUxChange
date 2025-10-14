@@ -13,6 +13,8 @@ function Information2() {
     const [courseAreas, setCourseAreas] = useState<string[]>([]);
     const [courseArea, setCourseArea] = useState<string>('');
 
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
 
     const getAllSchools = async () => {
         const response = await axios.get('http://localhost:3001/database/getAllExchangeSchools');
@@ -20,6 +22,7 @@ function Information2() {
         const uniqueCountries = [...new Set(schools.map((school: any) => school.country))] as string[];
         setCountries(uniqueCountries.sort());
         setSchools(schools.sort((a: any, b: any) => b['mappable_basket'].length - a['mappable_basket'].length));
+        setIsLoading(false);
     }
 
     const getSchoolsByCountry = async (country: string) => {
@@ -98,7 +101,7 @@ function Information2() {
                 </div>
             </div>
             <div className="container mx-auto mt-5 mb-1 text-center">
-                {schools.length === 0 && (
+                {(schools.length === 0 && !isLoading) && (
                     <div className="alert alert-danger" role="alert">
                         Module Unavailable. Try a different Course Area or Country.
                     </div>
