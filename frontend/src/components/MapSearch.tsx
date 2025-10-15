@@ -196,8 +196,6 @@ function MapSearch() {
         setSecondMajor(true);
         setSelectedSecondMajor(sessionStorage.getItem("secondMajor") || "");
       }
-      console.log(uid);
-      console.log((sessionStorage.getItem("faculty") || ""));
     }
   }, []);
 
@@ -223,8 +221,10 @@ function MapSearch() {
             >
               <option value="">Choose a country...</option>
               {countries.map((country) => (
-                <option key={country} value={country}>
+                <option key={country} value={country}
+                selected={country === selectedCountry}>
                   {country}
+                  
                 </option>
               ))}
             </select>
@@ -240,7 +240,8 @@ function MapSearch() {
             >
               <option value="">Choose a university...</option>
               {university.map((uni) => (
-                <option key={uni} value={uni}>
+                <option key={uni} value={uni} 
+                selected={uni === selectedUniversity}>
                   {uni}
                 </option>
               ))}
@@ -256,7 +257,8 @@ function MapSearch() {
             >
               <option value="">Choose a faculty...</option>
               {faculties.map((faculty) => (
-                <option key={faculty} value={faculty}>
+                <option key={faculty} value={faculty} 
+                selected={faculty === selectedFaculty}>
                   {faculty}
                 </option>
               ))}
@@ -276,7 +278,8 @@ function MapSearch() {
             >
               <option value="">Choose a major...</option>
               {allMajors.map((major) => (
-                <option key={major} value={major}>
+                <option key={major} value={major} 
+                selected={major === selectedMajor}>
                   {major}
                 </option>
               ))}
@@ -293,7 +296,8 @@ function MapSearch() {
             >
               <option value="">Select a track...</option>
               {track.map((t) => (
-                <option key={t} value={t}>
+                <option key={t} value={t} 
+                selected={t === selectedTrack}>
                   {t}
                 </option>
               ))}
@@ -310,7 +314,8 @@ function MapSearch() {
               >
                 <option value="">Select a second major...</option>
                 {allSecondMajors.map((sm) => (
-                  <option key={sm} value={sm}>
+                  <option key={sm} value={sm} 
+                  selected={sm === selectedSecondMajor}>
                     {sm}
                   </option>
                 ))}

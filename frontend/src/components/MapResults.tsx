@@ -149,6 +149,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                 <div className="text-gray-500 italic">No courses selected</div>
               ) : (
                 Object.keys(selectedCourses).map((area) => (
+                    selectedCourses[area].length > 0 && (
                   <div key={area} className="mb-4">
                     <h3 className="font-semibold text-gray-200">{area}</h3>
                     <ul className="text-gray-400 list-disc list-inside">
@@ -157,6 +158,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                       ))}
                     </ul>
                   </div>
+                  )
                 ))
               )}
             </div>

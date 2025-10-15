@@ -24,7 +24,7 @@ function Home() {
     <div
       className="relative min-h-screen flex flex-col items-center justify-center text-white"
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 25%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.04) 0%, transparent 30%)",
         backgroundImage:
           "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 25%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.04) 0%, transparent 30%)",
         backgroundSize: "cover",
