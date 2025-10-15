@@ -6,17 +6,17 @@ function Home() {
     {
       title: "Discover Universities",
       desc: "Explore partner universities and exchange destinations worldwide.",
-      video: "/videos/butterfly.mp4",
+      video: "/videos/SchoolsExplore.mp4",
     },
     {
-      title: "Accommodation Finder",
-      desc: "See nearby student housing and price comparisons instantly.",
-      video: "/videos/transport.mp4",
+      title: "Module Mapping",
+      desc: "Rediscover and find exchange mappings with ease.",
+      video: "/videos/ModuleMap.mp4",
     },
     {
       title: "Experience Map",
       desc: "Watch students share their real exchange stories on the map.",
-      video: "/videos/sights.mp4",
+      video: "/videos/Placeholder.mp4",
     },
   ];
 

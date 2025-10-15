@@ -203,20 +203,20 @@ function MapSearch() {
 
   return (
     <>
-      {/* 📝 Page heading - monochrome consistent with Home */}
+      {/* Page heading - monochrome consistent with Home */}
       <div className="text-center my-8">
         <h1 className="text-4xl font-semibold text-white">Mappable Search</h1>
         <p className="text-gray-400">Find exchange mappings with ease.</p>
       </div>
 
-      {/* 📝 Form container with dark glass effect */}
+      {/* Form container with dark glass effect */}
       <div className="container col-12 mx-auto bg-white/5 backdrop-blur-md border border-white/10 text-white py-4 rounded-3xl shadow-lg font-medium">
         <div className="row justify-content-center">
           
           {/* === SELECT COUNTRY === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="text-gray-200 mb-1">Select Country</p>
-            {/* 📝 Dropdown is now white with black text, slight gray hover */}
+            {/* Dropdown is now white with black text, slight gray hover */}
             <select
               className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
               onChange={(e) => setSelectedCountry(e.target.value)}

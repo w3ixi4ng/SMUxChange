@@ -154,7 +154,7 @@ function Information() {
     }
   }, [selectedSchool]);
 
-  // ✈️ Plane scroll animation
+  // Plane scroll animation
   useEffect(() => {
     const handleScroll = () => {
       const plane = document.getElementById('plane');
@@ -276,14 +276,14 @@ function Information() {
         </>
       )}
 
-      {/* ✈️ Scrolling plane icon */}
+      {/* Scrolling plane icon */}
       <div
         id="plane-scroll"
         style={{
           position: 'fixed',
           right: '110px',
-          top: '64px', // ⬅️ start BELOW navbar (adjust if your navbar is taller)
-          height: 'calc(100vh - 64px)', // ⬅️ keep the plane within the visible area below navbar
+          top: '64px', // start BELOW navbar (adjust if your navbar is taller)
+          height: 'calc(100vh - 64px)', // keep the plane within the visible area below navbar
           pointerEvents: 'none',
           zIndex: 20, // keep below navbar if navbar z-index is higher (e.g. 50)
         }}

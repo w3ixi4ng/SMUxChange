@@ -133,18 +133,18 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
 
     return (
-        // 📝 Dark theme wrapper, replaces light container and default bootstrap spacing
+        // Dark theme wrapper, replaces light container and default bootstrap spacing
         <div className="container mx-auto text-white my-10">
           <h1 className="text-3xl font-semibold mb-6 text-center">{university}</h1>
     
-          {/* 📝 Replaced Bootstrap row with responsive grid */}
+          {/* Replaced Bootstrap row with responsive grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* === LEFT PANEL (Your Map) === */}
             <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-lg">
               <h2 className="text-xl mb-2 font-semibold">Your Map</h2>
               <p className="text-gray-400 mb-4">{selectedCount}/{maxCount} selected</p>
     
-              {/* 📝 Empty state message styled to match dark background */}
+              {/* Empty state message styled to match dark background */}
               {selectedCount === 0 ? (
                 <div className="text-gray-500 italic">No courses selected</div>
               ) : (
@@ -178,7 +178,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
             </div>
           </div>
     
-          {/* 📝 Error message restyled to blend into dark aesthetic */}
+          {/* Error message restyled to blend into dark aesthetic */}
           {!availableCourses && (
             <div className="text-center mt-8 bg-red-500/10 border border-red-500/30 text-red-300 py-3 rounded-lg font-semibold">
               No courses mapped before. Find out more from the host university here.

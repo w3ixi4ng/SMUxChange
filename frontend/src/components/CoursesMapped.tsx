@@ -62,7 +62,7 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
         }
     }, [selectedButtons]);
 
- // 🧭 ⬇️  EVERYTHING BELOW THIS COMMENT changes
+ //  EVERYTHING BELOW THIS COMMENT changes
   //      Replace your existing JSX return() section with the following modern version.
   //      Do NOT change any logic above this point.
   return (
@@ -120,24 +120,24 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
             return (
                 <button
                   key={title}
-                  // 📝 New layout: pills now span most of container width, centered horizontally
+                  // New layout: pills now span most of container width, centered horizontally
                   className={`w-full max-w-[90%] text-center rounded-full px-5 py-3 text-sm transition-all duration-200 
                     ${
                       selected
-                        // 📝 Selected: bright white with glow for focus
+                        // Selected: bright white with glow for focus
                         ? "bg-white text-black font-semibold shadow-[0_0_10px_rgba(255,255,255,0.4)]"
-                        // 📝 Default: transparent with white border, smooth hover tint
+                        // Default: transparent with white border, smooth hover tint
                         : "bg-transparent text-white border border-white/20 hover:bg-white/10 hover:border-white/40"
                     }
                     ${
                       isDisabled && !selected
-                        // 📝 Disabled: faded and non-interactive
+                        // Disabled: faded and non-interactive
                         ? "opacity-40 cursor-not-allowed"
                         : "cursor-pointer"
                     }`}
                   disabled={isDisabled && !selected}
                   onClick={() => {
-                    // 📝 Toggle selection + count (unchanged logic)
+                    // Toggle selection + count (unchanged logic)
                     setSelectedButtons((prev) => ({
                       ...prev,
                       [title]: !prev[title],
@@ -145,7 +145,7 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
                     setSelectedCount((prev) => (selected ? prev - 1 : prev + 1));
                   }}
                 >
-                  {/* 📝 Text auto-wraps gracefully and stays centered */}
+                  {/* Text auto-wraps gracefully and stays centered */}
                   <span className="block leading-snug whitespace-normal break-words">
                     {title}
                   </span>

@@ -2,7 +2,7 @@ import { LoginForm } from "@/components/LoginForm";
 
 export default function LoginPage() {
   return (
-    // 🖤 Same background as Home page (sleek black with subtle radial gradients)
+    // Same background as Home page (sleek black with subtle radial gradients)
     <div
       className="min-h-screen flex flex-col items-center justify-center p-6 md:p-10 text-white 
       bg-[#0a0a0a] 
