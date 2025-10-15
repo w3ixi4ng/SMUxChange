@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChevronDown, ChevronUp, Infinity } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react"; //  removed Infinity import (unused)
 
 
 type ChildProps = {
@@ -62,55 +62,109 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
         }
     }, [selectedButtons]);
 
-    return (
-        <>
-            {courses.length > 0 &&
-                <div className="col-lg-12 col-12 bg-blue-100 py-3 rounded shadow-md font-semibold mb-3 ml-2 align-self-start">
-                    <div className="d-flex justify-content-start">
-                        <div className="col-11">
-                            <h1 className='text-center'>{courseArea[1]}</h1>
-                            <h3 className='text-center'><span className="badge text-bg-secondary">{courseArea[0] === 'None' ? `${selectedCount} selected (No Limits)` : `${selectedCount}/${courseArea[0]} selected`}</span></h3>
-                        </div>
-                        <div className="col-1 text-end fw-bold d-flex justify-content-end">
-                            {isExpanded ? 
-                            <ChevronUp className="cursor-pointer" onClick={() => {
-                                setIsExpanded(!isExpanded)
-                            }} /> :
-                            <ChevronDown className="cursor-pointer" onClick={() => {
-                                setIsExpanded(!isExpanded)
-                            }} />}
-                        </div>
-                    </div>
-                    <div className={`row justify-content-center ${isExpanded ? 'd-flex' : 'd-none'}`}>
-                    <hr />
-                        {courses.map((course: any) => (
-                            <div key={course['Course Title']} className="d-flex justify-content-between mb-2 col-lg-4 col-md-4 col-4" id={course['Course Title']}>
-                                <button className={`text-wrap text-start badge hover:cursor-pointer h-100 w-100 text-wrap overflow-hidden text-center
-                                ${!selectedButtons[course['Course Title']] && !isDisabled ? 'bg-dark' : ''}
-                                ${selectedButtons[course['Course Title']] ? 'bg-success' : ''}
-                                ${!selectedButtons[course['Course Title']] && isDisabled ? 'bg-danger' : ''}`}
-                                    disabled={isDisabled && !selectedButtons[course['Course Title']] ? true : false}
-                                    onClick={() => {
-                                        setSelectedButtons(prev => ({
-                                            ...prev,
-                                            [course['Course Title']]: !prev[course['Course Title']],
-                                        }));
-                                        (selectedButtons[course['Course Title']] ? setSelectedCount(prev => prev - 1) : setSelectedCount(prev => prev + 1));
-                                    }}>{course['Course Title']}</button>
+ // 🧭 ⬇️  EVERYTHING BELOW THIS COMMENT changes
+  //      Replace your existing JSX return() section with the following modern version.
+  //      Do NOT change any logic above this point.
+  return (
+    <>
+      {courses.length > 0 && (
+        // Outer container: changed to dark translucent card
+        <div className="col-lg-12 col-12 bg-white/5 backdrop-blur-md border border-white/10 text-white py-4 rounded-3xl shadow-md mb-4">
+            {/* === Header Section (centered & highlighted) === */}
+            <div className="relative flex flex-col items-center justify-center text-center mb-4">
+            {/* Title centered */}
+            <h2 className="text-xl font-semibold text-white mb-1 tracking-tight">
+                {courseArea[1]}
+            </h2>
 
-                            </div>
-                        ))}
-                    </div>
+            {/* Highlighted count below title */}
+            <p
+                className={`text-sm transition-colors duration-300 ${
+                selectedCount > 0
+                    ? "text-amber-400 font-medium" // Amber highlight when items selected
+                    : "text-gray-400 font-light"   // Subtle gray when none selected
+                }`}
+            >
+                {courseArea[0] === "None"
+                ? `${selectedCount} selected (No Limits)`
+                : `${selectedCount}/${courseArea[0]} selected`}
+            </p>
 
-                    {selectedCount >= maxCount && (
-                        <div className="text-center">
-                            <h4 className="text-danger">You have selected the maximum number of courses</h4>
-                        </div>
-                    )}
-                </div>
-            }
-        </>
-    )
+            {/* Chevron toggle positioned at top-right for aesthetic balance */}
+            <div className="absolute top-0 right-3 opacity-70 hover:opacity-100 transition">
+                {isExpanded ? (
+                <ChevronUp
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="cursor-pointer"
+                />
+                ) : (
+                <ChevronDown
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="cursor-pointer"
+                />
+                )}
+            </div>
+            </div>
+
+        {/* === Pill Container (flex-based for natural wrapping) === */}
+        {/* Switched from grid → flex-wrap to make pill sizes auto-fit instead of rigid squares */}
+        <div
+        className={`flex flex-wrap gap-2 justify-center items-center ${
+            isExpanded ? "visible" : "hidden"
+        }`}
+        >
+        {courses.map((course: any) => {
+            const title = course["Course Title"];
+            const selected = selectedButtons[title];
+
+            return (
+                <button
+                  key={title}
+                  // 📝 New layout: pills now span most of container width, centered horizontally
+                  className={`w-full max-w-[90%] text-center rounded-full px-5 py-3 text-sm transition-all duration-200 
+                    ${
+                      selected
+                        // 📝 Selected: bright white with glow for focus
+                        ? "bg-white text-black font-semibold shadow-[0_0_10px_rgba(255,255,255,0.4)]"
+                        // 📝 Default: transparent with white border, smooth hover tint
+                        : "bg-transparent text-white border border-white/20 hover:bg-white/10 hover:border-white/40"
+                    }
+                    ${
+                      isDisabled && !selected
+                        // 📝 Disabled: faded and non-interactive
+                        ? "opacity-40 cursor-not-allowed"
+                        : "cursor-pointer"
+                    }`}
+                  disabled={isDisabled && !selected}
+                  onClick={() => {
+                    // 📝 Toggle selection + count (unchanged logic)
+                    setSelectedButtons((prev) => ({
+                      ...prev,
+                      [title]: !prev[title],
+                    }));
+                    setSelectedCount((prev) => (selected ? prev - 1 : prev + 1));
+                  }}
+                >
+                  {/* 📝 Text auto-wraps gracefully and stays centered */}
+                  <span className="block leading-snug whitespace-normal break-words">
+                    {title}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* === Limit Message === */}
+          {/* Shown only when user hits max course count */}
+          {selectedCount >= maxCount && (
+            <div className="text-center mt-3 text-red-400 text-sm">
+              You have selected the maximum number of courses
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  );
 }
 
 export default CoursesMapped;

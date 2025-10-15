@@ -126,12 +126,7 @@ function RouterView() {
       </nav>
 
       {/* ===== Page Content ===== */}
-      <main
-        style={{
-          background: "linear-gradient(160deg, #A6D3C8 0%, #E8F2EF 100%)",
-          minHeight: "calc(100vh - 64px)",
-        }}
-      >
+      <main className="min-h-[calc(100vh-64px)]">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/information" element={<Information />} />

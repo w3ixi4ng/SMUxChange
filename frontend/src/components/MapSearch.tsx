@@ -203,147 +203,139 @@ function MapSearch() {
 
   return (
     <>
-      <div className="container col-12 mx-auto mb-1-">
-        <h1>Mappable</h1>
+      {/* 📝 Page heading - monochrome consistent with Home */}
+      <div className="text-center my-8">
+        <h1 className="text-4xl font-semibold text-white">Mappable Search</h1>
+        <p className="text-gray-400">Find exchange mappings with ease.</p>
       </div>
-      <div className="container col-12 mx-auto bg-light py-3 rounded shadow-md font-semibold">
+
+      {/* 📝 Form container with dark glass effect */}
+      <div className="container col-12 mx-auto bg-white/5 backdrop-blur-md border border-white/10 text-white py-4 rounded-3xl shadow-lg font-medium">
         <div className="row justify-content-center">
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Select Country</p>
+          
+          {/* === SELECT COUNTRY === */}
+          <div className="col-lg-6 col-12 mb-3">
+            <p className="text-gray-200 mb-1">Select Country</p>
+            {/* 📝 Dropdown is now white with black text, slight gray hover */}
             <select
-              className="form-select"
+              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
               onChange={(e) => setSelectedCountry(e.target.value)}
-              id="country"
             >
-              <option selected value="">
-                Choose a country...
-              </option>
+              <option value="">Choose a country...</option>
               {countries.map((country) => (
-                <option
-                  key={country}
-                  value={country}
-                  selected={country === selectedCountry}
-                >
+                <option key={country} value={country}>
                   {country}
                 </option>
               ))}
             </select>
           </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Select University</p>
+
+          {/* === SELECT UNIVERSITY === */}
+          <div className="col-lg-6 col-12 mb-3">
+            <p className="text-gray-200 mb-1">Select University</p>
             <select
-              className="form-select"
+              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
               disabled={toggleUniversity}
               onChange={(e) => setSelectedUniversity(e.target.value)}
-              id="university"
             >
-              <option selected value="">
-                Choose a university...
-              </option>
+              <option value="">Choose a university...</option>
               {university.map((uni) => (
-                <option
-                  key={uni}
-                  value={uni}
-                  selected={uni === selectedUniversity}
-                >
+                <option key={uni} value={uni}>
                   {uni}
                 </option>
               ))}
             </select>
           </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Select Faculty</p>
+
+          {/* === SELECT FACULTY === */}
+          <div className="col-lg-6 col-12 mb-3">
+            <p className="text-gray-200 mb-1">Select Faculty</p>
             <select
-              className="form-select"
+              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
               onChange={(e) => setSelectedFaculty(e.target.value)}
             >
-              <option selected value="">
-                Choose a faculty...
-              </option>
+              <option value="">Choose a faculty...</option>
               {faculties.map((faculty) => (
-                <option key={faculty} value={faculty}
-                selected={faculty === selectedFaculty}>
+                <option key={faculty} value={faculty}>
                   {faculty}
                 </option>
               ))}
             </select>
           </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Select Major</p>
+
+          {/* === SELECT MAJOR === */}
+          <div className="col-lg-6 col-12 mb-3">
+            <p className="text-gray-200 mb-1">Select Major</p>
             <select
+              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
               disabled={toggleMajor}
-              className="form-select"
               onChange={(e) => {
                 setSelectedMajor(e.target.value);
                 setSelectedTrack("");
               }}
             >
-              <option selected value="">
-                Choose a major...
-              </option>
+              <option value="">Choose a major...</option>
               {allMajors.map((major) => (
-                <option key={major} value={major}
-                selected={major === selectedMajor}>
+                <option key={major} value={major}>
                   {major}
                 </option>
               ))}
             </select>
           </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Select Track</p>
+
+          {/* === SELECT TRACK === */}
+          <div className="col-lg-6 col-12 mb-3">
+            <p className="text-gray-200 mb-1">Select Track</p>
             <select
+              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
               disabled={toggleTrack}
-              className="form-select"
               onChange={(e) => setSelectedTrack(e.target.value)}
             >
-              <option selected value="">
-                Select a track...
-              </option>
-              {track.map((track) => (
-                <option key={track} value={track}
-                selected={track === selectedTrack}>
-                  {track}
+              <option value="">Select a track...</option>
+              {track.map((t) => (
+                <option key={t} value={t}>
+                  {t}
                 </option>
               ))}
             </select>
           </div>
-          <div
-            className="col-lg-6 col-12 mb-2"
-            style={{ display: secondMajor ? "block" : "none" }}
-          >
-            <p className="text-start mb-1 ml-1">Select Second Major</p>
-            <select
-              className="form-select"
-              onChange={(e) => setSelectedSecondMajor(e.target.value)}
-            >
-              <option selected value="">
-                Select a second major...
-              </option>
-              {allSecondMajors.map((secondMajor) => (
-                <option key={secondMajor} value={secondMajor}
-                selected={secondMajor === selectedSecondMajor}>
-                  {secondMajor}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-12 mb-2">
-            <div className="form-check text-start mb-1 ml-1">
-              <input
-                id="second_major"
-                className="form-check-input"
-                type="checkbox"
-                onChange={() => setSecondMajor(!secondMajor)}
-                checked={secondMajor}
-              ></input>
-              <label className="form-check-label" htmlFor="second_major">
-                I have a second major
-              </label>
+
+          {/* === SECOND MAJOR (optional) === */}
+          {secondMajor && (
+            <div className="col-lg-6 col-12 mb-3">
+              <p className="text-gray-200 mb-1">Select Second Major</p>
+              <select
+                className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+                onChange={(e) => setSelectedSecondMajor(e.target.value)}
+              >
+                <option value="">Select a second major...</option>
+                {allSecondMajors.map((sm) => (
+                  <option key={sm} value={sm}>
+                    {sm}
+                  </option>
+                ))}
+              </select>
             </div>
+          )}
+
+          {/* === CHECKBOX === */}
+          <div className="col-12 mb-3 text-start">
+            <input
+              id="second_major"
+              className="form-check-input me-2"
+              type="checkbox"
+              onChange={() => setSecondMajor(!secondMajor)}
+              checked={secondMajor}
+            />
+            <label htmlFor="second_major" className="text-gray-200">
+              I have a second major
+            </label>
           </div>
-          <div className="col-12 text-center">
+
+          {/* === SEARCH BUTTON === */}
+          <div className="col-12 text-center mt-2">
             <button
-              className="btn btn-primary px-5"
+              className="bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 transition-transform px-8 py-3 text-lg rounded-full shadow-lg"
               onClick={() => setMapResults(true)}
               disabled={paramsAreValid}
             >
@@ -353,6 +345,7 @@ function MapSearch() {
         </div>
       </div>
 
+      {/* === MAP RESULTS === */}
       {mapResults && (
         <MapResults
           university={selectedUniversity}

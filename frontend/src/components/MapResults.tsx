@@ -133,63 +133,59 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
 
     return (
-        <>
-            <div className="col-12 text-center mt-4">
-                <h1>{university}</h1>
+        // 📝 Dark theme wrapper, replaces light container and default bootstrap spacing
+        <div className="container mx-auto text-white my-10">
+          <h1 className="text-3xl font-semibold mb-6 text-center">{university}</h1>
+    
+          {/* 📝 Replaced Bootstrap row with responsive grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* === LEFT PANEL (Your Map) === */}
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-lg">
+              <h2 className="text-xl mb-2 font-semibold">Your Map</h2>
+              <p className="text-gray-400 mb-4">{selectedCount}/{maxCount} selected</p>
+    
+              {/* 📝 Empty state message styled to match dark background */}
+              {selectedCount === 0 ? (
+                <div className="text-gray-500 italic">No courses selected</div>
+              ) : (
+                Object.keys(selectedCourses).map((area) => (
+                  <div key={area} className="mb-4">
+                    <h3 className="font-semibold text-gray-200">{area}</h3>
+                    <ul className="text-gray-400 list-disc list-inside">
+                      {selectedCourses[area].map((course) => (
+                        <li key={course}>{course}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))
+              )}
             </div>
-            <div className={`container mx-auto mt-2 mb-1 bg-light p-3 rounded-lg ${availableCourses ? "visible" : "hidden"}`}>
-                <div className="row align-items-start overflow-visible">
-                    <div className="col-lg-6 col-md-4 col-12 mx-auto mb-1 text-center sticky-lg-top sticky-md-top bg">
-                        <div className="d-lg-flex justify-content-evenly d-md-block">
-                            <h1 className="col-lg-6 col-md-12 col-12">Your Map</h1>
-                            <h1 className='col-lg-6 col-md-12 col-12'><span className="badge text-bg-secondary">{selectedCount}/{maxCount} selected</span></h1>
-                        </div>
-                        <div id="your-map" className="container mx-auto mb-1">
-                            {selectedCount == 0 ? <div className="row d-flex justify-content-center bg-dark border border-gray-300 rounded-lg p-3 text-white">No courses selected</div> : null}
-                            <div className={`bg-dark border border-gray-300 rounded-lg p-3 text-white ${selectedCount > 0 ? 'visible' : 'invisible'}`}>
-                                {Object.keys(selectedCourses).map((courseArea) => (
-                                    selectedCourses[courseArea].length > 0 && (
-                                        <>
-                                            <div key={courseArea}>
-                                                <h3>{courseArea}</h3>
-                                                {selectedCourses[courseArea].map(course => (
-                                                    <div key={course} className="">
-                                                        {course}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <hr />
-                                        </>
-                                    )
-
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-6 col-md-8 col-12 mx-auto mb-1 text-center">
-                        <h1>Available Courses</h1>
-                        <div id="courses-mapped" className="container mx-auto mb-1">
-                            <div className="row d-flex justify-content-center">
-                                {allElectives.map((elective) => (
-                                    <CoursesMapped key={elective[1]} courseArea={elective} university={university}
-                                        setAvailableCourses={setAvailableCourses} onSelectedCoursesChange={handleSelectedCoursesChange}
-                                        selectedTotalCount={selectedCount} maxTotalCount={maxCount} />
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    
+            {/* === RIGHT PANEL (Available Courses) === */}
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-lg">
+              <h2 className="text-xl mb-4 font-semibold text-center">Available Courses</h2>
+              {allElectives.map((elective) => (
+                <CoursesMapped
+                  key={elective[1]}
+                  courseArea={elective}
+                  university={university}
+                  setAvailableCourses={setAvailableCourses}
+                  onSelectedCoursesChange={handleSelectedCoursesChange}
+                  selectedTotalCount={selectedCount}
+                  maxTotalCount={maxCount}
+                />
+              ))}
             </div>
-            <div
-                id="error-message"
-                className={`text-center container col-12 mx-auto bg-red-100 py-3 rounded shadow-md font-semibold ${!availableCourses ? "visible" : "hidden"
-                    }`}>
-                {errorMessage}
+          </div>
+    
+          {/* 📝 Error message restyled to blend into dark aesthetic */}
+          {!availableCourses && (
+            <div className="text-center mt-8 bg-red-500/10 border border-red-500/30 text-red-300 py-3 rounded-lg font-semibold">
+              No courses mapped before. Find out more from the host university here.
             </div>
-
-
-        </>
-    )
-}
-
-export default MapResults;
+          )}
+        </div>
+      );
+    }
+    
+    export default MapResults;
