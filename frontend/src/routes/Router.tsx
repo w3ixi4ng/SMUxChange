@@ -4,9 +4,6 @@ import {
   Route,
   NavLink,
 } from "react-router-dom";
-import Home from "../pages/Home.tsx";
-import Information from "../pages/Information2.tsx";
-import MappableV3 from "../pages/MappableV3.tsx";
 import {
   Plane,
   House,
@@ -16,6 +13,9 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import Home from "../pages/Home.tsx";
+import Information from "../pages/Information.tsx";
+import Mappable from "../pages/Mappable.tsx";
 import Login from "../pages/Login.tsx";
 import Profile from "../pages/Profile.tsx";
 import Logout from "../pages/Logout.tsx";
@@ -57,7 +57,7 @@ function RouterView() {
             </NavLink>
 
             <NavLink
-              to="/mappablev3"
+              to="/mappable"
               className={({ isActive }) =>
                 `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
                   isActive
@@ -130,14 +130,14 @@ function RouterView() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/information" element={<Information />} />
-          <Route path="/mappablev3" element={<MappableV3 />} />
-          <Route path="/mappablev3/:school/:country" element={<MappableV3 />} />
+          <Route path="/mappable" element={<Mappable />} />
+          <Route path="/mappable/:school/:country" element={<Mappable />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
         </Routes>
       </main>
-    </Router>
+    </Router> 
   );
 }
 

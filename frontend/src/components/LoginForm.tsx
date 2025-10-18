@@ -58,7 +58,7 @@ export function LoginForm({
                 <Input
                   id="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="name@example.com"
                   required
                   onChange= {(e) => setEmail(e.target.value)}
                 />
@@ -68,7 +68,7 @@ export function LoginForm({
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <a
                     href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
+                    className="ml-auto text-sm underline-offset-2 hover:underline text-dark"
                   >
                     Forgot your password?
                   </a>
@@ -81,13 +81,13 @@ export function LoginForm({
                 }}>Login</Button>
               </Field>
               <FieldDescription className="text-center">
-                Don&apos;t have an account? <a href="#">Sign up</a>
+                Don&apos;t have an account? <a href="#" className="text-dark">Sign up</a>
               </FieldDescription>
             </FieldGroup>
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="./public/images/oxford.jpg"
+              src="../public/images/oxford.jpg"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
