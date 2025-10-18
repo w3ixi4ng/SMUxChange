@@ -73,7 +73,7 @@ function Home() {
         </div>
 
         {/* === Button === */}
-        <Link to="/mappablev3">
+        <Link to="/Mappable">
           <Button
             className="bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 transition-transform px-8 py-3 text-lg rounded-full shadow-lg"
           >
