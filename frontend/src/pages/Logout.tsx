@@ -8,7 +8,7 @@ function Logout() {
     useEffect(() => {
         sessionStorage.clear();
         navigate("/");
-    }, [navigate]);
+    }, []);
     return(
         <></>
     )

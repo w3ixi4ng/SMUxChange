@@ -20,9 +20,11 @@ import Login from "../pages/Login.tsx";
 import Profile from "../pages/Profile.tsx";
 import Logout from "../pages/Logout.tsx";
 import { useState } from "react";
+import Signup from "../pages/Signup.tsx";
 
 function RouterView() {
   const [isExpanded, setIsExpanded] = useState(false);
+
   return (
     <Router>
       {/* ===== Navigation Bar ===== */}
@@ -45,9 +47,9 @@ function RouterView() {
               to="/"
               end
               className={({ isActive }) =>
-                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all text-decoration-none ${
                   isActive
-                    ? "bg-neutral-600"
+                    ? "bg-neutral-600 text-dark"
                     : "text-white hover:bg-neutral-600"
                 }`
               }
@@ -59,9 +61,9 @@ function RouterView() {
             <NavLink
               to="/mappable"
               className={({ isActive }) =>
-                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all text-decoration-none ${
                   isActive
-                    ? "bg-neutral-600"
+                    ? "bg-neutral-600 text-dark"
                     : "text-white hover:bg-neutral-600"
                 }`
               }
@@ -73,9 +75,9 @@ function RouterView() {
             <NavLink
               to="/information"
               className={({ isActive }) =>
-                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all text-decoration-none ${
                   isActive
-                    ? "bg-neutral-600"
+                    ? "bg-neutral-600 text-dark "
                     : "text-white hover:bg-neutral-600"
                 }`
               }
@@ -86,9 +88,9 @@ function RouterView() {
             <NavLink
               to="/profile"
               className={({ isActive }) =>
-                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all ${
+                `flex-1 py-3 font-semibold flex items-center justify-center gap-2 transition-all text-decoration-none ${
                   isActive
-                    ? "bg-neutral-600"
+                    ? "bg-neutral-600 text-dark"
                     : "text-white hover:bg-neutral-600"
                 }`
               }
@@ -105,7 +107,7 @@ function RouterView() {
                     setIsExpanded(!isExpanded);
                   }}
                 />
-                <NavLink to="/logout">
+                <NavLink to="/logout" className="text-decoration-none text-white">
                   <span>Logout</span>
                 </NavLink>
 
@@ -135,6 +137,7 @@ function RouterView() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </main>
     </Router> 

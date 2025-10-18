@@ -6,7 +6,6 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import axios from "axios"
@@ -26,7 +25,6 @@ export function LoginForm({
         email: email,
         password: password
     });
-    console.log(response);
     if (response.data.success) {
         const uid = response.data.user.uid;
         sessionStorage.setItem('uid', uid);
@@ -68,7 +66,7 @@ export function LoginForm({
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <a
                     href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline text-dark"
+                    className="ml-auto text-sm underline-offset-2 hover:underline"
                   >
                     Forgot your password?
                   </a>
@@ -81,7 +79,7 @@ export function LoginForm({
                 }}>Login</Button>
               </Field>
               <FieldDescription className="text-center">
-                Don&apos;t have an account? <a href="#" className="text-dark">Sign up</a>
+                Don&apos;t have an account? <a href="/signup">Sign up</a>
               </FieldDescription>
             </FieldGroup>
           </form>
