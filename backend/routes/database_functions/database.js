@@ -3,7 +3,6 @@ import axios from 'axios';
 import admin from 'firebase-admin';
 import fs from 'fs';
 import dotenv from 'dotenv';
-
 const router = express.Router();
 
 
@@ -159,6 +158,59 @@ router.get('/getByCourseAreaAndCountry/:course_area/:country', async(req,res) =>
         console.log(err);
     }
 })
+
+router.get('/getUser/:uid', async(req,res) => {
+    try {
+        const { uid } = req.params;
+        const ref = await db.collection("users").where("uid", "==", uid).get();
+        let records = [];
+        ref.forEach(doc => {
+            records.push(doc.data());
+        });
+        res.json(records);
+    } catch(err) {
+        console.log(err);
+    }
+})
+
+router.post('/saveProfile', async(req,res) => {
+    try {
+        const { uid, name, faculty, major, track, secondMajor } = req.body;
+        
+        // Set document with uid as the document ID
+        await db.collection('users').doc(uid).set({
+            uid: uid,
+            name: name,
+            faculty: faculty,
+            major: major,
+            track: track,
+            secondMajor: secondMajor
+        });
+
+        res.json({ message: "Profile saved successfully" });
+    } catch (error) {
+        console.error('Error saving profile:', error);
+        res.status(500).json({ error: 'Failed to save profile' });
+    }
+})
+
+
+router.get('/getProfile/:uid', async (req, res) => {
+    try {
+        const { uid } = req.params;
+        
+        const doc = await db.collection('users').doc(uid).get();
+        
+        if (doc.exists) {
+            res.json(doc.data());
+        } else {
+            res.status(404).json({ error: 'User not found' });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Failed to get user' });
+    }
+});
 
 export default router;
 

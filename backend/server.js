@@ -12,6 +12,7 @@ import apartmentRoutes from './routes/api_functions/apartment.js';
 import loginRoutes from './routes/database_functions/login.js';
 import signupRoutes from './routes/database_functions/signup.js';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
