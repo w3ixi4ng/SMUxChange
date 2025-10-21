@@ -197,8 +197,8 @@ const fetchUser = async (uid: string) => {
        show={!userExists}
        size="lg"
        centered
-       backdrop="static"   // 👈 prevents closing by clicking outside
-       keyboard={false}    // 👈 prevents closing with ESC
+       backdrop="static"  
+       keyboard={false}    
      >
        <Modal.Header >
          <Modal.Title> Fill in your profile to continue</Modal.Title>
@@ -299,6 +299,7 @@ const fetchUser = async (uid: string) => {
        </Modal.Footer>
      </Modal>
     )}
+    <div className={`${userExists ? "" : "opacity-0"}`}>
       <div className="container col-12 mx-auto mb-1-">
         <h1>Profile</h1>
       </div>
@@ -390,6 +391,7 @@ const fetchUser = async (uid: string) => {
           </button>
         </div>
       </div>
+    </div>
     </>
   );
 }
