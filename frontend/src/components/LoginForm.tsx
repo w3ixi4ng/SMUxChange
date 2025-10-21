@@ -18,6 +18,7 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
 
   const nav = useNavigate()
+
   const login = async(e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
@@ -30,7 +31,8 @@ export function LoginForm({
         sessionStorage.setItem('uid', uid);
         nav('/profile');
     }}
-    catch (error) {
+    catch (error: any) {
+      setError("Invalid email or password");
       console.error(error);
     }
   }
@@ -74,6 +76,9 @@ export function LoginForm({
                 <Input id="password" type="password" required onChange={(e) => setPassword(e.target.value)} />
               </Field>
               <Field>
+              <FieldDescription className="text-red-500">{error}</FieldDescription>
+              </Field>
+              <Field>
                 <Button type="submit" onClick={(e) => {
                   login(e);
                 }}>Login</Button>
@@ -92,10 +97,6 @@ export function LoginForm({
           </div>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-center text-light">
-        By clicking continue, you agree to our <a href="#" className = 'text-primary'>Terms of Service</a>{" "}
-        and <a href="#" className = 'text-primary'>Privacy Policy</a>.
-      </FieldDescription>
     </div>
   )
 }
