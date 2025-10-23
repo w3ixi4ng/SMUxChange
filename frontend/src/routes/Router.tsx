@@ -21,6 +21,8 @@ import Profile from "../pages/Profile.tsx";
 import Logout from "../pages/Logout.tsx";
 import { useState } from "react";
 import Signup from "../pages/Signup.tsx";
+import Specifics from "../pages/Specifics.tsx";
+
 
 function RouterView() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -123,6 +125,13 @@ function RouterView() {
                 />
               )}
             </NavLink>
+
+            <NavLink
+              to="/specifics"
+              className="text-white hover:bg-neutral-600 px-3 py-2"
+            >
+              Specifics
+          </NavLink>
           </div>
         </div>
       </nav>
@@ -134,6 +143,7 @@ function RouterView() {
           <Route path="/information" element={<Information />} />
           <Route path="/mappable" element={<Mappable />} />
           <Route path="/mappable/:school/:country" element={<Mappable />} />
+          <Route path="/specifics/:universityName" element={<Specifics />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />

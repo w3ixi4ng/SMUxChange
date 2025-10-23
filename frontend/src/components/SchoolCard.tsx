@@ -59,7 +59,18 @@ function SchoolCard({ school }: ChildProps) {
                                 >
                                     Try Map
                                 </Link>
-                                <a href="#" className="btn btn-outline-success btn-sm w-100 text-success">Learn More</a>
+                                {/* ✅ CHANGE 1: Use <Link> instead of <a> so React Router handles navigation */}
+                                <Link
+                                // ✅ CHANGE 2: Dynamic URL with encoded university name
+                                to={`/specifics/${encodeURIComponent(school['host_university'])}`}
+
+                                // ✅ CHANGE 3: Pass the school object along via state so no re-fetch needed
+                                state={{ school }}
+
+                                className="btn btn-outline-success btn-sm w-100 text-success"
+                                >
+                                Learn More
+                                </Link>
                             </div>
                         </div>
                     </div>
