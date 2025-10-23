@@ -10,17 +10,25 @@ router.get('/:origin/:destination/:mode', async (req, res) => {
         const decodedOrigin = decodeURIComponent(origin);
         const decodedDestination = decodeURIComponent(destination);
         
-        const response = await axios.get('https://maps.googleapis.com/maps/api/distancematrix/json', {
-            params: {
-                origins: decodedOrigin,
-                destinations: decodedDestination,
-                mode: mode,
+        const response = await axios.post('https://routes.googleapis.com/directions/v2:computeRoutes', 
+            {
+                origin: {
+                    "address": decodedOrigin,
+                },
+                destination: {
+                    "address":decodedDestination
+                },
+                travelMode: mode,
                 units: 'metric',
-                key: process.env.GOOGLE_MAPS_API_KEY
+            },
+            {
+                headers: {
+                    'X-Goog-Api-Key': process.env.GOOGLE_MAPS_API_KEY,
+                    'X-Goog-FieldMask':"routes.distanceMeters,routes.duration"
+                }
             }
-        });
+        );
 
-        console.log('✅ Distance calculated successfully');
         res.json(response.data);
     } catch (error) {
         console.error('❌ Error calculating distance:', error.message);
