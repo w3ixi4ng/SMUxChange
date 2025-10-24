@@ -40,10 +40,20 @@ function getCountryCode(countryName?: string) {
     "south korea": "kr",
     china: "cn",
     "hong kong": "hk",
+    switzerland : "ch", 
+    argentina : "ar",
+    austria : "at",
+    belgium : "be"
   };
   const key = (countryName || "").toLowerCase().trim();
   return map[key] || "xx";
 }
+function scrollToTop() {
+    const topElement = document.getElementById("top");
+    if (topElement) {
+      topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
+    }
+  } 
 
 // Star Rating Component
 function StarRating({ rating }: { rating: number }) {
@@ -91,12 +101,27 @@ export default function Specifics() {
   const { universityName } = useParams();
   const location = useLocation();
   const schoolFromState = location.state?.school;
+  // Scroll button Constant
+  const [showScrollButton, setShowScrollButton] = useState(false); 
 
   const [data, setData] = useState<any>(schoolFromState || null);
   const [maxPrice, setMaxPrice] = useState(2000);
   const [accommodations, setAccommodations] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [showAllBaskets, setShowAllBaskets] = useState(false);
+
+  // Effect to add/remove scroll event listener
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 100) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Fallback fetch if refresh
   useEffect(() => {
@@ -161,7 +186,7 @@ export default function Specifics() {
   return (
     <div className="min-h-screen text-white bg-[#0b0b0b] bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.05)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.03)_0%,transparent_30%)]">
       <div className="container mx-auto px-6 py-12 space-y-10">
-
+        <div id="top" />
         {/* === HEADER === */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
@@ -464,6 +489,17 @@ export default function Specifics() {
             </div>
           </CardContent>
         </Card>
+      {/* Scroll to top button */}
+      {showScrollButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/70 text-white shadow-md hover:bg-black/90 transition-opacity"
+          aria-label="Scroll to top"
+          style={{ backdropFilter: "blur(5px)" }}
+        >
+          ↑
+        </button>
+      )}
       </div>
     </div>
   );

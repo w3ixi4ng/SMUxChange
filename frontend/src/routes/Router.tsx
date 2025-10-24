@@ -125,13 +125,6 @@ function RouterView() {
                 />
               )}
             </NavLink>
-
-            <NavLink
-              to="/specifics"
-              className="text-white hover:bg-neutral-600 px-3 py-2"
-            >
-              Specifics
-          </NavLink>
           </div>
         </div>
       </nav>
