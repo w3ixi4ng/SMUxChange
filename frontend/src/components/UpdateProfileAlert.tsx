@@ -50,10 +50,11 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
     };
 
     return (
+        
         <AlertDialog>
             <AlertDialogTrigger asChild>
                 <button className="bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg rounded">
-                    Update
+                    Edit Profile
                 </button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -63,7 +64,7 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
                         Are you sure you want to update your profile?
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
+                <AlertDialogFooter className='d-flex justify-content-center'>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={() => {
                         saveProfile(uid || "", name, faculty, major, track, secondMajor);

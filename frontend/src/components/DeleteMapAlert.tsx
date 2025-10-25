@@ -34,7 +34,7 @@ export function DeleteMapAlert({ uid, mapId, setSavedMaps, savedMaps }: { uid: s
                         This action cannot be undone. This will permanently delete the map and remove it from your profile.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
+                <AlertDialogFooter className='d-flex justify-content-center'>
                     <AlertDialogCancel className="">Cancel</AlertDialogCancel>
                     <AlertDialogAction className="bg-destructive text-white"  onClick={() => {
                         deleteMap(mapId);

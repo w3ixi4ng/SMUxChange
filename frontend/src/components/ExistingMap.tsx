@@ -1,14 +1,21 @@
 
+import { useState } from "react";
 import { DeleteMapAlert } from "./DeleteMapAlert";
+import { UpdateMapModal } from "./UpdateMapModal";
 
 
 type ChildProps = {
     map: any
     setSavedMaps: (maps: any) => void
     savedMaps: any
+    name: string
+    faculty: string
+    major: string
+    track: string
+    secondMajor: string
 };
 
-function ExistingMap({ map, setSavedMaps, savedMaps }: ChildProps) {
+function ExistingMap({ map, setSavedMaps, savedMaps, name, faculty, major, track, secondMajor }: ChildProps) {
 
     const uid = sessionStorage.getItem("uid") || "";
 
@@ -31,13 +38,11 @@ function ExistingMap({ map, setSavedMaps, savedMaps }: ChildProps) {
                         ))}
                     </ul>
                     <div className="card-body d-flex justify-content-between gap-2">
-                        <button className="btn btn-outline-primary btn-sm w-100">Update Map</button>
+                        <UpdateMapModal map={map} name={name} faculty={faculty} major={major} track={track} secondMajor={secondMajor} />
                         <DeleteMapAlert uid={uid} mapId={map.id} setSavedMaps={setSavedMaps} savedMaps={savedMaps} />
                     </div>
                 </div>
             </div>
-
-            
         </>
     )
 }

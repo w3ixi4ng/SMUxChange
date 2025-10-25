@@ -411,7 +411,7 @@ function Profile() {
             <h2 className="text-center mb-4 text-4xl text-bold">Your Saved Maps</h2>
             <div className="row justify-content-lg-center justify-content-md-start">
               {savedMaps.map((map) => (
-                <ExistingMap key={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps}/>
+                <ExistingMap key={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps} name={name} faculty={faculty} major={major} track={track} secondMajor={secondMajor}/>
               ))}
             </div>
             {savedMaps.length === 0 && (
