@@ -31,12 +31,16 @@ function MapSearch() {
   const [paramsAreValid, setParamsAreValid] = useState(true);
 
   useEffect(() => {
-    if (schoolParam && countryParam) {
+    if (countryParam && countries.includes(countryParam)) {
       setSelectedCountry(countryParam);
-      setSelectedUniversity(schoolParam);
-      setToggleUniversity(false);
     }
-  }, [schoolParam, countryParam]);
+  }, [countryParam, countries]);
+
+  useEffect(() => {
+    if (schoolParam && university.includes(schoolParam)) {
+      setSelectedUniversity(schoolParam);
+    }
+  }, [university, schoolParam]);
 
   const fetchCountries = async () => {
     try {
@@ -146,23 +150,34 @@ function MapSearch() {
   }, []);
 
   useEffect(() => {
-    if (selectedCountry) {
+    if (selectedCountry !== "") {
       fetchUniversities(selectedCountry);
       setToggleUniversity(false);
+    } else {
+      setSelectedUniversity("");
+      setToggleUniversity(true);
     }
   }, [selectedCountry]);
 
   useEffect(() => {
-    if (selectedFaculty) {
+    if (selectedFaculty !== "") {
       fetchMajors(selectedFaculty);
       setToggleMajor(false);
+    } else {
+      setSelectedMajor("");
+      setSelectedTrack("");
+      setToggleTrack(true);
+      setToggleMajor(true);
     }
   }, [selectedFaculty]);
 
   useEffect(() => {
-    if (selectedMajor) {
+    if (selectedMajor !== "") {
       fetchTracks(selectedFaculty, selectedMajor);
       setToggleTrack(false);
+    } else {
+      setSelectedTrack("");
+      setToggleTrack(true);
     }
   }, [selectedMajor]);
 
@@ -202,9 +217,9 @@ function MapSearch() {
   return (
     <>
       {/* Page heading - monochrome consistent with Home */}
-      <div className="text-center my-8">
-        <h1 className="text-4xl font-semibold text-white">Mappable Search</h1>
-        <p className="text-gray-400">Find exchange mappings with ease.</p>
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-bold text-white">Mappable Search</h1>
+        <p className="text-gray-400 text-sm">Find exchange mappings with ease.</p>
       </div>
 
       {/* Form container with dark glass effect */}
@@ -217,12 +232,12 @@ function MapSearch() {
             {/* Dropdown is now white with black text, slight gray hover */}
             <select
               className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
             >
               <option value="">Choose a country...</option>
               {countries.map((country) => (
-                <option key={country} value={country}
-                selected={country === selectedCountry}>
+                <option key={country} value={country}>
                   {country}
                   
                 </option>
@@ -234,14 +249,16 @@ function MapSearch() {
           <div className="col-lg-6 col-12 mb-3">
             <p className="text-gray-200 mb-1">Select University</p>
             <select
-              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              className={`${toggleUniversity ? 
+                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition opacity-50 cursor-not-allowed" : 
+                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition cursor-pointer"}`}
               disabled={toggleUniversity}
+              value={selectedUniversity}
               onChange={(e) => setSelectedUniversity(e.target.value)}
             >
               <option value="">Choose a university...</option>
               {university.map((uni) => (
-                <option key={uni} value={uni} 
-                selected={uni === selectedUniversity}>
+                <option key={uni} value={uni}>
                   {uni}
                 </option>
               ))}
@@ -253,12 +270,12 @@ function MapSearch() {
             <p className="text-gray-200 mb-1">Select Faculty</p>
             <select
               className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              value={selectedFaculty}
               onChange={(e) => setSelectedFaculty(e.target.value)}
             >
               <option value="">Choose a faculty...</option>
               {faculties.map((faculty) => (
-                <option key={faculty} value={faculty} 
-                selected={faculty === selectedFaculty}>
+                <option key={faculty} value={faculty}>
                   {faculty}
                 </option>
               ))}
@@ -269,8 +286,11 @@ function MapSearch() {
           <div className="col-lg-6 col-12 mb-3">
             <p className="text-gray-200 mb-1">Select Major</p>
             <select
-              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              className={`${toggleMajor ? 
+                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition opacity-50 cursor-not-allowed" : 
+                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition cursor-pointer"}`}
               disabled={toggleMajor}
+              value={selectedMajor}
               onChange={(e) => {
                 setSelectedMajor(e.target.value);
                 setSelectedTrack("");
@@ -278,8 +298,7 @@ function MapSearch() {
             >
               <option value="">Choose a major...</option>
               {allMajors.map((major) => (
-                <option key={major} value={major} 
-                selected={major === selectedMajor}>
+                <option key={major} value={major}>
                   {major}
                 </option>
               ))}
@@ -290,14 +309,16 @@ function MapSearch() {
           <div className="col-lg-6 col-12 mb-3">
             <p className="text-gray-200 mb-1">Select Track</p>
             <select
-              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              className={`${toggleTrack ? 
+                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition opacity-50 cursor-not-allowed" : 
+                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition cursor-pointer"}`}
               disabled={toggleTrack}
+              value={selectedTrack}
               onChange={(e) => setSelectedTrack(e.target.value)}
             >
               <option value="">Select a track...</option>
               {track.map((t) => (
-                <option key={t} value={t} 
-                selected={t === selectedTrack}>
+                <option key={t} value={t}>
                   {t}
                 </option>
               ))}
@@ -310,12 +331,12 @@ function MapSearch() {
               <p className="text-gray-200 mb-1">Select Second Major</p>
               <select
                 className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+                value={selectedSecondMajor}
                 onChange={(e) => setSelectedSecondMajor(e.target.value)}
               >
                 <option value="">Select a second major...</option>
                 {allSecondMajors.map((sm) => (
-                  <option key={sm} value={sm} 
-                  selected={sm === selectedSecondMajor}>
+                  <option key={sm} value={sm}>
                     {sm}
                   </option>
                 ))}

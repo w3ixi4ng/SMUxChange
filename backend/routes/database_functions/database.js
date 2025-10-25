@@ -216,7 +216,7 @@ export default router;
 
 router.post('/saveMap', async(req,res) => {
     try {
-        const { country, university, faculty, major, track, secondMajor, map } = req.body;
+        const { uid,country, university, faculty, major, track, secondMajor, map } = req.body;
         await db.collection('users').doc(uid).collection('maps').add({
             country: country,
             university: university,
@@ -226,6 +226,32 @@ router.post('/saveMap', async(req,res) => {
             secondMajor: secondMajor,
             map: map
         });
+    } catch(err) {
+        console.log(err);
+    }
+})
+
+router.get('/getSavedMaps/:uid', async(req,res) => {
+    try {
+        const { uid } = req.params;
+        const ref = await db.collection('users').doc(uid).collection('maps').get();
+        let records = [];
+        ref.forEach(doc => {
+            let data = doc.data();
+            data.id = doc.id;
+            records.push(data);
+        });
+        res.json(records);
+    } catch(err) {
+        console.log(err);
+    }
+})
+
+router.delete('/deleteMap/:uid/:mapId', async(req,res) => {
+    try {
+        const { uid, mapId } = req.params;
+        await db.collection('users').doc(uid).collection('maps').doc(mapId).delete();
+        res.json({ message: 'Map deleted successfully' });
     } catch(err) {
         console.log(err);
     }

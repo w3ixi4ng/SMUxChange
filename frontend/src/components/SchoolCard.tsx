@@ -55,7 +55,7 @@ function SchoolCard({ school }: ChildProps) {
                             <div className="d-flex justify-content-between gap-2">
                                 <Link
                                     to={`/mappable/${school['host_university']}/${school['country']}`}
-                                    className="btn btn-outline-primary btn-sm w-100 text-primary"
+                                    className="btn btn-outline-primary btn-sm w-100"
                                 >
                                     Try Map
                                 </Link>
@@ -67,7 +67,7 @@ function SchoolCard({ school }: ChildProps) {
                                 // ✅ CHANGE 3: Pass the school object along via state so no re-fetch needed
                                 state={{ school }}
 
-                                className="btn btn-outline-success btn-sm w-100 text-success"
+                                className="btn btn-outline-success btn-sm w-100"
                                 >
                                 Learn More
                                 </Link>

@@ -1,0 +1,409 @@
+[33mcommit 9bba3ea9775e228f5de21f5d191424c1204ace47[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/Mik[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sat Oct 25 15:14:28 2025 +0800
+
+    Revert missing code
+
+[33mcommit 4be288f980c6aad0d0c63482378450a03f6bcaac[m
+Merge: e0b7b72 55e15c0
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Fri Oct 24 17:53:13 2025 +0800
+
+    Merge pull request #10 from w3ixi4ng/Mik
+    
+    Bug Fix and Top Scroller
+
+[33mcommit 55e15c03abb2949a69339b31b08caeb98af881c9[m
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Fri Oct 24 17:52:08 2025 +0800
+
+    Bug Fix and Top Scroller
+
+[33mcommit e0b7b7299b53301d134c9b018af256908a869333[m
+Merge: 1504c57 05067f1
+Author: rnny123 <112319950+rnny123@users.noreply.github.com>
+Date:   Thu Oct 23 11:32:14 2025 +0800
+
+    Merge pull request #9 from w3ixi4ng/hd
+    
+    hd changes
+
+[33mcommit 05067f18140112110b0f266fd93f40978d5da180[m[33m ([m[1;31morigin/hd[m[33m)[m
+Author: shinroncham <sr.cham.2024@computing.smu.edu.sg>
+Date:   Thu Oct 23 11:31:29 2025 +0800
+
+    hd changes
+
+[33mcommit 1504c57c824f64673e174b27381d4020624166cf[m
+Merge: bc1ec5c 2bd9f90
+Author: rnny123 <112319950+rnny123@users.noreply.github.com>
+Date:   Thu Oct 23 11:09:01 2025 +0800
+
+    Merge pull request #8 from w3ixi4ng/shin_ron
+    
+    changed backend
+
+[33mcommit 2bd9f90d5230f325db0f9b3cfa6df0bfc8bfd3dd[m[33m ([m[1;31morigin/shin_ron[m[33m)[m
+Author: shinroncham <sr.cham.2024@computing.smu.edu.sg>
+Date:   Thu Oct 23 11:08:34 2025 +0800
+
+    changed backend
+
+[33mcommit bc1ec5c7ba1fb7874ffac0382ae202c818a89089[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Wed Oct 22 02:07:19 2025 +0800
+
+    Blur backdrop during profile entering
+
+[33mcommit 02600f16d10cfef8c14ce4ceca18406f680005a5[m
+Author: Matthew Chan <matcmk@gmail.com>
+Date:   Wed Oct 22 01:40:12 2025 +0800
+
+    Set up Modal, Firestore signups/update details
+
+[33mcommit cc5c437692baed16f7cc800706c01dc8ad5f3e71[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 21 22:03:06 2025 +0800
+
+    Signup Auth
+
+[33mcommit f395b62fa08aea041a28dcec4a9dc04889957a46[m
+Merge: 00bca71 737b90b
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sat Oct 18 23:37:25 2025 +0800
+
+    Merge branch 'main' of https://github.com/w3ixi4ng/SMUxChange
+
+[33mcommit 00bca7106b4b76f3de11f8f9e6c0bb3a6ddc9c1d[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sat Oct 18 23:35:48 2025 +0800
+
+    Signup page and index.css fix
+
+[33mcommit 737b90b0dd32e67df8424d2929cf955b55ce9850[m
+Merge: d1161a4 5a88286
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Sat Oct 18 21:56:50 2025 +0800
+
+    Merge pull request #7 from w3ixi4ng/Mik
+    
+    Small bug fix (Map button in Home)
+
+[33mcommit 5a882869abca6116e824383c3d54c7803ac479b6[m
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Sat Oct 18 21:55:42 2025 +0800
+
+    Small bug fix (Map button in Home)
+
+[33mcommit d1161a45593effdcb38f19ef16a5384b12c48f35[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sat Oct 18 20:38:45 2025 +0800
+
+    remove prototypes
+
+[33mcommit 3abf2f75538f4ff020c192b6df9afe56c6532b22[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Wed Oct 15 12:00:47 2025 +0800
+
+    Update mapsearch logic
+
+[33mcommit b57a220921b90ffcd6970a4aabf52266202054bc[m
+Author: hdylangit <dylan.huang.2024@computing.smu.edu.sg>
+Date:   Wed Oct 15 10:51:36 2025 +0800
+
+    Reattempt UI
+
+[33mcommit fc7d7672d7ae7acf64b99a3ffb28be121e6c3dee[m
+Author: hdylangit <dylan.huang.2024@computing.smu.edu.sg>
+Date:   Wed Oct 15 10:29:54 2025 +0800
+
+    UI overhaul
+
+[33mcommit db3583fa721bad5b0daa448fa8103731f16418d7[m
+Author: Matthew Chan <matcmk@gmail.com>
+Date:   Tue Oct 14 23:55:51 2025 +0800
+
+    Profile and SessionStorage v2
+
+[33mcommit 01e9c67ee92af25da193efd493223843adb0a48a[m
+Author: Matthew Chan <matcmk@gmail.com>
+Date:   Tue Oct 14 23:54:52 2025 +0800
+
+    Profile and SessionStorage v1
+
+[33mcommit 89e0db2f758892bd1b36e901333826616c26fa64[m
+Merge: c3bc190 60c555b
+Author: Matthew Chan <matcmk@gmail.com>
+Date:   Tue Oct 14 23:27:13 2025 +0800
+
+    "Update of Profile and Session Storage v1"
+    Merge branch 'main' of https://github.com/w3ixi4ng/SMUxChange
+
+[33mcommit c3bc190c4fd95be0db7205e86e71d7618eed0ac5[m
+Author: Matthew Chan <matcmk@gmail.com>
+Date:   Tue Oct 14 23:23:06 2025 +0800
+
+    Profile and session storage across all tabs v1
+
+[33mcommit 60c555b60f9007ef3fd475de6e14cf90aa2b910b[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 14 20:10:17 2025 +0800
+
+    update logic
+
+[33mcommit 5143857345038bef990a0deb2bae25f160df9d00[m[33m ([m[1;31morigin/Matt[m[33m)[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 14 17:45:19 2025 +0800
+
+    update css
+
+[33mcommit 37bb7944b465b053c868d14fec68b198729f893a[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 14 17:38:34 2025 +0800
+
+    css update
+
+[33mcommit da08fe8bc5355e4e91f3db7b76df91881c5b6e47[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 14 17:03:23 2025 +0800
+
+    limit logic update
+
+[33mcommit f7735b2862c50dad6067c6ca458bb94e97149a3f[m
+Merge: 959ce29 e358cff
+Author: rnny123 <112319950+rnny123@users.noreply.github.com>
+Date:   Tue Oct 14 16:16:57 2025 +0800
+
+    Merge pull request #6 from w3ixi4ng/shin_ron
+    
+    settled loading screen
+
+[33mcommit e358cff65e670dafc3564103d10935529d60c427[m
+Author: shinroncham <sr.cham.2024@computing.smu.edu.sg>
+Date:   Tue Oct 14 16:16:15 2025 +0800
+
+    settled loading screen
+
+[33mcommit 959ce2943bac508fb34ca0fb90157bdaf52ab35a[m
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Tue Oct 14 15:51:39 2025 +0800
+
+    Update README.md v2
+
+[33mcommit bffeca486b87b5b330b61d3c656ec775bc193e76[m
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Tue Oct 14 15:45:25 2025 +0800
+
+    Update README.md
+
+[33mcommit ab581208cd8c9a52874b766d3ec941194ef6c8bd[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Mon Oct 13 01:56:44 2025 +0800
+
+    mappable style
+
+[33mcommit 35c3a39e033c41659c08abddaf6800683d1e6d7d[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Mon Oct 13 01:46:56 2025 +0800
+
+    collapse position
+
+[33mcommit f1eb91c64903de5abe53c37cbf5e1d6ab6331363[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sun Oct 12 22:57:23 2025 +0800
+
+    added error msg handling for info page
+
+[33mcommit cf1fe0d6d899eb5e889b4990f5b2ba669a2219aa[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sun Oct 12 22:50:12 2025 +0800
+
+    New logic for Info Page
+
+[33mcommit 2df6b3b9c135fa26d7f7122a701b18df3e51cc22[m
+Author: Dylan Huang <dylan.huang.2024@computing.smu.edu.sg>
+Date:   Sun Oct 12 15:12:11 2025 +0800
+
+    Homepage + Nav
+
+[33mcommit 1cd2d4af110b8242305fb03d759344b3cadbf60f[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sat Oct 11 03:32:46 2025 +0800
+
+    info page logic p1
+
+[33mcommit 2360c76783dec9b6606856e6a38ed0e46e448f8e[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sat Oct 11 00:38:17 2025 +0800
+
+    icons
+
+[33mcommit 001b912d0eaa335ed64aafd3a77454f673f7af44[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Sat Oct 11 00:24:41 2025 +0800
+
+    Mappble funct done
+
+[33mcommit b7639e22122fca1d89c51ad7a4796e44a3caabdf[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Fri Oct 10 18:34:22 2025 +0800
+
+    Logic added for limits
+
+[33mcommit 203e0563c928c0763ac814b9542a8cead224c4f2[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Fri Oct 10 05:27:43 2025 +0800
+
+    No AI Run
+
+[33mcommit 09fe4dea755bf63818288de6bae481f70f9208bd[m
+Author: Matthew Chan <matcmk@gmail.com>
+Date:   Thu Oct 9 17:36:05 2025 +0800
+
+    Mappable V2
+
+[33mcommit 101375b3645a80d5f1e6c76fbf63de2b72acce3b[m
+Merge: 81966c0 2a08d4f
+Author: rnny123 <112319950+rnny123@users.noreply.github.com>
+Date:   Thu Oct 9 15:28:48 2025 +0800
+
+    Merge pull request #5 from w3ixi4ng/shin_ron
+    
+    added mapping logic
+
+[33mcommit 2a08d4fad35914defdc3018b590471d851bdf958[m
+Author: shinroncham <sr.cham.2024@computing.smu.edu.sg>
+Date:   Thu Oct 9 15:28:15 2025 +0800
+
+    added mapping logic
+
+[33mcommit 81966c0339fabc8292781ce769de15df3bc9518e[m
+Merge: 01b4301 051c435
+Author: rnny123 <112319950+rnny123@users.noreply.github.com>
+Date:   Thu Oct 9 12:51:28 2025 +0800
+
+    Merge pull request #4 from w3ixi4ng/shin_ron
+    
+    made some changes to backend
+
+[33mcommit 051c435ca06a3a4a1382265b01296e143b572a01[m
+Author: shinroncham <sr.cham.2024@computing.smu.edu.sg>
+Date:   Thu Oct 9 12:50:48 2025 +0800
+
+    made some changes to backend
+
+[33mcommit 01b4301e0e420fb02a89030034c5f53a928a1b9e[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Wed Oct 8 22:46:57 2025 +0800
+
+    backend and endpoints updated
+
+[33mcommit e71b103c2cf08de902e26a6c829f27505236a54e[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Wed Oct 8 22:36:23 2025 +0800
+
+    backend api endpoints done
+
+[33mcommit c9cbc38a980347c2e59fc949cd537b8659f6f7cc[m
+Merge: 662031e 681d371
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Wed Oct 8 17:36:02 2025 +0800
+
+    Merge branch 'main' of https://github.com/w3ixi4ng/SMUxChange
+
+[33mcommit 662031e5a86180f8981c287403efd31043c71af1[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Wed Oct 8 17:35:34 2025 +0800
+
+    edit
+
+[33mcommit 681d371272e08ed70798f39e92c916c683232b29[m
+Merge: 5d3d80c b9a6be5
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Wed Oct 8 17:25:35 2025 +0800
+
+    Merge pull request #3 from w3ixi4ng/Mik
+    
+    Information Page Addition
+
+[33mcommit b9a6be557547bf7b82372eef3e2dbe1b5687ae75[m
+Author: nilnilmik <nilremikfoo.2024@computing.smu.edu.sg>
+Date:   Wed Oct 8 17:23:16 2025 +0800
+
+    Information Page Addition
+
+[33mcommit 5d3d80ca132200688619a2ca5288693a55a14fde[m
+Author: Matthew Chan <matcmk@gmail.com>
+Date:   Wed Oct 8 14:27:55 2025 +0800
+
+    Drag and Drop
+
+[33mcommit e805cdee13ecf2c45a9160c571ae0588715b5f20[m
+Merge: efd35c1 0a9e355
+Author: rnny123 <112319950+rnny123@users.noreply.github.com>
+Date:   Tue Oct 7 22:31:03 2025 +0800
+
+    Merge pull request #2 from w3ixi4ng/shin_ron
+    
+    nice
+
+[33mcommit 0a9e355bf655aff132e36721b1c911cf46ca05e6[m
+Author: shinroncham <sr.cham.2024@computing.smu.edu.sg>
+Date:   Tue Oct 7 22:06:17 2025 +0800
+
+    nice
+
+[33mcommit efd35c14ffa9f73265806d6976152cc2201ff035[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 7 21:30:23 2025 +0800
+
+    Splitted Frontend and Backend Folders
+
+[33mcommit 0e5fd2c1a8d023ae6ec63648ea1651f5dfb2034a[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 7 16:42:55 2025 +0800
+
+    Added Shadcn Config
+
+[33mcommit 5dd8d2ef95d39be3f9af89efd0082a82a92245a7[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 7 16:29:22 2025 +0800
+
+    React TypeScript Skeleton
+
+[33mcommit 3c4f0dc1608f03f98e80d6003b6c1999fa30f204[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Tue Oct 7 16:13:26 2025 +0800
+
+    reset
+
+[33mcommit 88be5e8175748cbec81ebc5c6675e94e7925993b[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Fri Oct 3 19:21:12 2025 +0800
+
+    Main Skeleton 2
+
+[33mcommit 03241a7121624a5727285350b25086937205939a[m
+Merge: f8533f2 c5ffb8a
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Fri Oct 3 19:11:52 2025 +0800
+
+    Main Skeleton
+
+[33mcommit f8533f2a698ccded41dbd25ea1e91c250b6f67b9[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Fri Oct 3 19:10:09 2025 +0800
+
+    Main Skeleton
+
+[33mcommit c5ffb8aba07362d6c0c4be0e730dbe1023babc7c[m
+Author: Milkinator10K <150329268+Milkinator10K@users.noreply.github.com>
+Date:   Fri Oct 3 19:06:14 2025 +0800
+
+    Delete SMUxChange directory
+
+[33mcommit 17f425a68f6d40034d681da02db8746fd41debae[m
+Author: weixiang <weixiang0124@gmail.com>
+Date:   Fri Oct 3 19:01:32 2025 +0800
+
+    Main Skeleton

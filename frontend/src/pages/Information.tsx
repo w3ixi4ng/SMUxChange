@@ -127,7 +127,7 @@ function Information() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Select Country */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <label className="text-gray-200 mb-1 font-bold">
                 Select Country
               </label>
               <select
@@ -147,7 +147,7 @@ function Information() {
 
             {/* Select Course Area */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <label className="text-gray-200 mb-1 font-bold">
                 Select Course Area
               </label>
               <select
