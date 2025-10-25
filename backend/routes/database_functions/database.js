@@ -214,3 +214,19 @@ router.get('/getProfile/:uid', async (req, res) => {
 
 export default router;
 
+router.post('/saveMap', async(req,res) => {
+    try {
+        const { country, university, faculty, major, track, secondMajor, map } = req.body;
+        await db.collection('users').doc(uid).collection('maps').add({
+            country: country,
+            university: university,
+            faculty: faculty,
+            major: major,
+            track: track,
+            secondMajor: secondMajor,
+            map: map
+        });
+    } catch(err) {
+        console.log(err);
+    }
+})

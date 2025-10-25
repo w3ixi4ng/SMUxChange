@@ -14,6 +14,13 @@ type ChildProps = {
 
 
 function MapResults({ university, country, faculty, major, track, secondMajor }: ChildProps) {
+
+
+    const [uid, setUid] = useState<string>("");
+    useEffect(() => {
+        setUid(localStorage.getItem('uid') || "");
+    }, []);
+
     const [schoolCourses, setSchoolCourses] = useState<string[][]>([]);
     const [majorElectives, setMajorElectives] = useState<string>("");
     const [trackElectives, setTrackElectives] = useState<string>("");
@@ -21,7 +28,6 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     // const [allSecondMajors, setAllSecondMajors] = useState<{ [key: string]: string }>({});
     const [availableCourses, setAvailableCourses] = useState<boolean>(false);
     const [selectedCourses, setSelectedCourses] = useState<{ [courseArea: string]: string[] }>({});
-    const errorMessage = "No courses mapped before. Find out more from host university here.";
 
     const fetchSchoolCores = async (faculty: string, major: string, track: string) => {
         try {
@@ -127,6 +133,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     const [selectedCount, setSelectedCount] = useState(0);
     useEffect(() => {
         setSelectedCount(Object.values(selectedCourses).reduce((acc, curr) => acc + curr.length, 0));
+        console.log(selectedCourses);
     }, [selectedCourses]);
 
     const maxCount = 5;
@@ -141,7 +148,12 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* === LEFT PANEL (Your Map) === */}
             <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-lg">
-              <h2 className="text-xl mb-2 font-semibold">Your Map</h2>
+              <div className="flex justify-between items-center row">
+                <h2 className="text-xl mb-2 font-semibold col-lg-6 col-12 text-lg-start text-center font-bold">Your Map</h2>
+                {uid != "" && (
+                <button className="bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg rounded col-lg-6 col-12">Save Map</button>
+                )}
+              </div>
               <p className="text-gray-400 mb-4">{selectedCount}/{maxCount} selected</p>
     
               {/* Empty state message styled to match dark background */}
