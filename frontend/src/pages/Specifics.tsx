@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Star, ChevronDown, ChevronUp } from "lucide-react";
+import axios from "axios";
+
 
 // HELPER FUNCTIONS
 function filenameFromName(name: string) {
@@ -88,75 +90,164 @@ function StarRating({ rating }: { rating: number }) {
 
 // MAIN COMPONENT
 export default function Specifics() {
-  const { universityName } = useParams();
-  const location = useLocation();
-  const schoolFromState = location.state?.school;
+    //const schoolFromState = location.state?.school;
 
-  const [data, setData] = useState<any>(schoolFromState || null);
-  const [maxPrice, setMaxPrice] = useState(2000);
-  const [accommodations, setAccommodations] = useState<any[]>([]);
-  const [events, setEvents] = useState<any[]>([]);
-  const [showAllBaskets, setShowAllBaskets] = useState(false);
+    const [data, setData] = useState(() => {
+        const schoolData = sessionStorage.getItem("school");
+        console.log(schoolData)
+        if (schoolData){
+            var parse_data = JSON.parse(schoolData);
+            return {
+                ...parse_data,
+                rating: 4.5,
+                review:0
+            }
+        }
+        return null
+    });
+    const [maxPrice, setMaxPrice] = useState(2000);
+    const [accommodations, setAccommodations] = useState<any[]>([]);
+    const [events, setEvents] = useState<any[]>([]);
+    const [showAllBaskets, setShowAllBaskets] = useState(false);
+
+    async function get_events() {
+        try {
+            const response_data = await axios.get(`http://localhost:3001/api/events/${data.city}/${data.country}`);
+            console.log(response_data.data.events_results)
+            setEvents(response_data.data.events_results);
+        } catch(err) {
+            console.log(err)
+        }
+    }
+
+    async function get_accomodations() {
+        try {
+            const response_data = await axios.get(`http://localhost:3001/api/apartments/${data.host_university}`)
+            setAccommodations(response_data.data);
+        } catch(err) {
+            console.log(err);
+        }
+    };
+    
+    useEffect(() => {
+        get_events(),
+        get_accomodations()
+    }, []);
+
+    console.log(data,accommodations)
+    console.log(events)
+
+    function round_up_time(seconds:number){
+        const hours = Math.floor(seconds/3600);
+        const minutes = Math.floor((seconds%3600)/60);
+        const secs = Math.floor(seconds%60);
+
+        if (hours>0) {
+            return `${hours}h ${minutes}m ${secs}s`;
+        } else if (minutes > 0) {
+            return `${minutes}m ${secs}s`;
+        } else {
+            return `${secs}s`
+        }
+    }
+
+    async function helper_distance(origin: string, destination:string) {
+        const mode_values: string[] = ["DRIVE", "WALK", "TRANSIT"];
+        var return_values: any = {};
+        for (var i = 0; i< mode_values.length; i++) {
+                try {
+                    const response = await axios.get(`http://localhost:3001/api/distance/${origin}/${destination}/${mode_values[i]}`);
+                    if (i ==0 ) {
+                        return_values["distance"]= response.data.routes[0].distanceMeters
+                            
+                    };
+                    var time_taken = round_up_time(response.data.routes[0].duration);
+                    return_values[mode_values[i]] = time_taken
+                }
+                catch(err) {
+                    console.log(err);
+                }
+        
+        }
+        return return_values
+    }
+
+    async function get_distance() {
+        for (let i=0; i< accommodations.length; i++) {
+            const distanceData = await helper_distance(
+                data["host_university"],
+                accommodations[i]["formatted_address"]
+            );
+
+            accommodations[i] = {
+                ...accommodations[i],
+                ...distanceData
+            }
+
+        }
+    }
+
+
 
   // Fallback fetch if refresh
-  useEffect(() => {
-    if (!data && universityName) {
-      fetch(`/api/schools?name=${decodeURIComponent(universityName)}`)
-        .then((res) => res.json())
-        .then((schoolData) => setData(schoolData))
-        .catch(() => {
-          setData({
-            name: decodeURIComponent(universityName),
-            country: "Switzerland",
-            rating: 4.5,
-            reviews: 0,
-            min_gpa: 3.46,
-            max_gpa: 3.93,
-            places: 32,
-            description:
-              "The University of St Gallen is renowned for its strong focus on business and economics, making it an ideal choice for exchange students interested in these fields. Its international environment and diverse student body enhance the learning experience, fostering global networking opportunities.",
-            mappable_basket: [
-              "Accounting Data and Analytics Major Elective",
-              "Accounting Major Elective",
-              "Asian Studies",
-              "Communications Management Major Elective",
-              "Cultures of the Modern World",
-              "Data Science and Analytics Major Elective",
-              "Digital Business Electives – A",
-              "Economics Major Elective",
-              "Finance (Finance Analytics) Track Elective",
-              "Finance (Real Estate) Track Elective",
-              "Finance Major Elective",
-              "Financial Forensics Major Elective",
-              "Information Systems Depth Elective",
-              "Innovation & Entrepreneurship Major Elective",
-              "Marketing Major Elective",
-              "Sustainability Elective (B)",
-            ],
-          });
-        });
-    }
-  }, [data, universityName]);
+//  useEffect(() => {
+//    if (!data && universityName) {
+//      fetch(`/api/schools?name=${decodeURIComponent(universityName)}`)
+//        .then((res) => res.json())
+//        .then((schoolData) => setData(schoolData))
+//        .catch(() => {
+//          setData({
+//            name: decodeURIComponent(universityName),
+//            country: "Switzerland",
+//            rating: 4.5,
+//            reviews: 0,
+//            min_gpa: 3.46,
+//            max_gpa: 3.93,
+//            places: 32,
+//            description:
+//              "The University of St Gallen is renowned for its strong focus on business and economics, making it an ideal choice for exchange students interested in these fields. Its international environment and diverse student body enhance the learning experience, fostering global networking opportunities.",
+//            mappable_basket: [
+//              "Accounting Data and Analytics Major Elective",
+//              "Accounting Major Elective",
+//              "Asian Studies",
+//              "Communications Management Major Elective",
+//              "Cultures of the Modern World",
+//              "Data Science and Analytics Major Elective",
+//              "Digital Business Electives – A",
+//              "Economics Major Elective",
+//              "Finance (Finance Analytics) Track Elective",
+//              "Finance (Real Estate) Track Elective",
+//              "Finance Major Elective",
+//              "Financial Forensics Major Elective",
+//              "Information Systems Depth Elective",
+//              "Innovation & Entrepreneurship Major Elective",
+//              "Marketing Major Elective",
+//              "Sustainability Elective (B)",
+//            ],
+//          });
+//        });
+//    }
+//  }, [data, universityName]);
 
   // Mock demo data
-  useEffect(() => {
-    setAccommodations([
-      { name: "Campus Village", price: 950, distance: "1.2 km" },
-      { name: "Z Place Apartments", price: 1100, distance: "0.6 km" },
-      { name: "Ann Arbor Housing Co.", price: 1250, distance: "0.9 km" },
-      { name: "Student Hub Residence", price: 1400, distance: "1.8 km" },
-    ]);
 
-    setEvents([
-      { title: "Art Fair", desc: "Downtown Ann Arbor street festival" },
-      { title: "Game Day", desc: "Football Match at Michigan Stadium" },
-      { title: "Tech Meetup", desc: "Local networking and innovation event" },
-      { title: "Music Night", desc: "Live concert at central square" },
-    ]);
-  }, []);
 
-  if (!data)
-    return <div className="text-center text-white mt-20">Loading...</div>;
+//  useEffect(() => {
+//    setAccommodations([
+//      { name: "Campus Village", price: 950, distance: "1.2 km" },
+//      { name: "Z Place Apartments", price: 1100, distance: "0.6 km" },
+//      { name: "Ann Arbor Housing Co.", price: 1250, distance: "0.9 km" },
+//      { name: "Student Hub Residence", price: 1400, distance: "1.8 km" },
+//    ]);
+
+    //setEvents([
+    //  { title: "Art Fair", desc: "Downtown Ann Arbor street festival" },
+    //  { title: "Game Day", desc: "Football Match at Michigan Stadium" },
+    //  { title: "Tech Meetup", desc: "Local networking and innovation event" },
+    //  { title: "Music Night", desc: "Live concert at central square" },
+    //]);
+//  }, []);
+
 
   return (
     <div className="min-h-screen text-white bg-[#0b0b0b] bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.05)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.03)_0%,transparent_30%)]">
@@ -166,15 +257,15 @@ export default function Specifics() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
             <h1 className="text-4xl font-bold mb-2">
-              {data.name || data.host_university}
+              {data && data.host_university}
             </h1>
             <div className="flex items-center gap-3">
               <img
                 src={`https://flagcdn.com/${getCountryCode(data.country)}.svg`}
-                alt={data.country}
+                alt={data && data.country}
                 className="w-8 h-5 rounded-md"
               />
-              <span className="text-gray-300">{data.country}</span>
+              <span className="text-gray-300">{data && data.country}</span>
             </div>
           </div>
 
@@ -215,7 +306,7 @@ export default function Specifics() {
               About the University
             </CardTitle>
             <CardDescription className="text-white/90 leading-relaxed">
-              {data.description}
+              {data && data.description}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-3 gap-6 mt-4">
@@ -230,9 +321,9 @@ export default function Specifics() {
             <div>
               <p className="text-sm text-gray-400">Rating</p>
               <div className="flex items-center gap-2">
-                <StarRating rating={data.rating || 4.5} />
+                <StarRating rating={data && data.rating} />
                 <span className="text-sm text-gray-300">
-                  {(data.rating || 4.5).toFixed(1)} ({data.reviews || 0} reviews)
+                  {(data.rating).toFixed(1)} ({data.reviews} reviews)
                 </span>
               </div>
 
@@ -241,13 +332,13 @@ export default function Specifics() {
               </p>
               <div className="flex gap-4 text-sm font-semibold">
                 <span className="text-green-400">
-                  Max GPA: {data.max_gpa ?? "N/A"}
+                  Max GPA: {data && data.max_gpa}
                 </span>
                 <span className="text-red-400">
-                  Min GPA: {data.min_gpa ?? "N/A"}
+                  Min GPA: {data && data.min_gpa}
                 </span>
                 <span className="text-blue-400">
-                  Places: {data.places ?? "N/A"}
+                  Places: {data && data.places}
                 </span>
               </div>
             </div>
@@ -291,7 +382,7 @@ export default function Specifics() {
                     : "max-h-[260px] opacity-95" // collapsed to show only ~2 rows
                 }`}
               >
-                {data.mappable_basket?.map((basket: string, i: number) => (
+                {data && data.mappable_basket?.map((basket: string, i: number) => (
                   <div key={i} className="flex justify-center">
                     <span className="bg-[#1e1f23] text-white/90 px-5 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-[#2a2b30] hover:text-white transition-all duration-200 text-center w-full max-w-[280px]">
                       {basket}
@@ -300,7 +391,7 @@ export default function Specifics() {
                 ))}
               </div>
 
-              {data.mappable_basket?.length > 6 && (
+              {data && data.mappable_basket?.length > 6 && (
                 <button
                   onClick={() => setShowAllBaskets((prev) => !prev)}
                   className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full bg-white/10 text-gray-200 text-sm font-semibold hover:bg-white/20 transition-all"
@@ -391,15 +482,15 @@ export default function Specifics() {
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
                 {accommodations
-                  .filter((a) => a.price <= maxPrice)
-                  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 2.0))
+                //  .filter((a) => a.price <= maxPrice)
+                //  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 2.0))
                   .map((a, i) => (
                     <div
                       key={i}
                       className="bg-white/5 border border-white/10 rounded-xl w-72 shrink-0 hover:bg-white/10 transition-all duration-200"
                     >
                       <img
-                        src={`/images/accommodation_${i + 1}.jpg`}
+                        src={a.icon}
                         onError={(e) =>
                           ((e.currentTarget as HTMLImageElement).src =
                             "/images/accommodations_placeholder.jpg")
@@ -441,7 +532,7 @@ export default function Specifics() {
                       src={`/images/event_${i + 1}.jpg`}
                       onError={(e) =>
                         ((e.currentTarget as HTMLImageElement).src =
-                          "/images/event_placeholder.jpg")
+                          ev.thumbnail)
                       }
                       alt={ev.title}
                       className="w-full h-40 object-cover rounded-t-xl"

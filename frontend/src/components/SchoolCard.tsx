@@ -65,7 +65,7 @@ function SchoolCard({ school }: ChildProps) {
                                 to={`/specifics/${encodeURIComponent(school['host_university'])}`}
 
                                 // ✅ CHANGE 3: Pass the school object along via state so no re-fetch needed
-                                state={{ school }}
+                                onClick={() =>  sessionStorage.setItem("school", JSON.stringify(school))} 
 
                                 className="btn btn-outline-success btn-sm w-100 text-success"
                                 >
