@@ -13,7 +13,7 @@ function Mappable() {
     >
 
       {/*  Keeps MapSearch above the animated background */}
-      <div className="relative z-10 w-full">
+      <div className="relative z-10 container mx-auto px-4 py-10">
         <MapSearch />
       </div>
     </div>

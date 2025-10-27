@@ -1,16 +1,46 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import ExistingMap from "../components/ExistingMap";
+import { UpdateProfileAlert } from "@/components/UpdateProfileAlert";
+
 
 function Profile() {
   const uid = sessionStorage.getItem("uid");
   const navigate = useNavigate();
 
+  const fetchUser = async (uid: string) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/database/getProfile/${uid}`);
+      const user = response.data;
+
+      setUserExists(true);
+      setName(user.name);
+      setFaculty(user.faculty);
+      setMajor(user.major);
+      setTrack(user.track);
+      setSecondMajor(user.secondMajor);
+    } catch (error) {
+      console.log("API error:", error);
+      setUserExists(false);
+    }
+  };
+
+
   useEffect(() => {
     if (!uid) {
       navigate("/login");
+    } else {
+      fetchUser(uid);
+      getSavedMaps(uid);
     }
   }, []);
+
+
+  const [userExists, setUserExists] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
 
   const [toggleMajor, setToggleMajor] = useState(true);
   const [toggleTrack, setToggleTrack] = useState(true);
@@ -113,13 +143,55 @@ function Profile() {
     }
   }, [major]);
 
-  const handleUpdate = () => {
-    sessionStorage.setItem("name", name);
-    sessionStorage.setItem("faculty", faculty);
-    sessionStorage.setItem("major", major);
-    sessionStorage.setItem("track", track);
-    sessionStorage.setItem("secondMajor", secondMajor);
-    console.log(sessionStorage.getItem("name"), sessionStorage.getItem("faculty"), sessionStorage.getItem("major"), sessionStorage.getItem("track"), sessionStorage.getItem("secondMajor"));
+  useEffect(() => {
+    if (userExists) {
+      sessionStorage.setItem("name", name);
+      sessionStorage.setItem("faculty", faculty);
+      sessionStorage.setItem("major", major);
+      sessionStorage.setItem("track", track);
+      sessionStorage.setItem("secondMajor", secondMajor);
+
+    }
+  }, [userExists, name, faculty, major, track, secondMajor]);
+
+
+  const [savedMaps, setSavedMaps] = useState<any[]>([]);
+
+  const getSavedMaps = async (uid: string) => {
+    try {
+      const response = await axios.get(`http://localhost:3001/database/getSavedMaps/${uid}`);
+      setSavedMaps(response.data);
+    }
+    catch (error) {
+      console.log("API error getting saved maps:", error);
+    }
+  }
+
+
+  const saveProfile = async (uid: any, name: string, faculty: string, major: string, track: string, secondMajor: string) => {
+    let errors = [];
+    if (name === "") {
+      errors.push("Name is required");
+    }
+    if (faculty === "") {
+      errors.push("Faculty is required");
+    }
+    if (major === "") {
+      errors.push("Major is required");
+
+    }
+    if (errors.length > 0) {
+      setErrorMessage(errors);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+      setUserExists(true);
+      setErrorMessage([]);
+    } catch (error) {
+      console.log("API error saving profile:", error);
+    }
   };
 
   useEffect(() => {
@@ -132,90 +204,225 @@ function Profile() {
 
   return (
     <>
-      <div className="container col-12 mx-auto mb-1-">
-        <h1>Profile</h1>
-      </div>
-      <div className="container col-12 mx-auto bg-light py-3 rounded shadow-md font-semibold">
-        <div className="row justify-content-center">
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Name</p>
-            <input
-              type="text"
-              className="form-control"
-              value={name}
-              placeholder="Enter your name ..."
-              onChange={(e) => setName(e.target.value)}
-            />
+      {!userExists && (
+        <Modal
+          show={!userExists}
+          size="lg"
+          centered
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header >
+            <Modal.Title> Fill in your profile to continue</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <div className="container col-12 mx-auto py-3">
+              <div className="row justify-content-center">
+                <div className="col-lg-6 col-12 mb-2">
+                  <p className="text-start mb-1 ml-1">Name</p>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={name}
+                    placeholder="Enter your name ..."
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="col-lg-6 col-12 mb-2">
+                  <p className="text-start mb-1 ml-1">Faculty</p>
+                  <select
+                    className="form-select"
+                    value={faculty}
+                    onChange={(e) => setFaculty(e.target.value)}
+                  >
+                    <option value="">Choose your faculty...</option>
+                    {faculties.map((f) => (
+                      <option key={f} value={f}>
+                        {f}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-lg-6 col-12 mb-2">
+                  <p className="text-start mb-1 ml-1">Major</p>
+                  <select
+                    className="form-select"
+                    value={major}
+                    onChange={(e) => setMajor(e.target.value)}
+                    disabled={toggleMajor}
+                  >
+                    <option value="">Choose your major...</option>
+                    {majors.map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-lg-6 col-12 mb-2">
+                  <p className="text-start mb-1 ml-1">Track (Optional)</p>
+                  <select
+                    className="form-select"
+                    value={track}
+                    onChange={(e) => setTrack(e.target.value)}
+                    disabled={toggleTrack}
+                  >
+                    <option value="">Choose your track...</option>
+                    {tracks.map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-lg-6 col-12 mb-2">
+                  <p className="text-start mb-1 ml-1">Second Major (Optional)</p>
+                  <select
+                    className="form-select"
+                    value={secondMajor}
+                    onChange={(e) => setSecondMajor(e.target.value)}
+                  >
+                    <option value="">Choose your second major...</option>
+                    {secondMajors.map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+
+          <Modal.Footer>
+            {errorMessage.length > 0 && (
+              <div className="col-12 mb-2 text-center">
+                {errorMessage.map((error) => (
+                  <p className="text-danger">{error}</p>
+                ))}
+              </div>
+            )}
+            <div className="col-12 mb-2 text-center">
+              <Button variant="secondary" className="btn-primary" onClick={() => saveProfile(uid || "", name, faculty, major, track, secondMajor)}>
+                Save Profile
+              </Button>
+            </div>
+          </Modal.Footer>
+        </Modal>
+      )}
+      <div className={`${userExists ? "relative min-h-screen w-full text-white bg-[#0a0a0a] bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.06)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.04)_0%,transparent_30%)]"
+        : "bg-black"}`}>
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+        <div className="relative z-10 container mx-auto px-4 py-10" style={{ opacity: userExists ? 1 : 0 }}>
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-bold mb-2">Profile</h1>
+            <p className="text-gray-400 text-sm">
+              Update your profile or update your existing map.
+            </p>
           </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Faculty</p>
-            <select
-              className="form-select"
-              value={faculty}
-              onChange={(e) => setFaculty(e.target.value)}
-            >
-              <option value="">Choose your faculty...</option>
-              {faculties.map((f) => (
-                <option key={f} value={f}>
-                  {f}
-                </option>
-              ))}
-            </select>
+          <div className="container col-12 mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg py-8 px-6 mb-10">
+            <div className="row justify-content-center">
+              <div className="col-lg-6 col-12 mb-2">
+                <p className="text-gray-200 mb-1 font-bold">Name</p>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={name}
+                  placeholder="Enter your name ..."
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="col-lg-6 col-12 mb-2">
+                <p className="text-gray-200 mb-1 font-bold">Faculty</p>
+                <select
+                  className="form-select"
+                  value={faculty}
+                  onChange={(e) => setFaculty(e.target.value)}
+                >
+                  <option value="">Choose your faculty...</option>
+                  {faculties.map((f) => (
+                    <option key={f} value={f}>
+                      {f}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-lg-6 col-12 mb-2">
+                <p className="text-gray-200 mb-1 font-bold">Major</p>
+                <select
+                  className="form-select"
+                  value={major}
+                  onChange={(e) => setMajor(e.target.value)}
+                  disabled={toggleMajor}
+                >
+                  <option value="">Choose your major...</option>
+                  {majors.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-lg-6 col-12 mb-2">
+                <p className="text-gray-200 mb-1 font-bold">Track</p>
+                <select
+                  className="form-select"
+                  value={track}
+                  onChange={(e) => setTrack(e.target.value)}
+                  disabled={toggleTrack}
+                >
+                  <option value="">Choose your track...</option>
+                  {tracks.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="col-lg-6 col-12 mb-2">
+                <p className="text-gray-200 mb-1 font-bold">Second Major</p>
+                <select
+                  className="form-select"
+                  value={secondMajor}
+                  onChange={(e) => setSecondMajor(e.target.value)}
+                >
+                  <option value="">Choose your second major...</option>
+                  {secondMajors.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {errorMessage.length > 0 && (
+              <div className="col-12 mb-2 text-center">
+                {errorMessage.map((error) => (
+                  <p className="text-danger">{error}</p>
+                ))}
+              </div>
+            )}
+            <div className="col-12 text-center mt-4">
+              <UpdateProfileAlert uid={uid || ""} name={name} faculty={faculty} major={major} track={track} secondMajor={secondMajor} setErrorMessage={setErrorMessage} />
+            </div>
           </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Major</p>
-            <select
-              className="form-select"
-              value={major}
-              onChange={(e) => setMajor(e.target.value)}
-              disabled={toggleMajor}
-            >
-              <option value="">Choose your major...</option>
-              {majors.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
+          <div className="container col-12 mx-auto">
+            <h2 className="text-center mb-4 text-4xl text-bold">Your Saved Maps</h2>
+            <div className="row justify-content-lg-center justify-content-md-start">
+              {savedMaps.map((map) => (
+                <ExistingMap key={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps} name={name} faculty={faculty} major={major} track={track} secondMajor={secondMajor}/>
               ))}
-            </select>
-          </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Track</p>
-            <select
-              className="form-select"
-              value={track}
-              onChange={(e) => setTrack(e.target.value)}
-              disabled={toggleTrack}
-            >
-              <option value="">Choose your track...</option>
-              {tracks.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-lg-6 col-12 mb-2">
-            <p className="text-start mb-1 ml-1">Second Major</p>
-            <select
-              className="form-select"
-              value={secondMajor}
-              onChange={(e) => setSecondMajor(e.target.value)}
-            >
-              <option value="">Choose your second major...</option>
-              {secondMajors.map((m) => (
-                <option key={m} value={m}>
-                  {m}
-                </option>
-              ))}
-            </select>
+            </div>
+            {savedMaps.length === 0 && (
+              <div className="col-12 mb-2 text-center">
+                <p className="text-gray-400 text-sm">No saved maps found. Start exploring!</p>
+              </div>
+            )}
           </div>
         </div>
-        <div className="col-12 mb-2 text-center">
-          <button className="btn btn-primary" onClick={handleUpdate}>
-            Update
-          </button>
-        </div>
       </div>
+
     </>
   );
 }

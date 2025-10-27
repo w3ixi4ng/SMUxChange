@@ -1,4 +1,3 @@
-import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -42,10 +41,20 @@ function getCountryCode(countryName?: string) {
     "south korea": "kr",
     china: "cn",
     "hong kong": "hk",
+    switzerland : "ch", 
+    argentina : "ar",
+    austria : "at",
+    belgium : "be"
   };
   const key = (countryName || "").toLowerCase().trim();
   return map[key] || "xx";
 }
+function scrollToTop() {
+    const topElement = document.getElementById("top");
+    if (topElement) {
+      topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
+    }
+  } 
 
 // Star Rating Component
 function StarRating({ rating }: { rating: number }) {
@@ -90,8 +99,6 @@ function StarRating({ rating }: { rating: number }) {
 
 // MAIN COMPONENT
 export default function Specifics() {
-    //const schoolFromState = location.state?.school;
-
     const [data, setData] = useState(() => {
         const schoolData = sessionStorage.getItem("school");
         console.log(schoolData)
@@ -109,6 +116,22 @@ export default function Specifics() {
     const [accommodations, setAccommodations] = useState<any[]>([]);
     const [events, setEvents] = useState<any[]>([]);
     const [showAllBaskets, setShowAllBaskets] = useState(false);
+    const [showScrollButton, setShowScrollButton] = useState(false); 
+    const [distanceCalculated, setDistanceCalculated] = useState(false);
+
+
+
+    useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 100) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     async function get_events() {
         try {
@@ -129,18 +152,13 @@ export default function Specifics() {
         }
     };
     
-    useEffect(() => {
-        get_events(),
-        get_accomodations()
-    }, []);
-
-    console.log(data,accommodations)
-    console.log(events)
 
     function round_up_time(seconds:number){
+        console.log(seconds)
         const hours = Math.floor(seconds/3600);
         const minutes = Math.floor((seconds%3600)/60);
         const secs = Math.floor(seconds%60);
+        console.log(hours,minutes, secs)
 
         if (hours>0) {
             return `${hours}h ${minutes}m ${secs}s`;
@@ -161,7 +179,7 @@ export default function Specifics() {
                         return_values["distance"]= response.data.routes[0].distanceMeters
                             
                     };
-                    var time_taken = round_up_time(response.data.routes[0].duration);
+                    var time_taken = round_up_time(response.data.routes[0].duration.split("s")[0]);
                     return_values[mode_values[i]] = time_taken
                 }
                 catch(err) {
@@ -173,21 +191,64 @@ export default function Specifics() {
     }
 
     async function get_distance() {
+        const updatedAccomodations = [];
+        const updatedEvents = [];
         for (let i=0; i< accommodations.length; i++) {
             const distanceData = await helper_distance(
                 data["host_university"],
                 accommodations[i]["formatted_address"]
             );
 
-            accommodations[i] = {
+            updatedAccomodations.push( {
                 ...accommodations[i],
                 ...distanceData
-            }
-
+            })
         }
+        for (let j=0; j< events.length; j++) {
+            const distance_event_data = await helper_distance(
+                data["host_university"],
+                events[j]["address"][0]
+            );
+            updatedEvents.push( {
+                ...events[j],
+                ...distance_event_data
+            })
+        }
+        setAccommodations(updatedAccomodations);
+        setEvents(updatedEvents);
     }
 
+    useEffect(() => {
+        get_events(),
+        get_accomodations()
+    }, []);
 
+    useEffect(() => {
+        async function calculateDistanceOnce() {
+        if (accommodations.length > 0 && !distanceCalculated) {
+            await get_distance();
+            setDistanceCalculated(true);
+        }
+        }
+        calculateDistanceOnce();
+    },[accommodations, distanceCalculated])
+
+    console.log(data,accommodations)
+    console.log(events)
+
+
+  // Effect to add/remove scroll event listener
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 100) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Fallback fetch if refresh
 //  useEffect(() => {
@@ -252,7 +313,7 @@ export default function Specifics() {
   return (
     <div className="min-h-screen text-white bg-[#0b0b0b] bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.05)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.03)_0%,transparent_30%)]">
       <div className="container mx-auto px-6 py-12 space-y-10">
-
+        <div id="top" />
         {/* === HEADER === */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
@@ -555,6 +616,17 @@ export default function Specifics() {
             </div>
           </CardContent>
         </Card>
+      {/* Scroll to top button */}
+      {showScrollButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/70 text-white shadow-md hover:bg-black/90 transition-opacity"
+          aria-label="Scroll to top"
+          style={{ backdropFilter: "blur(5px)" }}
+        >
+          ↑
+        </button>
+      )}
       </div>
     </div>
   );

@@ -4,16 +4,16 @@ import axios from 'axios';
 const router = express.Router();
 
 
-router.get('/:query', async (req, res) => {
+router.get('/:photo', async (req, res) => {
     try {
-        const { query } = req.params;
-        const decodedquery= decodeURIComponent(query);
+        const { photo } = req.params;
+        const decodedphoto= decodeURIComponent(photo);
         
-        const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
+        const response = await axios.get('https://maps.googleapis.com/maps/api/place/photo', {
             params: {
-                "query": `apartments near ${decodedquery}`,
-                "type": "lodging",
-                "key":process.env.GOOGLE_MAPS_API_KEY
+                "maxheight": 400,
+                "key":process.env.GOOGLE_MAPS_API_KEY,
+                "photoreference": decodedphoto
             }
         });
 
