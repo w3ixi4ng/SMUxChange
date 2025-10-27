@@ -154,11 +154,9 @@ export default function Specifics() {
     
 
     function round_up_time(seconds:number){
-        console.log(seconds)
         const hours = Math.floor(seconds/3600);
         const minutes = Math.floor((seconds%3600)/60);
         const secs = Math.floor(seconds%60);
-        console.log(hours,minutes, secs)
 
         if (hours>0) {
             return `${hours}h ${minutes}m ${secs}s`;
@@ -176,8 +174,7 @@ export default function Specifics() {
                 try {
                     const response = await axios.get(`http://localhost:3001/api/distance/${origin}/${destination}/${mode_values[i]}`);
                     if (i ==0 ) {
-                        return_values["distance"]= response.data.routes[0].distanceMeters
-                            
+                        return_values["distance"]= (response.data.routes[0].distanceMeters/1000)
                     };
                     var time_taken = round_up_time(response.data.routes[0].duration.split("s")[0]);
                     return_values[mode_values[i]] = time_taken
@@ -249,65 +246,6 @@ export default function Specifics() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Fallback fetch if refresh
-//  useEffect(() => {
-//    if (!data && universityName) {
-//      fetch(`/api/schools?name=${decodeURIComponent(universityName)}`)
-//        .then((res) => res.json())
-//        .then((schoolData) => setData(schoolData))
-//        .catch(() => {
-//          setData({
-//            name: decodeURIComponent(universityName),
-//            country: "Switzerland",
-//            rating: 4.5,
-//            reviews: 0,
-//            min_gpa: 3.46,
-//            max_gpa: 3.93,
-//            places: 32,
-//            description:
-//              "The University of St Gallen is renowned for its strong focus on business and economics, making it an ideal choice for exchange students interested in these fields. Its international environment and diverse student body enhance the learning experience, fostering global networking opportunities.",
-//            mappable_basket: [
-//              "Accounting Data and Analytics Major Elective",
-//              "Accounting Major Elective",
-//              "Asian Studies",
-//              "Communications Management Major Elective",
-//              "Cultures of the Modern World",
-//              "Data Science and Analytics Major Elective",
-//              "Digital Business Electives – A",
-//              "Economics Major Elective",
-//              "Finance (Finance Analytics) Track Elective",
-//              "Finance (Real Estate) Track Elective",
-//              "Finance Major Elective",
-//              "Financial Forensics Major Elective",
-//              "Information Systems Depth Elective",
-//              "Innovation & Entrepreneurship Major Elective",
-//              "Marketing Major Elective",
-//              "Sustainability Elective (B)",
-//            ],
-//          });
-//        });
-//    }
-//  }, [data, universityName]);
-
-  // Mock demo data
-
-
-//  useEffect(() => {
-//    setAccommodations([
-//      { name: "Campus Village", price: 950, distance: "1.2 km" },
-//      { name: "Z Place Apartments", price: 1100, distance: "0.6 km" },
-//      { name: "Ann Arbor Housing Co.", price: 1250, distance: "0.9 km" },
-//      { name: "Student Hub Residence", price: 1400, distance: "1.8 km" },
-//    ]);
-
-    //setEvents([
-    //  { title: "Art Fair", desc: "Downtown Ann Arbor street festival" },
-    //  { title: "Game Day", desc: "Football Match at Michigan Stadium" },
-    //  { title: "Tech Meetup", desc: "Local networking and innovation event" },
-    //  { title: "Music Night", desc: "Live concert at central square" },
-    //]);
-//  }, []);
 
 
   return (
@@ -500,7 +438,7 @@ export default function Specifics() {
 
             {/* Filters */}
             <div className="grid sm:grid-cols-2 gap-6 mt-6">
-              <div>
+              {/*<div>
                 <label className="block mb-2 text-gray-400 text-sm">
                   Filter by max price (${maxPrice})
                 </label>
@@ -513,7 +451,7 @@ export default function Specifics() {
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
                   className="w-full accent-amber-400"
                 />
-              </div>
+              </div>*/}
 
               <div>
                 <label className="block mb-2 text-gray-400 text-sm">
@@ -543,8 +481,7 @@ export default function Specifics() {
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
                 {accommodations
-                //  .filter((a) => a.price <= maxPrice)
-                //  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 2.0))
+                  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 2.0))
                   .map((a, i) => (
                     <div
                       key={i}
@@ -560,9 +497,17 @@ export default function Specifics() {
                         className="w-full h-40 object-cover rounded-t-xl"
                       />
                       <div className="p-4">
-                        <h4 className="font-semibold text-lg mb-1">{a.name}</h4>
+                        <h5 className="font-semibold text-lg mb-1">{a.name}</h5>
                         <p className="text-gray-300 text-sm mb-3">
-                          ${a.price}/month • {a.distance} from campus
+                          {a.distance}km from campus
+                        </p>
+                        <p>
+                            Address: {a.formatted_address}
+                        </p>
+                        <p>
+                            <div>🚗 Driving time: {a.DRIVE}</div>
+                            <div>🚶 Walking time: {a.WALK}</div>
+                            <div>🚌 Public transport: {a.TRANSIT}</div>
                         </p>
                         <Button
                           asChild
@@ -584,7 +529,9 @@ export default function Specifics() {
                 Nearby Events & Activities
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
-                {events.map((ev, i) => (
+                {events
+                .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 2.0))
+                .map((ev, i) => (
                   <div
                     key={i}
                     className="bg-white/5 border border-white/10 rounded-xl w-72 shrink-0 hover:bg-white/10 transition-all duration-200"
@@ -600,7 +547,17 @@ export default function Specifics() {
                     />
                     <div className="p-4">
                       <h4 className="font-semibold text-lg mb-1">{ev.title}</h4>
-                      <p className="text-gray-300 text-sm mb-3">{ev.desc}</p>
+                      <p className="text-gray-300 text-sm mb-3">
+                        {ev.distance}km from campus
+                      </p>
+                      <p>
+                        Address: {ev.address[0]}
+                      </p>
+                      <p>
+                            <div>🚗 Driving time: {ev.DRIVE}</div>
+                            <div>🚶 Walking time: {ev.WALK}</div>
+                            <div>🚌 Public transport: {ev.TRANSIT}</div>
+                        </p>
                       <Button
                         asChild
                         className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white no-underline"
