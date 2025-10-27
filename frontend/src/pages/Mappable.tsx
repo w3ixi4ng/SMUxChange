@@ -20,4 +20,4 @@ function Mappable() {
   );
 }
 
-export default Mappable;''
+export default Mappable;

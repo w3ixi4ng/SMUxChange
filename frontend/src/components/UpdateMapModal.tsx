@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
+    DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
@@ -39,10 +40,11 @@ export function UpdateMapModal({ map, name, faculty, major, track, secondMajor }
                     </div>
                 </div>
                 <DialogFooter className="d-flex justify-content-center">
+                    <DialogClose><Button>Close</Button></DialogClose>
                     <Button type="submit">Save Changes</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
     )
 }
-        
+

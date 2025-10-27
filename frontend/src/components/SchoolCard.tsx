@@ -16,7 +16,7 @@ function SchoolCard({ school }: ChildProps) {
         <>
             <div className="col-lg-4 col-md-6 col-12 mb-2">
                 <div className="card shadow h-100 border-0">
-                    <img src="./images/university.jpg"
+                    <img src={`/images/university_pictures/${school['host_university']}.jpg`}
                         className="card-img-top" alt={`${school['host_university']}`}
                         style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '.5rem' }} />
                     <div className="card-body d-flex flex-column justify-content-between">
