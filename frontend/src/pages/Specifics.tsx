@@ -461,14 +461,14 @@ export default function Specifics() {
 
               <div>
                 <label className="block mb-2 text-gray-400 text-sm">
-                  Filter by max distance ({data.maxDistance ?? "2.0"} km)
+                  Filter by max distance ({data.maxDistance ?? "20"} km)
                 </label>
                 <Input
                   type="range"
                   min={0.5}
-                  max={5}
-                  step={0.1}
-                  value={data.maxDistance ?? 2.0}
+                  max={20}
+                  step={0.5}
+                  value={data.maxDistance ?? 20}
                   onChange={(e) =>
                     setData((prev: any) => ({
                       ...prev,
@@ -487,7 +487,7 @@ export default function Specifics() {
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
                 {accommodations
-                  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 2.0))
+                  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20))
                   .map((a, i) => (
                     <div
                       key={i}
@@ -536,7 +536,7 @@ export default function Specifics() {
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
                 {events
-                .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 2.0))
+                .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20))
                 .map((ev, i) => (
                   <div
                     key={i}
