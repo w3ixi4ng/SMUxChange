@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import ThreeDLogo from "@/components/ThreeDLogo";
 
 function Home() {
   const features = [
@@ -37,6 +38,7 @@ function Home() {
       {/* === Content === */}
       <div className="relative z-10 flex flex-col items-center justify-center text-center px-6">
         {/* === Hero Section === */}
+        <ThreeDLogo/>
         <div className="mb-12 mt-20 bg-white/5 backdrop-blur-md rounded-3xl shadow-lg px-10 py-8 max-w-3xl mx-auto border border-white/10">
           <h1 className="text-5xl font-bold mb-3 text-white">
             Welcome to{" "}
