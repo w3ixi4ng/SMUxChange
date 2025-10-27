@@ -11,9 +11,9 @@ router.get('/:query', async (req, res) => {
         
         const response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
             params: {
-                "query": `student apartments near ${decodedquery}`,
-                "key": process.env.GOOGLE_MAPS_API_KEY,
-                "type": "lodging"
+                "query": `apartments near ${decodedquery}`,
+                "type": "lodging",
+                "key":process.env.GOOGLE_MAPS_API_KEY
             }
         });
 
