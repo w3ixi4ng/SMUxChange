@@ -103,7 +103,7 @@ export function SignupForm({
           </form>
           <div className="bg-muted relative hidden md:block">
             <img
-              src="../public/images/oxford.jpg"
+              src="/images/oxford.jpg"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
