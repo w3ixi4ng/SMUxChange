@@ -51,18 +51,20 @@ export default function ThreeDLogo() {
         container?.addEventListener("wheel", onWheel, { passive: false });
 
         // animation loop
+        let animationFrameId: number;
         const animate = () => {
             if (logoRef.current) {
-                logoRef.current.rotation.x += 0.01;
-                logoRef.current.rotation.y += 0.01;
+                logoRef.current.rotation.x += 0.005;
+                logoRef.current.rotation.y += 0.005;
             }
             renderer.render(scene, camera);
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         };
         animate();
 
         // cleanup
         return () => {
+            cancelAnimationFrame(animationFrameId);
             container?.removeEventListener("wheel", onWheel);
             container?.removeChild(renderer.domElement);
             renderer.dispose();

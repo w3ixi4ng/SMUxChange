@@ -1,7 +1,5 @@
 import express from 'express';
-import axios from 'axios';
 import admin from 'firebase-admin';
-import fs from 'fs';
 import dotenv from 'dotenv';
 const router = express.Router();
 
