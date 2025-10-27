@@ -18,7 +18,6 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
 
   const nav = useNavigate()
-
   const login = async(e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {

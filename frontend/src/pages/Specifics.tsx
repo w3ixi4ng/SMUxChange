@@ -1,4 +1,3 @@
-import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Star, ChevronDown, ChevronUp } from "lucide-react";
+import axios from "axios";
+
 
 // HELPER FUNCTIONS
 function filenameFromName(name: string) {
@@ -98,7 +99,7 @@ function StarRating({ rating }: { rating: number }) {
 
 // MAIN COMPONENT
 export default function Specifics() {
-  const [data, setData] = useState(() => {
+    const [data, setData] = useState(() => {
         const schoolData = sessionStorage.getItem("school");
         console.log(schoolData)
         if (schoolData){
@@ -119,20 +120,8 @@ export default function Specifics() {
     const [distanceCalculated, setDistanceCalculated] = useState(false);
 
 
-  // Effect to add/remove scroll event listener
-  useEffect(() => {
-    function handleScroll() {
-      if (window.scrollY > 100) {
-        setShowScrollButton(true);
-      } else {
-        setShowScrollButton(false);
-      }
-    }
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
-  useEffect(() => {
+    useEffect(() => {
     function handleScroll() {
       if (window.scrollY > 100) {
         setShowScrollButton(true);
@@ -247,10 +236,79 @@ export default function Specifics() {
     console.log(data,accommodations)
     console.log(events)
 
+
+  // Effect to add/remove scroll event listener
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 100) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   // Fallback fetch if refresh
-  
-  if (!data)
-    return <div className="text-center text-white mt-20">Loading...</div>;
+//  useEffect(() => {
+//    if (!data && universityName) {
+//      fetch(`/api/schools?name=${decodeURIComponent(universityName)}`)
+//        .then((res) => res.json())
+//        .then((schoolData) => setData(schoolData))
+//        .catch(() => {
+//          setData({
+//            name: decodeURIComponent(universityName),
+//            country: "Switzerland",
+//            rating: 4.5,
+//            reviews: 0,
+//            min_gpa: 3.46,
+//            max_gpa: 3.93,
+//            places: 32,
+//            description:
+//              "The University of St Gallen is renowned for its strong focus on business and economics, making it an ideal choice for exchange students interested in these fields. Its international environment and diverse student body enhance the learning experience, fostering global networking opportunities.",
+//            mappable_basket: [
+//              "Accounting Data and Analytics Major Elective",
+//              "Accounting Major Elective",
+//              "Asian Studies",
+//              "Communications Management Major Elective",
+//              "Cultures of the Modern World",
+//              "Data Science and Analytics Major Elective",
+//              "Digital Business Electives – A",
+//              "Economics Major Elective",
+//              "Finance (Finance Analytics) Track Elective",
+//              "Finance (Real Estate) Track Elective",
+//              "Finance Major Elective",
+//              "Financial Forensics Major Elective",
+//              "Information Systems Depth Elective",
+//              "Innovation & Entrepreneurship Major Elective",
+//              "Marketing Major Elective",
+//              "Sustainability Elective (B)",
+//            ],
+//          });
+//        });
+//    }
+//  }, [data, universityName]);
+
+  // Mock demo data
+
+
+//  useEffect(() => {
+//    setAccommodations([
+//      { name: "Campus Village", price: 950, distance: "1.2 km" },
+//      { name: "Z Place Apartments", price: 1100, distance: "0.6 km" },
+//      { name: "Ann Arbor Housing Co.", price: 1250, distance: "0.9 km" },
+//      { name: "Student Hub Residence", price: 1400, distance: "1.8 km" },
+//    ]);
+
+    //setEvents([
+    //  { title: "Art Fair", desc: "Downtown Ann Arbor street festival" },
+    //  { title: "Game Day", desc: "Football Match at Michigan Stadium" },
+    //  { title: "Tech Meetup", desc: "Local networking and innovation event" },
+    //  { title: "Music Night", desc: "Live concert at central square" },
+    //]);
+//  }, []);
+
 
   return (
     <div className="min-h-screen text-white bg-[#0b0b0b] bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.05)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.03)_0%,transparent_30%)]">
@@ -324,7 +382,7 @@ export default function Specifics() {
             <div>
               <p className="text-sm text-gray-400">Rating</p>
               <div className="flex items-center gap-2">
-                <StarRating rating={data.rating || 4.5} />
+                <StarRating rating={data && data.rating} />
                 <span className="text-sm text-gray-300">
                   {(data.rating).toFixed(1)} ({data.reviews} reviews)
                 </span>
@@ -385,7 +443,7 @@ export default function Specifics() {
                     : "max-h-[260px] opacity-95" // collapsed to show only ~2 rows
                 }`}
               >
-                {data.mappable_basket?.map((basket: string, i: number) => (
+                {data && data.mappable_basket?.map((basket: string, i: number) => (
                   <div key={i} className="flex justify-center">
                     <span className="bg-[#1e1f23] text-white/90 px-5 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-[#2a2b30] hover:text-white transition-all duration-200 text-center w-full max-w-[280px]">
                       {basket}
@@ -394,7 +452,7 @@ export default function Specifics() {
                 ))}
               </div>
 
-              {data.mappable_basket?.length > 6 && (
+              {data && data.mappable_basket?.length > 6 && (
                 <button
                   onClick={() => setShowAllBaskets((prev) => !prev)}
                   className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full bg-white/10 text-gray-200 text-sm font-semibold hover:bg-white/20 transition-all"
@@ -535,7 +593,7 @@ export default function Specifics() {
                       src={`/images/event_${i + 1}.jpg`}
                       onError={(e) =>
                         ((e.currentTarget as HTMLImageElement).src =
-                          "/images/event_placeholder.jpg")
+                          ev.thumbnail)
                       }
                       alt={ev.title}
                       className="w-full h-40 object-cover rounded-t-xl"
