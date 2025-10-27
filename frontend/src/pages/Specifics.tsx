@@ -220,6 +220,11 @@ export default function Specifics() {
         get_accomodations()
     }, []);
 
+    // Scroll to top when component mounts (temporary solution?)
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     useEffect(() => {
         async function calculateDistanceOnce() {
         if (accommodations.length > 0 && !distanceCalculated) {
@@ -280,9 +285,10 @@ export default function Specifics() {
         {/* === HERO IMAGE === */}
         <div className="relative w-full h-80 overflow-hidden rounded-2xl shadow-lg">
           {(() => {
-            const derived = `/images/${filenameFromName(
-              data.name || data.host_university || ""
-            )}.jpg`;
+            // const derived = `/images/${filenameFromName(
+            //   data.name || data.host_university || ""
+            // )}.jpg`;
+            const derived = `/images/university_pictures/${data.host_university}.jpg`
             const src = data.images?.[0] || derived;
             return (
               <img
