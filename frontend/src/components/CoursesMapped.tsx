@@ -7,7 +7,7 @@ type ChildProps = {
     courseArea: string | string[]
     university: string
     setAvailableCourses: (availableCourses: boolean) => void
-    onSelectedCoursesChange?: (courseArea: string, selectedCourses: string[]) => void
+    onSelectedCoursesChange?: (courseAreaName: string , courseAreaLimit: number , selectedCourses: string[]) => void
     selectedTotalCount: number
     maxTotalCount: number
 };
@@ -58,7 +58,7 @@ function CoursesMapped({ courseArea, university, setAvailableCourses, onSelected
     useEffect(() => {
         if (onSelectedCoursesChange) {
             const selectedCoursesList = Object.keys(selectedButtons).filter(course => selectedButtons[course]);
-            onSelectedCoursesChange(courseArea[1], selectedCoursesList);
+            onSelectedCoursesChange(courseArea[1], parseInt(courseArea[0]), selectedCoursesList);
         }
     }, [selectedButtons]);
 

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import CoursesMapped from "./CoursesMapped";
 import axios from "axios";
 import { toast } from "sonner";
@@ -29,7 +29,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
   const [secondMajorElectives, setSecondMajorElectives] = useState<string>("");
 
   const [availableCourses, setAvailableCourses] = useState<boolean>(false);
-  const [selectedCourses, setSelectedCourses] = useState<{ [courseArea: string]: string[] }>({});
+  const [selectedCourses, setSelectedCourses] = useState<{ [courseArea: string]: { limit: number, courses: string[] } }>({});
 
   const fetchSchoolCores = async (faculty: string, major: string, track: string) => {
     try {
@@ -104,10 +104,13 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     setSelectedCount(0);
   }, [university, faculty, major, track, secondMajor, country]);
 
-  const handleSelectedCoursesChange = (courseArea: string, selectedCoursesList: string[]) => {
-    setSelectedCourses(prev => ({
+  const handleSelectedCoursesChange = (courseArea: string  , courseAreaLimit: number  , selectedCoursesList: string[]) => {
+    setSelectedCourses((prev: { [courseArea: string]: { limit: number, courses: string[] } }) => ({
       ...prev,
-      [courseArea]: selectedCoursesList
+      [courseArea]: {
+        limit: courseAreaLimit,
+        courses: selectedCoursesList
+      }
     }));
   };
 
@@ -134,14 +137,14 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
   const [selectedCount, setSelectedCount] = useState(0);
 
   useEffect(() => {
-    setSelectedCount(Object.values(selectedCourses).reduce((acc, curr) => acc + curr.length, 0));
+    setSelectedCount(Object.values(selectedCourses).reduce((acc: number, curr: { limit: number, courses: string[] }) => acc + curr.courses.length, 0));
   }, [selectedCourses]);
 
   const maxCount = 5;
 
   const saveMap = async () => {
     try {
-      let filteredCourses = Object.fromEntries(Object.entries(selectedCourses).filter(([_, value]) => value.length > 0));
+      let filteredCourses = Object.fromEntries(Object.entries(selectedCourses).filter(([key, _]) => key != "undefined"));
       const response = await axios.post(`http://localhost:3001/database/saveMap`, {
         uid: uid,
         country: country,
@@ -219,11 +222,11 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
             <div className="text-gray-500 italic">No courses selected</div>
           ) : (
             Object.keys(selectedCourses).map((area) => (
-              selectedCourses[area].length > 0 && (
+              selectedCourses[area].courses.length > 0 && (
                 <div key={area} className="mb-4">
                   <h3 className="font-semibold text-gray-200">{area}</h3>
                   <ul className="text-gray-400 list-disc list-inside">
-                    {selectedCourses[area].map((course) => (
+                    {selectedCourses[area].courses.map((course: string) => (
                       <li key={course}>{course}</li>
                     ))}
                   </ul>

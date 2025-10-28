@@ -3,6 +3,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
 
 function Dialog({
   ...props
@@ -127,8 +128,34 @@ function DialogDescription({
   )
 }
 
+function DialogAction({
+  className,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return (
+    <DialogPrimitive.Close
+      className={cn(buttonVariants(), className)}
+      {...props}
+    />
+  )
+}
+
+function DialogCancel({
+  className,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return (
+    <DialogPrimitive.Close
+      className={cn(buttonVariants({ variant: "outline" }), className)}
+      {...props}
+    />
+  )
+}
+
 export {
   Dialog,
+  DialogAction,
+  DialogCancel,
   DialogClose,
   DialogContent,
   DialogDescription,
