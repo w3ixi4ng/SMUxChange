@@ -254,3 +254,96 @@ router.delete('/deleteMap/:uid/:mapId', async(req,res) => {
         console.log(err);
     }
 })
+
+// New database logic for creating School_Reviews document
+// Add or update a student's review for a university
+router.post('/saveReview', async (req, res) => {
+  try {
+
+    // Get info from frontend
+    const { uid, name, university, rating, comment } = req.body;
+    // Make sure required fields exist
+    if (!uid || !name || !university || rating === undefined) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    // Check if university is valid
+    // Look in "Exchange School Info" → official school sources
+    const validUniSnap = await db.collection("Exchange School Info")
+      .where("host_university", "==", university)
+      .get();
+    // University not found so we do not allow review
+    if (validUniSnap.empty) {
+      return res.status(404).json({ error: "University not found in Exchange School Info" });
+    }
+    // Check if school already exists in review database
+    const reviewSchoolSnap = await db.collection("school_reviews")
+      .where("name", "==", university)
+      .get();
+    let schoolId; // we will use this to store the review under the correct uni
+    if (reviewSchoolSnap.empty) {
+      // First time someone reviews this school → create a doc for the school
+      const newSchoolDoc = await db.collection("school_reviews").add({
+        name: university,
+        created_at: new Date()
+      });
+      schoolId = newSchoolDoc.id;
+    } else {
+      // Already reviewed before → reuse the existing document
+      schoolId = reviewSchoolSnap.docs[0].id;
+    }
+    // Save / update the student's review
+    // Using 'uid' as doc ID = one review per user (can be updated later)
+    await db.collection("school_reviews")
+      .doc(schoolId)
+      .collection("user_reviews")
+      .doc(uid)
+      .set({
+        uid,                    // who wrote it
+        name,                   // for display
+        rating: Number(rating), // make sure it's a number
+        comment: comment || "", // avoid undefined
+        updated_at: new Date()  // record last edit time
+      });
+
+    // Tell frontend everything worked successfully
+    res.status(200).json({ success: true, message: "Review posted!" });
+
+  } catch (error) {
+    // Something broke → log it on server + notify frontend
+    console.error("Error saving review:", error);
+    res.status(500).json({ error: "Failed to save review" });
+  }
+});
+
+// Get all reviews for a specific university
+// CRUCIAL BECAUSE frontend needs this to display reviews, without, UI will show nothing
+router.get('/getReviews/:university', async (req, res) => {
+  try {
+    const { university } = req.params;
+
+    // Find the correct school in school_reviews
+    const schoolSnap = await db.collection("school_reviews")
+      .where("name", "==", university)
+      .get();
+
+    if (schoolSnap.empty) {
+      return res.json([]); // no reviews yet
+    }
+
+    const schoolId = schoolSnap.docs[0].id;
+
+    // Get all user reviews
+    const reviewsSnap = await db.collection("school_reviews")
+      .doc(schoolId)
+      .collection("user_reviews")
+      .get();
+
+    const reviews = reviewsSnap.docs.map(doc => doc.data());
+
+    res.json(reviews);
+
+  } catch (err) {
+    console.error("Error getting reviews:", err);
+    res.status(500).json({ error: "Failed to get reviews" });
+  }
+});

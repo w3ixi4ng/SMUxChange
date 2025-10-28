@@ -26,9 +26,16 @@ export function LoginForm({
         password: password
     });
     if (response.data.success) {
-        const uid = response.data.user.uid;
-        sessionStorage.setItem('uid', uid);
-        nav('/profile');
+        // const uid = response.data.user.uid;
+        // sessionStorage.setItem('uid', uid);
+        // nav('/profile');
+        const user = response.data.user;
+        // Store login state for entire app
+        sessionStorage.setItem("uid", user.uid);
+        sessionStorage.setItem("email", user.email);
+        sessionStorage.setItem("name", user.displayName || "");
+        // Redirect after login
+        nav("/profile");
     }}
     catch (error: any) {
       setError("Invalid email or password");
