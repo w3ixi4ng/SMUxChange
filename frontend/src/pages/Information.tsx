@@ -2,7 +2,17 @@ import axios from "axios";
 import SchoolCard from "../components/SchoolCard";
 import { useEffect, useState } from "react";
 
+function scrollToTop() {
+  const topElement = document.getElementById("top");
+  if (topElement) {
+    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
+  }
+}
+
 function Information() {
+  // Scroll constant
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
   const [schools, setSchools] = useState<string[]>([]);
   const [countries, setCountries] = useState<string[]>([]);
   const [country, setCountry] = useState<string>("");
@@ -102,8 +112,22 @@ function Information() {
     }
   }, [country, courseArea]);
 
+  /* ========== Scroll listener (unchanged) ========== */
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 100) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     // 🖤 Full-page radial background (visible under all content)
+    <div id="top">
     <div
       className="relative min-h-screen w-full text-white 
       bg-[#0a0a0a] 
@@ -183,6 +207,18 @@ function Information() {
               Module Unavailable. Try a different Course Area or Country.
             </div>
           </div>
+        )}
+      </div>
+      {/* Scroll to top */}
+        {showScrollButton && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/70 text-white shadow-md hover:bg-black/90 transition-opacity"
+            aria-label="Scroll to top"
+            style={{ backdropFilter: "blur(5px)" }}
+          >
+            ↑
+          </button>
         )}
       </div>
     </div>

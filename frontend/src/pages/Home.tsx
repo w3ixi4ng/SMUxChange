@@ -1,8 +1,19 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import ThreeDLogo from "@/components/ThreeDLogo";
+import { useEffect, useState } from "react";
+
+function scrollToTop() {
+  const topElement = document.getElementById("top");
+  if (topElement) {
+    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
+  }
+}
 
 function Home() {
+  // Scroll constant
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
   const features = [
     {
       title: "Discover Universities",
@@ -21,7 +32,21 @@ function Home() {
     },
   ];
 
+  /* ========== Scroll listener (unchanged) ========== */
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 100) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
+    <div id="top">
     <div
       className="relative min-h-screen flex flex-col items-center justify-center text-white"
       style={{
@@ -82,6 +107,18 @@ function Home() {
             Explore the Map
           </Button>
         </Link>
+      </div>
+      {/* Scroll to top */}
+        {showScrollButton && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/70 text-white shadow-md hover:bg-black/90 transition-opacity"
+            aria-label="Scroll to top"
+            style={{ backdropFilter: "blur(5px)" }}
+          >
+            ↑
+          </button>
+        )}
       </div>
     </div>
   );
