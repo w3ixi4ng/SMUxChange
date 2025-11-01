@@ -255,6 +255,18 @@ router.delete('/deleteMap/:uid/:mapId', async(req,res) => {
     }
 })
 
+router.post('/updateMap', async(req,res) => {
+    try {
+        const { mapId, uid, map } = req.body;
+        await db.collection('users').doc(uid).collection('maps').doc(mapId).update({
+            map: map
+        });
+    }
+    catch(err) {
+        console.log(err);
+    }
+})
+
 // New database logic for creating School_Reviews document
 // Add or update a student's review for a university
 router.post('/saveReview', async (req, res) => {
