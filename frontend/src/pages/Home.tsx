@@ -18,17 +18,17 @@ function Home() {
     {
       title: "Discover Universities",
       desc: "Explore partner universities and exchange destinations worldwide.",
-      video: "/videos/SchoolsExplore.mp4",
+      video: "",
     },
     {
       title: "Module Mapping",
       desc: "Rediscover and find exchange mappings with ease.",
-      video: "/videos/ModuleMap.mp4",
+      video: "",
     },
     {
       title: "Experience Map",
       desc: "Watch students share their real exchange stories on the map.",
-      video: "/videos/Placeholder.mp4",
+      video: "",
     },
   ];
 

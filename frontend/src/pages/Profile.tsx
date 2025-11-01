@@ -161,6 +161,7 @@ function Profile() {
     try {
       const response = await axios.get(`http://localhost:3001/database/getSavedMaps/${uid}`);
       setSavedMaps(response.data);
+      console.log(response.data);
     }
     catch (error) {
       console.log("API error getting saved maps:", error);
@@ -186,7 +187,7 @@ function Profile() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+      await axios.post('http://localhost:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
       setUserExists(true);
       setErrorMessage([]);
     } catch (error) {
@@ -411,7 +412,7 @@ function Profile() {
             <h2 className="text-center mb-4 text-4xl text-bold">Your Saved Maps</h2>
             <div className="row justify-content-lg-center justify-content-md-start">
               {savedMaps.map((map) => (
-                <ExistingMap key={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps}/>
+                <ExistingMap key={map.id} mapId={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps}/>
               ))}
             </div>
             {savedMaps.length === 0 && (

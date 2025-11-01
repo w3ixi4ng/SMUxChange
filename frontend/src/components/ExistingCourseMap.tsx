@@ -6,16 +6,17 @@ import { ChevronDown, ChevronUp } from "lucide-react"; //  removed Infinity impo
 type ChildProps = {
     courseArea: string | string[]
     university: string
-    setAvailableCourses?: (availableCourses: boolean) => void
+    setAvailableCourses: (availableCourses: boolean) => void
     onSelectedCoursesChange?: (courseAreaName: string , courseAreaLimit: number , selectedCourses: string[]) => void
     selectedTotalCount: number
     maxTotalCount: number
     selectedCourseArea: string
     setSelectedMapCourseAreas: React.Dispatch<React.SetStateAction<string[]>>
     setAvailableCourseAreasList: React.Dispatch<React.SetStateAction<string[]>>
+    map: any
 };
 
-function CoursesMapped({ courseArea, university, onSelectedCoursesChange, selectedTotalCount, maxTotalCount, selectedCourseArea, setSelectedMapCourseAreas, setAvailableCourseAreasList }: ChildProps) {
+function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSelectedCoursesChange, selectedTotalCount, maxTotalCount, selectedCourseArea, setSelectedMapCourseAreas, setAvailableCourseAreasList, map }: ChildProps) {
     const [courses, setCourses] = useState([]);
 
     const fetchMappableCourses = async (courseArea: string, university: string) => {
@@ -23,20 +24,13 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
         const courses = response.data;
         setCourses(courses);
         if (courses.length > 0) {
+            setAvailableCourses(true);
             setAvailableCourseAreasList((prev: string[]) => 
               !prev.includes(courseArea) ? [...prev, courseArea] : prev
             );
-        } else {
-            setAvailableCourseAreasList((prev: string[]) => prev.filter(area => area !== courseArea));
+            
         }
     }
-
-    useEffect(() => {
-        fetchMappableCourses(courseArea[1], university);
-        setSelectedCount(0);
-        setSelectedMapCourseAreas([]);
-    }, [courseArea, university]);
-
 
     const [selectedCount, setSelectedCount] = useState(0);
     const maxCount = parseInt(courseArea[0]);
@@ -44,10 +38,25 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
     const [selectedButtons, setSelectedButtons] = useState<{ [key: string]: boolean }>({});
     const [isDisabled, setIsDisabled] = useState(false);
 
+    useEffect(() => {
+        fetchMappableCourses(courseArea[1], university);
+    }, [courseArea, university]);
 
     useEffect(() => {
-        setSelectedButtons({});
-    }, [courseArea, university]);
+        // Initialize selected buttons from existing map data if available
+        if (map && map.map && map.map[courseArea[1]] && courses.length > 0) {
+            const existingCourses = map.map[courseArea[1]].courses;
+            const initialSelected: { [key: string]: boolean } = {};
+            existingCourses.forEach((courseTitle: string) => {
+                initialSelected[courseTitle] = true;
+            });
+            setSelectedButtons(initialSelected);
+            setSelectedCount(existingCourses.length);
+        } else {
+            setSelectedButtons({});
+            setSelectedCount(0);
+        }
+    }, [courseArea, university, courses]);
 
     useEffect(() => {
         if (selectedCount >= maxCount || selectedTotalCount >= maxTotalCount) {
@@ -190,4 +199,4 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
   );
 }
 
-export default CoursesMapped;
+export default ExistingCourseMap;

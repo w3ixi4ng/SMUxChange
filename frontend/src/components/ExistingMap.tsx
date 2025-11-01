@@ -1,15 +1,16 @@
 
 import { DeleteMapAlert } from "./DeleteMapAlert";
 import { UpdateMapModal } from "./UpdateMapModal";
-
+import UpdateExistingMap from "./UpdateExistingMap";
 
 type ChildProps = {
+    mapId: string
     map: any
     setSavedMaps: (maps: any) => void
     savedMaps: any
 };
 
-function ExistingMap({ map, setSavedMaps, savedMaps}: ChildProps) {
+function ExistingMap({ mapId, map, setSavedMaps, savedMaps}: ChildProps) {
 
     const uid = sessionStorage.getItem("uid") || "";
 
@@ -33,7 +34,7 @@ function ExistingMap({ map, setSavedMaps, savedMaps}: ChildProps) {
                         ))}
                     </ul>
                     <div className="card-body d-flex justify-content-between gap-2">
-                        <UpdateMapModal map={map} />
+                        <UpdateMapModal mapId={mapId} map={map} />
                         <DeleteMapAlert uid={uid} mapId={map.id} setSavedMaps={setSavedMaps} savedMaps={savedMaps} />
                     </div>
                 </div>

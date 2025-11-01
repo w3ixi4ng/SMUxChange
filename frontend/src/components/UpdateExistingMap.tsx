@@ -1,21 +1,16 @@
 import { useState, useEffect } from "react";
-import CoursesMapped from "./CoursesMapped";
 import axios from "axios";
 import { toast } from "sonner";
-
+import ExistingCourseMap from "./ExistingCourseMap";
 
 type ChildProps = {
-  university: string,
-  country: string,
-  faculty: string,
-  major: string,
-  track: string,
-  secondMajor: string
-};
+  map: any
+  setSelectedCourses: (courses: any) => void
+  selectedCourses: any
+}
 
 
-function MapResults({ university, country, faculty, major, track, secondMajor }: ChildProps) {
-
+function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildProps) {
 
   const [uid, setUid] = useState<string>("");
   const [selectedCourseArea, setSelectedCourseArea] = useState<string>("");
@@ -29,7 +24,9 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
   const [secondMajorElectives, setSecondMajorElectives] = useState<string>("");
 
   const [availableCourses, setAvailableCourses] = useState<boolean>(false);
-  const [selectedCourses, setSelectedCourses] = useState<{ [courseArea: string]: { limit: number, courses: string[] } }>({});
+  const [selectedCount, setSelectedCount] = useState(0);
+  const [selectedMapCourseAreas, setSelectedMapCourseAreas] = useState<string[]>([]);
+  const [availableCourseAreasList, setAvailableCourseAreasList] = useState<string[]>([]);
 
   const fetchSchoolCores = async (faculty: string, major: string, track: string) => {
     try {
@@ -93,18 +90,32 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
   }
 
   useEffect(() => {
-    fetchSchoolCores(faculty, major, track);
-  }, [university, faculty, major, track, secondMajor, country]);
+    fetchSchoolCores(map.faculty, map.major, map.track);
+  }, [map.faculty, map.major, map.track]);
 
   useEffect(() => {
-    fetchSecondMajors(secondMajor);
-  }, [university, secondMajor, faculty, major, track, country])
+    fetchSecondMajors(map.secondMajor);
+  }, [map.secondMajor])
 
+  // Initialize selectedCourses from existing map data when component mounts
   useEffect(() => {
-    setSelectedCourses({});
-    setSelectedCount(0);
-    setAvailableCourseAreasList([]);
-  }, [university, faculty, major, track, secondMajor, country]);
+    if (map && map.map) {
+      setSelectedCourses(map.map);
+      const initialCount = Object.values(map.map).reduce((acc: number, curr: any) => {
+        if (curr && curr.courses) {
+          return acc + curr.courses.length;
+        }
+        return acc;
+      }, 0);
+      setSelectedCount(initialCount);
+      
+      // Initialize selectedMapCourseAreas with course areas that have courses
+      const areasWithCourses = Object.keys(map.map).filter((area: string) => {
+        return map.map[area].courses && map.map[area].courses.length > 0;
+      });
+      setSelectedMapCourseAreas(areasWithCourses);
+    }
+  }, []);
 
   const handleSelectedCoursesChange = (courseArea: string, courseAreaLimit: number, selectedCoursesList: string[]) => {
     setSelectedCourses((prev: { [courseArea: string]: { limit: number, courses: string[] } }) => ({
@@ -121,7 +132,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   useEffect(() => {
     const allElectivesList: any[] = [];
-
+    
     if (schoolCourses.length > 0) {
       for (let course of schoolCourses) {
         allElectivesList.push(course);
@@ -138,71 +149,19 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     if (secondMajorElectives != "") {
       allElectivesList.push(secondMajorElectives);
     }
-
+    
     setAllElectives(allElectivesList);
-  }, [schoolCourses, majorElectives, trackElectives, secondMajorElectives, secondMajor]);
+  }, [schoolCourses, majorElectives, trackElectives, secondMajorElectives, map.secondMajor]);
 
-  const [selectedCount, setSelectedCount] = useState(0);
-
-  useEffect(() => {
-    setSelectedCount(Object.values(selectedCourses).reduce((acc: number, curr: { limit: number, courses: string[] }) => acc + curr.courses.length, 0));
-  }, [selectedCourses]);
+    useEffect(() => {
+      setSelectedCount(Object.values(selectedCourses).reduce((acc: number, curr: any) => acc + curr.courses.length, 0));
+    }, [selectedCourses]);
 
   const maxCount = 5;
 
-  const saveMap = async () => {
-    try {
-      let filteredCourses = Object.fromEntries(Object.entries(selectedCourses).filter(([key, _]) => key != "undefined"));
-      await axios.post(`http://localhost:3001/database/saveMap`, {
-        uid: uid,
-        country: country,
-        university: university,
-        faculty: faculty,
-        major: major,
-        track: track,
-        secondMajor: secondMajor,
-        map: filteredCourses
-      });
-      await getSavedMaps();
-    }
-    catch (error) {
-      console.log("API error:", error);
-    }
-  }
-
-  const [saveMapDisabled, setSaveMapDisabled] = useState(false);
-  const [savedMaps, setSavedMaps] = useState<any[]>([]);
-
-  const getSavedMaps = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/database/getSavedMaps/${uid}`);
-      setSavedMaps(response.data);
-    }
-    catch (error) {
-      console.log("API error:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (uid != "") {
-      getSavedMaps();
-    }
-  }, [uid, getSavedMaps]);
 
 
-  useEffect(() => {
-    if (savedMaps.length >= 3) {
-      setSaveMapDisabled(true);
-    }
-  }, [savedMaps]);
 
-  const [selectedMapCourseAreas, setSelectedMapCourseAreas] = useState<string[]>([]);
-  const [availableCourseAreasList, setAvailableCourseAreasList] = useState<string[]>([]);
-
-  // Update availableCourses based on whether any course areas have courses
-  useEffect(() => {
-    setAvailableCourses(availableCourseAreasList.length > 0);
-  }, [availableCourseAreasList]);
 
   useEffect(() => {
     if (selectedCount >= maxCount) {
@@ -210,29 +169,20 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     }
   }, [selectedCount]);
 
-
+  
+  
+  
   return (
     // Dark theme wrapper, replaces light container and default bootstrap spacing
-    <div className="container mx-auto text-white my-10">
-      <h1 className="text-3xl font-semibold mb-6 text-center">{university}</h1>
-      {/* Error message restyled to blend into dark aesthetic */}
-      {!availableCourses && (
-        <div className="text-center mt-8 bg-red-500/10 border border-red-500/30 text-red-300 py-3 rounded-lg font-semibold">
-          No courses mapped before. Find out more from the host university here.
-        </div>
-      )}
-
+    <div className="container mx-auto text-white my-10 mt-0">
 
       {/* Replaced Bootstrap row with responsive grid */}
-      <div className="row gap-6" style={{ display: availableCourses ? "" : "none" }}>
+      <div className="row gap-6">
         {/* === LEFT PANEL (Your Map) === */}
         <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-lg">
           <div className="flex justify-between items-center row">
             <h2 className="text-xl mb-2 font-semibold col-12 text-center font-bold">Your Map</h2>
 
-            {saveMapDisabled && (
-              <p className="text-gray-400 mb-4 text-center">You have reached the maximum number of maps allowed. Delete or update your existing maps to save more.</p>
-            )}
           </div>
           <p className="text-gray-400 mb-4">{selectedCount}/{maxCount} selected</p>
 
@@ -240,12 +190,12 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
           {selectedCount === 0 ? (
             <div className="text-gray-500 italic">No courses selected</div>
           ) : (
-            Object.keys(selectedCourses).map((area) => (
+            Object.keys(selectedCourses).map((area: string) => (
               selectedCourses[area].courses.length > 0 && (
                 <div key={area} className="mb-4">
                   <h3 className="font-semibold text-gray-200">{area}</h3>
                   <ul className="text-gray-400 list-disc list-inside">
-                    {selectedCourses[area].courses.map((course: string) => (
+                    {selectedCourses[area].courses.map((course: any) => (
                       <li key={course}>{course}</li>
                     ))}
                   </ul>
@@ -256,14 +206,13 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
           {uid != "" && (
             <div className="col-12 text-center mt-2">
               <button onClick={() => {
-                saveMap();
-                toast("Map saved successfully", {
-                  description: "The map has been saved to your profile.",
+                setSelectedCourses(Object.fromEntries(Object.entries(selectedCourses).filter(([key, _]: [string, any]) => key != "undefined")));
+                toast("Map updated successfully", {
+                  description: "The map has been updated.",
                 });
               }}
-                disabled={saveMapDisabled}
-                className={`bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 px-8 py-2 text-lg rounded-full shadow-lg rounded  ${saveMapDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer "}`}>
-                Save Map
+                className={`bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 px-8 py-2 text-lg rounded-full shadow-lg rounded cursor-pointer`}>
+                Update Map
               </button>
             </div>
           )}
@@ -280,7 +229,6 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
               <option value="">Select a course area...</option>
               {availableCourseAreasList.map((courseArea, index) => (
                 <option key={`${courseArea}-${index}`} value={courseArea}
-
                 >
                   {courseArea}
                   {selectedMapCourseAreas.includes(courseArea) && <span className="text-green-500"> (Courses Selected)</span>}
@@ -289,10 +237,12 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
             </select>
           </div>
           {allElectives.map((elective, index) => (
-            <CoursesMapped
+            <ExistingCourseMap
+              map={map}
               key={`${elective[1]}-${index}`}
               courseArea={elective}
-              university={university}
+              university={map.university}
+              setAvailableCourses={setAvailableCourses}
               onSelectedCoursesChange={handleSelectedCoursesChange}
               selectedTotalCount={selectedCount}
               maxTotalCount={maxCount}
@@ -307,4 +257,4 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
   );
 }
 
-export default MapResults;
+export default UpdateExistingMap;
