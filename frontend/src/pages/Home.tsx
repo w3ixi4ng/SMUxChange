@@ -86,7 +86,7 @@ function Home() {
       <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
 
       {/* === Hero Section === */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-12 pb-20">
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 pb-20">
         <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-5xl mx-auto">
           {/* Logo */}
           <div className="mb-12">

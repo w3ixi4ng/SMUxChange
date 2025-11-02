@@ -12,6 +12,7 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
+
 export function LoginForm({
   className,
   ...props
@@ -22,13 +23,10 @@ export function LoginForm({
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/login', {
-        email: email,
-        password: password
+            email: email,
+            password: password
     });
     if (response.data.success) {
-        // const uid = response.data.user.uid;
-        // sessionStorage.setItem('uid', uid);
-        // nav('/profile');
         const user = response.data.user;
         // Store login state for entire app
         sessionStorage.setItem("uid", user.uid);
@@ -40,7 +38,7 @@ export function LoginForm({
         if (sessionStorage.getItem('backToUrl')) {
           window.location.href = sessionStorage.getItem('backToUrl') || "/profile";
         } else {
-        nav("/profile");
+          nav("/profile");
         }
     }}
     catch (error: any) {

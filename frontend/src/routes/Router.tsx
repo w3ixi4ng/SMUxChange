@@ -74,7 +74,7 @@ function RouterView() {
     <Router>
       {/* ===== Navigation Bar ===== */}
       <nav
-        className="sticky top-0 z-50 w-full backdrop-blur-md shadow-sm border-b border-[#102b72]/30"
+        className="sticky z-50 w-full backdrop-blur-md shadow-sm border-b border-[#102b72]/30"
         style={{
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
           backgroundColor: "#102b72",
