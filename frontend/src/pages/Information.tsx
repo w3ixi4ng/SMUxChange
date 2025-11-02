@@ -113,6 +113,10 @@ function Information() {
   }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     setCurrentPage(1); // Reset to page 1 when filters change
     
     if (courseArea !== "" && country !== "") {
@@ -129,7 +133,7 @@ function Information() {
   /* ========== Scroll listener (unchanged) ========== */
   useEffect(() => {
     function handleScroll() {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 200) {
         setShowScrollButton(true);
       } else {
         setShowScrollButton(false);
@@ -146,36 +150,37 @@ function Information() {
   const currentSchools = schools.slice(startIndex, endIndex);
 
   return (
-    // 🖤 Full-page radial background (visible under all content)
     <div id="top">
       <div
-        className="relative min-h-screen w-full text-white 
-      bg-[#0a0a0a] 
-      bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.06)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.04)_0%,transparent_30%)]"
+        className="relative min-h-screen w-full"
+        style={{
+          backgroundColor: "#eeeeee",
+          color: "#102b72",
+        }}
       >
-        {/* Subtle overlay for depth */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+        {/* === Subtle gradient + grid overlay === */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
-        {/* All content sits above overlay */}
         <div className="relative z-10 container mx-auto px-4 py-10">
-          {/* 🏫 Centered Header (matching Mappable Search) */}
           <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold mb-2">Schools</h1>
-            <p className="text-gray-400 text-sm">
+            <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Schools</h1>
+            <p className="text-sm" style={{ color: "#102b72" }}>
               Explore different universities and exchange destinations with ease.
             </p>
           </div>
 
           {/* Search Filters */}
-          <div className="max-w-5xl mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg py-8 px-6 mb-10">
+          <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg py-8 px-6 mb-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Select Country */}
               <div>
-                <label className="text-gray-200 mb-1 font-bold">
+                <label className="mb-1 font-bold" style={{ color: "#102b72" }}>
                   Select Country
                 </label>
                 <select
-                  className="w-full rounded-md border border-white/30 bg-white/90 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  className="w-full rounded-md border border-[#102b72]/30 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#102b72] transition"
+                  style={{ color: "#102b72" }}
                   onChange={(e) => setCountry(e.target.value)}
                 >
                   <option selected value="">
@@ -191,11 +196,12 @@ function Information() {
 
               {/* Select Course Area */}
               <div>
-                <label className="text-gray-200 mb-1 font-bold">
+                <label className="mb-1 font-bold" style={{ color: "#102b72" }}>
                   Select Course Area
                 </label>
                 <select
-                  className="w-full rounded-md border border-white/30 bg-white/90 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                  className="w-full rounded-md border border-[#102b72]/30 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#102b72] transition"
+                  style={{ color: "#102b72" }}
                   onChange={(e) => setCourseArea(e.target.value)}
                 >
                   <option selected value="">
@@ -223,7 +229,7 @@ function Information() {
           {/* No Results */}
           {schools.length === 0 && !isLoading ? (
             <div className="container mx-auto mt-5 mb-1 text-center">
-              <div className="bg-red-500/20 text-red-300 border border-red-500/30 px-6 py-4 rounded-lg inline-block">
+              <div className="bg-red-100 text-red-700 border border-red-300 px-6 py-4 rounded-lg inline-block">
                 Module Unavailable. Try a different Course Area or Country.
               </div>
             </div>
@@ -244,11 +250,11 @@ function Information() {
                           scrollToTop();
                         }
                       }}
-                      className="hover:bg-gray-800"
+                      className="hover:bg-[#102b72]/10"
                       style={{ 
                         pointerEvents: currentPage === 1 ? 'none' : 'auto', 
                         opacity: currentPage === 1 ? 0.5 : 1 ,
-                        color: 'white',
+                        color: '#102b72',
                         textDecoration: 'none',
                       }}
                     />
@@ -276,9 +282,9 @@ function Information() {
                             scrollToTop();
                             
                           }}
-                          className={`hover:bg-gray-800 ${pageNum === currentPage ? 'bg-gray-800' : ''}`}
+                          className={`hover:bg-[#102b72]/10 ${pageNum === currentPage ? 'bg-[#102b72] text-white' : ''}`}
                           style={{ 
-                            color: 'white',
+                            color: pageNum === currentPage ? 'white' : '#102b72',
                             textDecoration: 'none',
                           }}
                         >
@@ -304,11 +310,11 @@ function Information() {
                           scrollToTop();
                         }
                       }}
-                      className="hover:bg-gray-800"
+                      className="hover:bg-[#102b72]/10"
                       style={{ 
                         pointerEvents: currentPage === totalPages ? 'none' : 'auto', 
                         opacity: currentPage === totalPages ? 0.5 : 1 ,
-                        color: 'white',
+                        color: '#102b72',
                         textDecoration: 'none',
                       }}
                     />
@@ -322,9 +328,9 @@ function Information() {
         {showScrollButton && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/70 text-white shadow-md hover:bg-black/90 transition-opacity"
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-md transition-opacity"
             aria-label="Scroll to top"
-            style={{ backdropFilter: "blur(5px)" }}
+            style={{ backgroundColor: "#102b72", color: "#ffffff", backdropFilter: "blur(5px)" }}
           >
             ↑
           </button>

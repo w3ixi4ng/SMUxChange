@@ -158,3 +158,16 @@
   animation: spin-slow 60s linear infinite;
 }
 
+/* Remove underlines from navbar links */
+nav a,
+nav button,
+nav span {
+  text-decoration: none !important;
+}
+
+nav a:hover,
+nav a:focus,
+nav a:active {
+  text-decoration: none !important;
+}
+

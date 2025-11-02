@@ -55,57 +55,82 @@ export function SignupForm({
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0 border border-dark">
+      <Card className="overflow-hidden p-0 border border-[#102b72]/20 shadow-xl bg-white/95 backdrop-blur-sm">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8 bg-white">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
-                <h1 className="text-2xl font-bold">Create your account</h1>
-                <p className="text-muted-foreground text-sm text-balance">
+                <h1 className="text-2xl font-bold" style={{ color: "#102b72" }}>Create your account</h1>
+                <p className="text-sm text-balance" style={{ color: "#102b72" }}>
                   Create your SMUxChange account
                 </p>
               </div>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email" style={{ color: "#102b72" }}>Email</FieldLabel>
                 <Input
                   id="email"
                   type="email"
                   placeholder="name@example.com"
                   required
                   onChange={(e) => setEmail(e.target.value)}
+                  className="bg-white border border-[#102b72]/30"
+                  style={{ color: "#102b72" }}
                 />
               </Field>
               <Field>
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
-                    <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <Input id="password" type="password" required onChange={(e) => setPassword(e.target.value)} />
+                    <FieldLabel htmlFor="password" style={{ color: "#102b72" }}>Password</FieldLabel>
+                    <Input 
+                      id="password" 
+                      type="password" 
+                      required 
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="bg-white border border-[#102b72]/30"
+                      style={{ color: "#102b72" }}
+                    />
                   </Field>
                   <Field>
-                    <FieldLabel htmlFor="confirm-password">
+                    <FieldLabel htmlFor="confirm-password" style={{ color: "#102b72" }}>
                       Confirm Password
                     </FieldLabel>
-                    <Input id="confirm-password" type="password" required onChange={(e) => setConfirmPassword(e.target.value)} />
+                    <Input 
+                      id="confirm-password" 
+                      type="password" 
+                      required 
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="bg-white border border-[#102b72]/30"
+                      style={{ color: "#102b72" }}
+                    />
                   </Field>
                 </Field>
-                {error && <FieldDescription className="text-red-500">{error}</FieldDescription>}
+                {error && <FieldDescription className="text-red-600">{error}</FieldDescription>}
 
               </Field>
               <Field>
-                <Button type="submit" onClick={handleSignup}>Create Account</Button>
+                <Button 
+                  type="submit" 
+                  onClick={handleSignup}
+                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                >
+                  Create Account
+                </Button>
               </Field>
 
               
               <FieldDescription className="text-center">
-                Already have an account? <a href="/login">Sign in</a>
+                <span style={{ color: "#102b72" }}>
+                  Already have an account?{" "}
+                  <a href="/login" style={{ color: "#2563eb" }}>Sign in</a>
+                </span>
               </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="bg-muted relative hidden md:block">
+          <div className="bg-gray-100 relative hidden md:block">
             <img
-              src="/images/oxford.jpg"
+              src="/images/london.jpg"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover opacity-80"
             />
           </div>
         </CardContent>

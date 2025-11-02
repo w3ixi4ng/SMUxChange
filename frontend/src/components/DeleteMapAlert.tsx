@@ -25,18 +25,18 @@ export function DeleteMapAlert({ uid, mapId, setSavedMaps, savedMaps }: { uid: s
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className="btn btn-outline-danger btn-sm w-100">Delete Map</button>
+                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105" style={{ backgroundColor: "#dc2626", color: "#ffffff", border: "none" }}>Delete Map</button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className="bg-[#eeeeee] border-[#102b72]/20">
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure you want to delete this map?</AlertDialogTitle>
-                    <AlertDialogDescription>
+                    <AlertDialogTitle style={{ color: "#102b72" }}>Are you sure you want to delete this map?</AlertDialogTitle>
+                    <AlertDialogDescription style={{ color: "#102b72", opacity: 0.7 }}>
                         This action cannot be undone. This will permanently delete the map and remove it from your profile.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className='d-flex justify-content-center'>
-                    <AlertDialogCancel className="">Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="bg-destructive text-white"  onClick={() => {
+                    <AlertDialogCancel className="bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10" style={{ color: "#102b72" }}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction className="font-semibold" style={{ backgroundColor: "#dc2626", color: "#ffffff" }} onClick={() => {
                         deleteMap(mapId);
                         toast("Map has been deleted", {
                             description: "The map has been deleted from your profile.",

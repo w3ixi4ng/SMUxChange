@@ -36,18 +36,18 @@ export function QRModal({ map }: ChildProps) {
 
         <Dialog>
             <DialogTrigger asChild>
-                <button className="btn btn-outline-success btn-sm w-100">Share Map</button>
+                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105" style={{ backgroundColor: "#102b72", color: "#ffffff", border: "none" }}>Share Map</button>
             </DialogTrigger>
-            <DialogContent className="max-h-[90vh] overflow-y-auto bg-[#0a0a0a] border-white/20 [&_button[data-slot='dialog-close']]:text-white [&_button[data-slot='dialog-close']]:hover:bg-white/10">
+            <DialogContent className="max-h-[90vh] overflow-y-auto bg-[#eeeeee] border-[#102b72]/20 [&_button[data-slot='dialog-close']]:text-[#102b72] [&_button[data-slot='dialog-close']]:hover:bg-[#102b72]/10">
                 <DialogHeader>
-                    <DialogTitle className="text-white">QR Code</DialogTitle>
-                    <DialogDescription className="text-gray-400">
+                    <DialogTitle style={{ color: "#102b72" }}>QR Code</DialogTitle>
+                    <DialogDescription style={{ color: "#102b72", opacity: 0.7 }}>
                         Scan the QR code to share your map.
                     </DialogDescription>
                 </DialogHeader>
                 <img src={qrCode || ""} alt="QR Code" className="w-50 mx-auto" />
-                <DialogFooter className='d-flex justify-content-center sticky bottom-0 z-10 bg-[#0a0a0a] py-3 w-50 mx-auto rounded-2xl'>
-                    <DialogCancel className="">Cancel</DialogCancel>
+                <DialogFooter className='d-flex justify-content-center sticky bottom-0 z-10 bg-[#eeeeee] py-3 w-50 mx-auto rounded-2xl'>
+                    <DialogCancel className="bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10" style={{ color: "#102b72" }}>Cancel</DialogCancel>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

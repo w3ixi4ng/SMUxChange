@@ -100,22 +100,22 @@ function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSele
     <>
     
       {courses.length > 0 && selectedCourseArea === courseArea[1] && (
-        // Outer container: changed to dark translucent card
-        <div className="col-lg-12 col-12 bg-white/5 backdrop-blur-md border border-white/10 text-white py-4 rounded-3xl shadow-md mb-4">
+        // Outer container: light theme card
+        <div className="col-lg-12 col-12 bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-4 rounded-3xl shadow-md mb-4">
             {/* === Header Section (centered & highlighted) === */}
             <div className="relative flex flex-col items-center justify-center text-center mb-4">
             {/* Title centered */}
-            <h2 className="text-xl font-semibold text-white mb-1 tracking-tight">
+            <h2 className="text-xl font-semibold mb-1 tracking-tight" style={{ color: "#102b72" }}>
                 {courseArea[1]}
             </h2>
 
             {/* Highlighted count below title */}
             <p
-                className={`text-sm transition-colors duration-300 ${
-                selectedCount > 0
-                    ? "text-amber-400 font-medium" // Amber highlight when items selected
-                    : "text-gray-400 font-light"   // Subtle gray when none selected
-                }`}
+                className="text-sm transition-colors duration-300 font-medium"
+                style={{ 
+                  color: selectedCount > 0 ? "#102b72" : "#102b72",
+                  opacity: selectedCount > 0 ? 1 : 0.7
+                }}
             >
                 {courseArea[0] === "None"
                 ? `${selectedCount} selected (No Limits)`
@@ -123,7 +123,7 @@ function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSele
             </p>
 
             {/* Chevron toggle positioned at top-right for aesthetic balance */}
-            <div className="absolute top-0 right-3 opacity-70 hover:opacity-100 transition">
+            <div className="absolute top-0 right-3 opacity-70 hover:opacity-100 transition" style={{ color: "#102b72" }}>
                 {isExpanded ? (
                 <ChevronUp
                     onClick={() => setIsExpanded(!isExpanded)}
@@ -153,13 +153,13 @@ function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSele
                 <button
                   key={title}
                   // New layout: pills now span most of container width, centered horizontally
-                  className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 
+                  className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold
                     ${
                       selected
-                        // Selected: bright white with glow for focus
-                        ? "bg-white text-black font-semibold shadow-[0_0_10px_rgba(255,255,255,0.4)]"
-                        // Default: transparent with white border, smooth hover tint
-                        : "bg-transparent text-white border border-white/20 hover:bg-white/10 hover:border-white/40"
+                        // Selected: dark blue background with white text
+                        ? "shadow-lg"
+                        // Default: white background with blue border, smooth hover tint
+                        : "bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
                     }
                     ${
                       isDisabled && !selected
@@ -167,6 +167,10 @@ function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSele
                         ? "opacity-40 cursor-not-allowed"
                         : "cursor-pointer"
                     }`}
+                  style={{
+                    backgroundColor: selected ? "#102b72" : undefined,
+                    color: selected ? "#ffffff" : "#102b72"
+                  }}
                   disabled={isDisabled && !selected}
                   onClick={() => {
                     // Toggle selection + count (unchanged logic)
@@ -189,7 +193,7 @@ function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSele
           {/* === Limit Message === */}
           {/* Shown only when user hits max course count */}
           {selectedCount >= maxCount && (
-            <div className="text-center mt-3 text-red-400 text-sm">
+            <div className="text-center mt-3 text-sm" style={{ color: "#dc2626" }}>
               You have selected the maximum number of courses
             </div>
           )}

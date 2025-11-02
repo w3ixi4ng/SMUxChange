@@ -216,22 +216,20 @@ function MapSearch() {
 
   return (
     <>
-      {/* Page heading - monochrome consistent with Home */}
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold text-white">Mappable Search</h1>
-        <p className="text-gray-400 text-sm">Find exchange mappings with ease.</p>
+        <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search</h1>
+        <p className="text-sm" style={{ color: "#102b72" }}>Find exchange mappings with ease.</p>
       </div>
 
-      {/* Form container with dark glass effect */}
-      <div className="container col-12 mx-auto bg-white/5 backdrop-blur-md border border-white/10 text-white py-4 rounded-3xl shadow-lg font-medium">
+      <div className="container col-12 mx-auto bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-4 rounded-3xl shadow-lg font-medium">
         <div className="row justify-content-center">
           
           {/* === SELECT COUNTRY === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="text-gray-200 mb-1">Select Country</p>
-            {/* Dropdown is now white with black text, slight gray hover */}
+            <p className="mb-1" style={{ color: "#102b72" }}>Select Country</p>
             <select
-              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+              style={{ color: "#102b72" }}
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
             >
@@ -247,11 +245,12 @@ function MapSearch() {
 
           {/* === SELECT UNIVERSITY === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="text-gray-200 mb-1">Select University</p>
+            <p className="mb-1" style={{ color: "#102b72" }}>Select University</p>
             <select
-              className={`${toggleUniversity ? 
-                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition opacity-50 cursor-not-allowed" : 
-                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition cursor-pointer"}`}
+              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${
+                toggleUniversity ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
+              style={{ color: "#102b72" }}
               disabled={toggleUniversity}
               value={selectedUniversity}
               onChange={(e) => setSelectedUniversity(e.target.value)}
@@ -267,9 +266,10 @@ function MapSearch() {
 
           {/* === SELECT FACULTY === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="text-gray-200 mb-1">Select Faculty</p>
+            <p className="mb-1" style={{ color: "#102b72" }}>Select Faculty</p>
             <select
-              className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+              style={{ color: "#102b72" }}
               value={selectedFaculty}
               onChange={(e) => setSelectedFaculty(e.target.value)}
             >
@@ -284,11 +284,12 @@ function MapSearch() {
 
           {/* === SELECT MAJOR === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="text-gray-200 mb-1">Select Major</p>
+            <p className="mb-1" style={{ color: "#102b72" }}>Select Major</p>
             <select
-              className={`${toggleMajor ? 
-                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition opacity-50 cursor-not-allowed" : 
-                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition cursor-pointer"}`}
+              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${
+                toggleMajor ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
+              style={{ color: "#102b72" }}
               disabled={toggleMajor}
               value={selectedMajor}
               onChange={(e) => {
@@ -307,11 +308,12 @@ function MapSearch() {
 
           {/* === SELECT TRACK === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="text-gray-200 mb-1">Select Track</p>
+            <p className="mb-1" style={{ color: "#102b72" }}>Select Track</p>
             <select
-              className={`${toggleTrack ? 
-                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition opacity-50 cursor-not-allowed" : 
-                "form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition cursor-pointer"}`}
+              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${
+                toggleTrack ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+              }`}
+              style={{ color: "#102b72" }}
               disabled={toggleTrack}
               value={selectedTrack}
               onChange={(e) => setSelectedTrack(e.target.value)}
@@ -328,9 +330,10 @@ function MapSearch() {
           {/* === SECOND MAJOR (optional) === */}
           {secondMajor && (
             <div className="col-lg-6 col-12 mb-3">
-              <p className="text-gray-200 mb-1">Select Second Major</p>
+              <p className="mb-1" style={{ color: "#102b72" }}>Select Second Major</p>
               <select
-                className="form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+                className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+                style={{ color: "#102b72" }}
                 value={selectedSecondMajor}
                 onChange={(e) => setSelectedSecondMajor(e.target.value)}
               >
@@ -353,7 +356,7 @@ function MapSearch() {
               onChange={() => setSecondMajor(!secondMajor)}
               checked={secondMajor}
             />
-            <label htmlFor="second_major" className="text-gray-200">
+            <label htmlFor="second_major" style={{ color: "#102b72" }}>
               I have a second major
             </label>
           </div>
@@ -361,7 +364,8 @@ function MapSearch() {
           {/* === SEARCH BUTTON === */}
           <div className="col-12 text-center mt-2">
             <button
-              className="bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg rounded"
+              className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg"
+              style={{ backgroundColor: "#102b72", color: "#ffffff" }}
               onClick={() => setMapResults(true)}
               disabled={paramsAreValid}
             >

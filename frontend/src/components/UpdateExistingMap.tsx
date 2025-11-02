@@ -174,41 +174,41 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
   
   
   return (
-    // Dark theme wrapper, replaces light container and default bootstrap spacing
-    <div className="container mx-auto text-white my-10 mt-0">
+    <div className="container mx-auto my-10 mt-0" style={{ color: "#102b72" }}>
 
       {/* Replaced Bootstrap row with responsive grid */}
       <div className="row gap-6">
         {/* === LEFT PANEL (Your Map) === */}
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg p-8">
+        <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg p-8">
           <div className="flex items-center gap-2 mb-6">
-            <BookOpen className="w-6 h-6 text-white" />
-            <h2 className="text-2xl font-semibold">Your Map</h2>
+            <BookOpen className="w-6 h-6" style={{ color: "#102b72" }} />
+            <h2 className="text-2xl font-semibold" style={{ color: "#102b72" }}>Your Map</h2>
           </div>
 
-          <p className="text-gray-400 mb-6">{selectedCount}/{maxCount} selected</p>
+          <p className="mb-6" style={{ color: "#102b72" }}>{selectedCount}/{maxCount} selected</p>
 
-          {/* Empty state message styled to match ShareMap */}
+          {/* Empty state message */}
           {selectedCount === 0 ? (
             <div className="text-center py-12">
               <div className="flex flex-col items-center gap-3">
-                <BookOpen className="w-12 h-12 text-gray-600" />
-                <p className="text-gray-500 italic text-lg">No courses selected</p>
+                <BookOpen className="w-12 h-12" style={{ color: "#102b72", opacity: 0.5 }} />
+                <p className="italic text-lg" style={{ color: "#102b72", opacity: 0.7 }}>No courses selected</p>
               </div>
             </div>
           ) : (
             <div className="space-y-6">
               {Object.keys(selectedCourses).map((area: string) => (
                 selectedCourses[area].courses.length > 0 && (
-                  <div key={area} className="bg-white/5 rounded-xl p-5 border border-white/10">
-                    <h3 className="font-semibold text-white text-lg mb-4 pb-2 border-b border-white/10">
+                  <div key={area} className="bg-white border border-[#102b72]/20 rounded-xl p-5">
+                    <h3 className="font-semibold text-lg mb-4 pb-2 border-b border-[#102b72]/20" style={{ color: "#102b72" }}>
                       {area}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedCourses[area].courses.map((course: any) => (
                         <span
                           key={course}
-                          className="px-3 py-1.5 bg-white/10 text-gray-200 rounded-lg text-sm border border-white/10 hover:bg-white/15 transition-colors"
+                          className="px-3 py-1.5 rounded-lg text-sm border border-[#102b72]/30 hover:bg-[#102b72]/10 transition-colors"
+                          style={{ color: "#102b72", backgroundColor: "white" }}
                         >
                           {course}
                         </span>
@@ -222,11 +222,12 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
         </div>
 
         {/* === RIGHT PANEL (Available Courses) === */}
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-lg">
-          <h2 className="text-xl mb-4 font-semibold text-center">Available Courses</h2>
+        <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-3xl p-5 shadow-lg">
+          <h2 className="text-xl mb-4 font-semibold text-center" style={{ color: "#102b72" }}>Available Courses</h2>
           <div className="text-center mb-4">
             <select
-              className="w-50 mx-auto form-select bg-white text-black border border-white/20 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-gray-300 transition"
+              className="w-50 mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+              style={{ color: "#102b72" }}
               onChange={(e) => setSelectedCourseArea(e.target.value)}
             >
               <option value="">Select a course area...</option>
