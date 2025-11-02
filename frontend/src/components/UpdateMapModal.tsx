@@ -108,7 +108,7 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
                     </div>
                 </div>
                 <UpdateExistingMap map={map} setSelectedCourses={setSelectedCourses} selectedCourses={selectedCourses} />
-                <DialogFooter className='flex flex-row sticky bottom-0 z-10 bg-[#eeeeee] py-3 w-50 mx-auto rounded-2xl gap-3 justify-center sm:justify-center'>
+                <DialogFooter className='flex flex-row sticky bottom-0 z-10 bg-[#eeeeee] py-3 w-100 mx-auto rounded-2xl gap-3 justify-center sm:justify-center'>
                     <DialogCancel className="bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10" style={{ color: "#102b72" }}>Cancel</DialogCancel>
                     <DialogAction className="font-semibold" style={{ backgroundColor: "#102b72", color: "#ffffff" }} onClick={() => {
                         updateMap();

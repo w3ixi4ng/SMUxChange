@@ -132,7 +132,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
         {/* === Pill Container (flex-based for natural wrapping) === */}
         {/* Switched from grid → flex-wrap to make pill sizes auto-fit instead of rigid squares */}
         <div
-        className={`grid grid-cols-3 gap-2 justify-center items-center mx-2 ${
+        className={`grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 justify-center items-center mx-2 ${
             isExpanded ? "visible" : "hidden"
         }`}
         >
@@ -144,7 +144,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
                 <button
                   key={title}
                   // New layout: pills now span most of container width, centered horizontally
-                  className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold
+                  className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold col-md-12
                     ${
                       selected
                         // Selected: dark blue background with white text
