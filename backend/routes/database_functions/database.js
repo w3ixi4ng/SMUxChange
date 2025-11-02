@@ -224,8 +224,10 @@ router.post('/saveMap', async(req,res) => {
             secondMajor: secondMajor,
             map: map
         });
+        res.json({ message: 'Map saved successfully' });
     } catch(err) {
         console.log(err);
+        res.status(500).json({ error: 'Failed to save map' });
     }
 })
 

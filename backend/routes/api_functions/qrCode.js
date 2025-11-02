@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
     const { map } = req.body;
     const encodedMap = encodeURIComponent(JSON.stringify(map));
     const url = `http://localhost:5173/shareMap?map=${encodedMap}`;
-        const qrCode = await QRCode.toDataURL(url, { width: 500 });
+        const qrCode = await QRCode.toDataURL(url, { width: 700 });
         res.json({ qrCode });
     } catch (error) {
         console.error('❌ Error generating QR code:', error.message);

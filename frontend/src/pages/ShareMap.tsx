@@ -70,13 +70,10 @@ export function ShareMap() {
                 secondMajor: map.secondMajor,
                 map: map.map
             });
-            console.log("Map saved successfully");
             toast.success("Map saved successfully", {
                 description: "The map has been saved to your profile.",
             });
-            setTimeout(() => {
-                navigate("/profile");
-            }, 500);
+            navigate("/profile");
         }
         catch (error) {
             console.error("API error:", error);
