@@ -25,6 +25,7 @@ import { useState, useEffect, useRef } from "react";
 import Signup from "../pages/Signup.tsx";
 import Specifics from "../pages/Specifics.tsx";
 import { ShareMap } from "@/pages/ShareMap.tsx";
+import axios from "axios";
 
 
 function RouterView() {
@@ -32,21 +33,41 @@ function RouterView() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [name, setName] = useState<string>(sessionStorage.getItem("name") || "");
+
+  const checkAdmin = async () => {
+    try {
+    const response = await axios.post('http://localhost:3001/database/checkAdmin',
+      { uid: sessionStorage.getItem("uid") })
+      if (response.data.message === "admin") {
+        setIsAdmin(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    checkAdmin();
+  }, []);
+
   // Check login state from sessionStorage
   useEffect(() => {
     const checkLogin = () => {
       const uid = sessionStorage.getItem("uid");
       setIsLoggedIn(!!uid);
+      setName(sessionStorage.getItem("name") || "");
     };
-    
+
     checkLogin();
-    
+
     // Listen for auth changes
     window.addEventListener("authChange", checkLogin);
-    
+
     // Poll for changes (in case of same-tab navigation)
     const interval = setInterval(checkLogin, 1000);
-    
+
     return () => {
       window.removeEventListener("authChange", checkLogin);
       clearInterval(interval);
@@ -82,7 +103,7 @@ function RouterView() {
       >
         <div className="flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-6 py-4">
           {/* Logo */}
-          <NavLink 
+          <NavLink
             to="/"
             className="flex items-center gap-2 text-xl font-semibold text-white hover:text-gray-200 transition-colors"
             style={{ textDecoration: 'none' }}
@@ -97,10 +118,9 @@ function RouterView() {
               to="/"
               end
               className={({ isActive }) =>
-                `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-                  isActive
-                    ? "bg-[#0d2259] text-white"
-                    : "text-white hover:bg-[#0d2259]/80"
+                `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                  ? "bg-[#0d2259] text-white"
+                  : "text-white hover:bg-[#0d2259]/80"
                 }`
               }
               style={{ textDecoration: 'none' }}
@@ -112,10 +132,9 @@ function RouterView() {
             <NavLink
               to="/mappable"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-                  isActive
-                    ? "bg-[#0d2259] text-white"
-                    : "text-white hover:bg-[#0d2259]/80"
+                `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                  ? "bg-[#0d2259] text-white"
+                  : "text-white hover:bg-[#0d2259]/80"
                 }`
               }
               style={{ textDecoration: 'none' }}
@@ -127,10 +146,9 @@ function RouterView() {
             <NavLink
               to="/information"
               className={({ isActive }) =>
-                `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-                  isActive
-                    ? "bg-[#0d2259] text-white"
-                    : "text-white hover:bg-[#0d2259]/80"
+                `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                  ? "bg-[#0d2259] text-white"
+                  : "text-white hover:bg-[#0d2259]/80"
                 }`
               }
               style={{ textDecoration: 'none' }}
@@ -141,15 +159,14 @@ function RouterView() {
 
             {!isLoggedIn ? (
               <>
-            <NavLink
+                <NavLink
                   to="/login"
-              className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-                  isActive
-                        ? "bg-[#0d2259] text-white"
-                        : "text-white hover:bg-[#0d2259]/80"
-                }`
-              }
+                  className={({ isActive }) =>
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                      ? "bg-[#0d2259] text-white"
+                      : "text-white hover:bg-[#0d2259]/80"
+                    }`
+                  }
                   style={{ textDecoration: 'none' }}
                 >
                   <LogIn size={18} strokeWidth={2} />
@@ -158,29 +175,28 @@ function RouterView() {
                 <NavLink
                   to="/signup"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-                      isActive
-                        ? "bg-[#0d2259] text-white"
-                        : "text-white hover:bg-[#0d2259]/80"
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                      ? "bg-[#0d2259] text-white"
+                      : "text-white hover:bg-[#0d2259]/80"
                     }`
                   }
                   style={{ textDecoration: 'none' }}
                 >
                   <span style={{ textDecoration: 'none' }}>Sign Up</span>
                 </NavLink>
-                </>
-              ) : (
+              </>
+            ) : (
               <div className="relative profile-dropdown-container" ref={dropdownRef}>
                 <button
                   onClick={() => setIsExpanded(!isExpanded)}
-                  className={`px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${
-                    isExpanded
-                      ? "bg-[#0d2259] text-white"
-                      : "text-white hover:bg-[#0d2259]/80"
-                  }`}
-                  style={{ textDecoration: 'none' }}
+                  className={`px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isExpanded
+                      ? "bg-[#0d2259] text-white rounded-lg"
+                      : "text-white hover:bg-[#0d2259]/80 rounded-lg"
+                    }`}
+                  style={{ textDecoration: 'none', border: 'none', cursor: 'pointer', borderRadius: '0.5rem' }}
                 >
-                  <User size={18} strokeWidth={2} />
+                  {/* <User size={18} strokeWidth={2} /> */}
+                  <img src={`https://avatar.iran.liara.run/username?username=${name}`} alt="Profile" className="w-6 h-6 rounded-full" />
                   <span style={{ textDecoration: 'none' }}>Profile</span>
                   {isExpanded ? (
                     <ChevronUp size={16} strokeWidth={2} />
@@ -188,15 +204,15 @@ function RouterView() {
                     <ChevronDown size={16} strokeWidth={2} />
                   )}
                 </button>
-                
+
                 {isExpanded && (
                   <div className="absolute right-0 mt-2 w-48 bg-[#0d2259] rounded-lg shadow-lg border border-[#0a1a47] py-1 z-50">
+  
                     <NavLink
                       to="/profile"
                       onClick={() => setIsExpanded(false)}
                       className={({ isActive }) =>
-                        `block px-4 py-2 text-sm text-white hover:bg-[#0a1a47] transition-colors ${
-                          isActive ? "bg-[#0a1a47]" : ""
+                        `block px-4 py-2 text-sm text-white hover:bg-[#0a1a47] transition-colors ${isActive ? "bg-[#0a1a47]" : ""
                         }`
                       }
                       style={{ textDecoration: 'none' }}
@@ -216,7 +232,7 @@ function RouterView() {
                         <LogOut size={16} strokeWidth={2} />
                         <span style={{ textDecoration: 'none' }}>Logout</span>
                       </div>
-            </NavLink>
+                    </NavLink>
                   </div>
                 )}
               </div>
@@ -240,7 +256,7 @@ function RouterView() {
           <Route path="/shareMap" element={<ShareMap />} />
         </Routes>
       </main>
-    </Router> 
+    </Router>
   );
 }
 

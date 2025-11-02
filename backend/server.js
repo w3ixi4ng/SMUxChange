@@ -46,6 +46,7 @@ app.use('/database', databaseRoutes);
 app.use('/api/qrCode', qrCodeRoutes);
 
 
+
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Backend server running on http://localhost:${PORT}`);

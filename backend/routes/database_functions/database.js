@@ -173,7 +173,7 @@ router.get('/getUser/:uid', async(req,res) => {
 
 router.post('/saveProfile', async(req,res) => {
     try {
-        const { uid, name, faculty, major, track, secondMajor } = req.body;
+        const { uid, name, faculty, major, track, secondMajor, avatarUrl } = req.body;
         
         // Set document with uid as the document ID
         await db.collection('users').doc(uid).set({
@@ -182,7 +182,8 @@ router.post('/saveProfile', async(req,res) => {
             faculty: faculty,
             major: major,
             track: track,
-            secondMajor: secondMajor
+            secondMajor: secondMajor,
+            role: "user",
         });
 
         res.json({ message: "Profile saved successfully" });
@@ -266,6 +267,23 @@ router.post('/updateMap', async(req,res) => {
     }
     catch(err) {
         console.log(err);
+    }
+})
+
+router.post('/checkAdmin', async(req,res) => {
+    try {
+        const { uid } = req.body;
+        const ref = await db.collection('users').doc(uid).get();
+        if (ref.exists) {
+            if (ref.data().role === "admin") {
+                res.json({ message: "admin" });
+            } else {
+                res.json({ message: "user" });
+            }
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ error: 'Failed to check' });
     }
 })
 

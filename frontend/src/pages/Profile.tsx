@@ -9,6 +9,7 @@ import { UpdateProfileAlert } from "@/components/UpdateProfileAlert";
 
 function Profile() {
   const uid = sessionStorage.getItem("uid");
+
   const navigate = useNavigate();
 
   const fetchUser = async (uid: string) => {
@@ -229,6 +230,7 @@ function Profile() {
                     value={name}
                     placeholder="Enter your name ..."
                     onChange={(e) => setName(e.target.value)}
+                    maxLength={20}
                   />
                 </div>
                 <div className="col-lg-6 col-12 mb-2">
@@ -314,7 +316,7 @@ function Profile() {
         </Modal>
       )}
       <div className={`${userExists ? "relative min-h-screen w-full"
-        : "bg-black"}`}
+        : "bg-black min-h-screen w-full"}`}
         style={{
           backgroundColor: userExists ? "#eeeeee" : undefined,
           color: userExists ? "#102b72" : undefined,
@@ -343,6 +345,7 @@ function Profile() {
                   value={name}
                   placeholder="Enter your name ..."
                   onChange={(e) => setName(e.target.value)}
+                  maxLength={20}
                 />
               </div>
               <div className="col-lg-6 col-12 mb-2">
