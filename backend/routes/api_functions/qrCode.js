@@ -1,0 +1,19 @@
+import express from 'express';
+import QRCode from 'qrcode';
+
+const router = express.Router();
+
+router.post('/', async (req, res) => {
+    try {
+    const { map } = req.body;
+    const encodedMap = encodeURIComponent(JSON.stringify(map));
+    const url = `http://localhost:5173/shareMap?map=${encodedMap}`;
+        const qrCode = await QRCode.toDataURL(url, { width: 500 });
+        res.json({ qrCode });
+    } catch (error) {
+        console.error('❌ Error generating QR code:', error.message);
+        res.status(500).json({ error: 'Failed to generate QR code' });
+    }
+});
+
+export default router;

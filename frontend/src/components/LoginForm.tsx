@@ -35,7 +35,11 @@ export function LoginForm({
         sessionStorage.setItem("email", user.email);
         sessionStorage.setItem("name", user.displayName || "");
         // Redirect after login
-        nav("/profile");
+        if (sessionStorage.getItem('backToUrl')) {
+          window.location.href = sessionStorage.getItem('backToUrl') || "/profile";
+        } else {
+          nav("/profile");
+        }
     }}
     catch (error: any) {
       setError("Invalid email or password");

@@ -22,6 +22,7 @@ import Logout from "../pages/Logout.tsx";
 import { useState } from "react";
 import Signup from "../pages/Signup.tsx";
 import Specifics from "../pages/Specifics.tsx";
+import { ShareMap } from "@/pages/ShareMap.tsx";
 
 
 function RouterView() {
@@ -141,6 +142,7 @@ function RouterView() {
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/shareMap" element={<ShareMap />} />
         </Routes>
       </main>
     </Router> 

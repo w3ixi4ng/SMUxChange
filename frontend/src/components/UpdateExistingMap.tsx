@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import ExistingCourseMap from "./ExistingCourseMap";
+import { BookOpen } from "lucide-react";
 
 type ChildProps = {
   map: any
@@ -179,41 +180,43 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
       {/* Replaced Bootstrap row with responsive grid */}
       <div className="row gap-6">
         {/* === LEFT PANEL (Your Map) === */}
-        <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-5 shadow-lg">
-          <div className="flex justify-between items-center row">
-            <h2 className="text-xl mb-2 font-semibold col-12 text-center font-bold">Your Map</h2>
-
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg p-8">
+          <div className="flex items-center gap-2 mb-6">
+            <BookOpen className="w-6 h-6 text-white" />
+            <h2 className="text-2xl font-semibold">Your Map</h2>
           </div>
-          <p className="text-gray-400 mb-4">{selectedCount}/{maxCount} selected</p>
 
-          {/* Empty state message styled to match dark background */}
+          <p className="text-gray-400 mb-6">{selectedCount}/{maxCount} selected</p>
+
+          {/* Empty state message styled to match ShareMap */}
           {selectedCount === 0 ? (
-            <div className="text-gray-500 italic">No courses selected</div>
+            <div className="text-center py-12">
+              <div className="flex flex-col items-center gap-3">
+                <BookOpen className="w-12 h-12 text-gray-600" />
+                <p className="text-gray-500 italic text-lg">No courses selected</p>
+              </div>
+            </div>
           ) : (
-            Object.keys(selectedCourses).map((area: string) => (
-              selectedCourses[area].courses.length > 0 && (
-                <div key={area} className="mb-4">
-                  <h3 className="font-semibold text-gray-200">{area}</h3>
-                  <ul className="text-gray-400 list-disc list-inside">
-                    {selectedCourses[area].courses.map((course: any) => (
-                      <li key={course}>{course}</li>
-                    ))}
-                  </ul>
-                </div>
-              )
-            ))
-          )}
-          {uid != "" && (
-            <div className="col-12 text-center mt-2">
-              <button onClick={() => {
-                setSelectedCourses(Object.fromEntries(Object.entries(selectedCourses).filter(([key, _]: [string, any]) => key != "undefined")));
-                toast("Map updated successfully", {
-                  description: "The map has been updated.",
-                });
-              }}
-                className={`bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 px-8 py-2 text-lg rounded-full shadow-lg rounded cursor-pointer`}>
-                Update Map
-              </button>
+            <div className="space-y-6">
+              {Object.keys(selectedCourses).map((area: string) => (
+                selectedCourses[area].courses.length > 0 && (
+                  <div key={area} className="bg-white/5 rounded-xl p-5 border border-white/10">
+                    <h3 className="font-semibold text-white text-lg mb-4 pb-2 border-b border-white/10">
+                      {area}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedCourses[area].courses.map((course: any) => (
+                        <span
+                          key={course}
+                          className="px-3 py-1.5 bg-white/10 text-gray-200 rounded-lg text-sm border border-white/10 hover:bg-white/15 transition-colors"
+                        >
+                          {course}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )
+              ))}
             </div>
           )}
         </div>
