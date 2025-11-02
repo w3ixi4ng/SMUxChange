@@ -12,13 +12,23 @@ import {
 import axios from "axios";  
 import { toast } from "sonner";
 
-export function DeleteMapAlert({ uid, mapId, setSavedMaps, savedMaps }: { uid: string, mapId: string, setSavedMaps: (maps: any) => void, savedMaps: any }) {
+export function DeleteMapAlert({ uid, mapId, setSavedMaps }: { uid: string, mapId: string, setSavedMaps: (maps: any) => void }) {
     const deleteMap = async (mapId: string) => {
         try {
-            const response = await axios.delete(`http://localhost:3001/database/deleteMap/${uid}/${mapId}`);
-            setSavedMaps(savedMaps.filter((map: any) => map.id !== mapId));
+            await axios.delete(`http://localhost:3001/database/deleteMap/${uid}/${mapId}`);
+            // Use function form to ensure we're working with the latest state
+            setSavedMaps((prev: any[]) => {
+                const filtered = prev.filter((m: any) => String(m.id) !== String(mapId));
+                return filtered;
+            });
+            toast.success("Map has been deleted", {
+                description: "The map has been deleted from your profile.",
+            });
         } catch (error) {
             console.log(error);
+            toast.error("Error deleting map", {
+                description: "Please try again.",
+            });
         }
     }
 
@@ -36,11 +46,8 @@ export function DeleteMapAlert({ uid, mapId, setSavedMaps, savedMaps }: { uid: s
                 </AlertDialogHeader>
                 <AlertDialogFooter className='d-flex justify-content-center'>
                     <AlertDialogCancel className="bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10" style={{ color: "#102b72" }}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="font-semibold" style={{ backgroundColor: "#dc2626", color: "#ffffff" }} onClick={() => {
-                        deleteMap(mapId);
-                        toast("Map has been deleted", {
-                            description: "The map has been deleted from your profile.",
-                        });
+                    <AlertDialogAction className="font-semibold bg-destructive text-white border-none" onClick={async () => {
+                        await deleteMap(mapId);
                     }}>Delete</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

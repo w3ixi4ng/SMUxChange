@@ -11,11 +11,26 @@ import { Input } from "@/components/ui/input"
 import axios from "axios";
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB6K8DguE-HfOF2nsDWMACgKhCvMqHCjfg",
+    authDomain: "smuxchange-f09b0.firebaseapp.com",
+    databaseURL: "https://smuxchange-f09b0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "smuxchange-f09b0",
+    storageBucket: "smuxchange-f09b0.firebasestorage.app",
+    messagingSenderId: "594685984997",
+    appId: "1:594685984997:web:14e3d2cfa46b48fac8d40c",
+    measurementId: "G-HNT1NFRBWT"
+  };
+
+  const app = initializeApp(firebaseConfig);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,20 +42,19 @@ export function SignupForm({
     if (error !== "") {
       return;
     }
-    try {
-      const response = await axios.post('http://localhost:3001/signup', {
-        email: email,
-        password: password
-    });
-    if (response.data.success) {
-        const uid = response.data.user.uid;
-        sessionStorage.setItem('uid', uid);
-        navigate('/login');
-    }}
-    catch (error: any) {
-      setError(error.response.data.error);
-      console.error(error);
-    }
+
+    const auth = getAuth(app);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+        sessionStorage.setItem("uid", user.uid);
+        navigate("/login");
+      })
+      .catch((error) => {
+        setError("Email already in use");
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -81,10 +95,10 @@ export function SignupForm({
                 <Field className="grid grid-cols-2 gap-4">
                   <Field>
                     <FieldLabel htmlFor="password" style={{ color: "#102b72" }}>Password</FieldLabel>
-                    <Input 
-                      id="password" 
-                      type="password" 
-                      required 
+                    <Input
+                      id="password"
+                      type="password"
+                      required
                       onChange={(e) => setPassword(e.target.value)}
                       className="bg-white border border-[#102b72]/30"
                       style={{ color: "#102b72" }}
@@ -94,10 +108,10 @@ export function SignupForm({
                     <FieldLabel htmlFor="confirm-password" style={{ color: "#102b72" }}>
                       Confirm Password
                     </FieldLabel>
-                    <Input 
-                      id="confirm-password" 
-                      type="password" 
-                      required 
+                    <Input
+                      id="confirm-password"
+                      type="password"
+                      required
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="bg-white border border-[#102b72]/30"
                       style={{ color: "#102b72" }}
@@ -108,8 +122,8 @@ export function SignupForm({
 
               </Field>
               <Field>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   onClick={handleSignup}
                   style={{ backgroundColor: "#102b72", color: "#ffffff" }}
                 >
@@ -117,7 +131,7 @@ export function SignupForm({
                 </Button>
               </Field>
 
-              
+
               <FieldDescription className="text-center">
                 <span style={{ color: "#102b72" }}>
                   Already have an account?{" "}

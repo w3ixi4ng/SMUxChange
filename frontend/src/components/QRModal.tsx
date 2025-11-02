@@ -36,7 +36,7 @@ export function QRModal({ map }: ChildProps) {
 
         <Dialog>
             <DialogTrigger asChild>
-                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105" style={{ backgroundColor: "#102b72", color: "#ffffff", border: "none" }}>Share Map</button>
+                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105 bg-success text-white border-none">Share Map</button>
             </DialogTrigger>
             <DialogContent className="max-h-[90vh] overflow-y-auto bg-[#eeeeee] border-[#102b72]/20 [&_button[data-slot='dialog-close']]:text-[#102b72] [&_button[data-slot='dialog-close']]:hover:bg-[#102b72]/10">
                 <DialogHeader>

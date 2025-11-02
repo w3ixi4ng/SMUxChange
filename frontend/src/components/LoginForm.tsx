@@ -8,43 +8,44 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyB6K8DguE-HfOF2nsDWMACgKhCvMqHCjfg",
+    authDomain: "smuxchange-f09b0.firebaseapp.com",
+    databaseURL: "https://smuxchange-f09b0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "smuxchange-f09b0",
+    storageBucket: "smuxchange-f09b0.firebasestorage.app",
+    messagingSenderId: "594685984997",
+    appId: "1:594685984997:web:14e3d2cfa46b48fac8d40c",
+    measurementId: "G-HNT1NFRBWT"
+  };
+  const app = initializeApp(firebaseConfig);
+
   const nav = useNavigate()
-  const login = async(e:React.MouseEvent<HTMLButtonElement>) => {
+  const login = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:3001/login', {
-            email: email,
-            password: password
-    });
-    if (response.data.success) {
-        const user = response.data.user;
-        // Store login state for entire app
+
+    const auth = getAuth(app);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
         sessionStorage.setItem("uid", user.uid);
-        sessionStorage.setItem("email", user.email);
-        sessionStorage.setItem("name", user.displayName || "");
-        // Dispatch custom event to notify navbar of login
-        window.dispatchEvent(new Event('authChange'));
-        // Redirect after login
-        if (sessionStorage.getItem('backToUrl')) {
-          window.location.href = sessionStorage.getItem('backToUrl') || "/profile";
-        } else {
-          nav("/profile");
-        }
-    }}
-    catch (error: any) {
-      setError("Invalid email or password");
-      console.error(error);
-    }
+        nav("/profile");
+      })
+      .catch((error) => {
+        console.log(error);
+        setError("Invalid email or password");
+      });
   }
 
   const [email, setEmail] = useState("");
@@ -70,7 +71,7 @@ export function LoginForm({
                   type="email"
                   placeholder="name@example.com"
                   required
-                  onChange= {(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-white border border-[#102b72]/30"
                   style={{ color: "#102b72" }}
                 />
@@ -86,21 +87,21 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  required 
+                <Input
+                  id="password"
+                  type="password"
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                   className="bg-white border border-[#102b72]/30"
                   style={{ color: "#102b72" }}
                 />
               </Field>
               <Field>
-              <FieldDescription className="text-red-600">{error}</FieldDescription>
+                <FieldDescription className="text-red-600">{error}</FieldDescription>
               </Field>
               <Field>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   onClick={(e) => {
                     login(e);
                   }}

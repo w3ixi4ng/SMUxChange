@@ -68,7 +68,7 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction onClick={() => {
                         saveProfile(uid || "", name, faculty, major, track, secondMajor);
-                        toast("Profile updated", {
+                        toast.success("Profile updated successfully", {
                             description: "Your profile has been updated successfully.",
                         });
                     }}>

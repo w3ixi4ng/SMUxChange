@@ -1,4 +1,3 @@
-
 import {
     Dialog,
     DialogAction,
@@ -19,9 +18,10 @@ import { GraduationCap } from "lucide-react";
 type ChildProps = {
     map: any
     mapId: string
+    setSavedMaps: (maps: any) => void
 }
 
-export function UpdateMapModal({ mapId, map }: ChildProps) {
+export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
 
     const [selectedCourses, setSelectedCourses] = useState<any>(map.map);
     const uid = sessionStorage.getItem('uid') || "";
@@ -29,19 +29,21 @@ export function UpdateMapModal({ mapId, map }: ChildProps) {
 
     const updateMap = async () => {
         try {
-          await axios.post(`http://localhost:3001/database/updateMap`, {
-            mapId: mapId,
-            uid: uid,
-            map: selectedCourses
-          });
+            await axios.post(`http://localhost:3001/database/updateMap`, {
+                mapId: mapId,
+                uid: uid,
+                map: selectedCourses
+            });
         }
         catch (error) {
-          console.log("API error:", error);
-          toast("Error updating map", {
-            description: "Please try again.",
-          });
+            console.log("API error:", error);
+            toast.error("Error updating map", {
+                description: "Please try again.",
+            });
         }
-      }
+    }
+
+
     return (
 
         <Dialog>
@@ -113,9 +115,7 @@ export function UpdateMapModal({ mapId, map }: ChildProps) {
                         toast.success("Map updated successfully", {
                             description: "The map has been updated.",
                         });
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 500);
+                        setSavedMaps((prev: any[]) => prev.map((m: any) => m.id === mapId ? { ...m, map: selectedCourses } : m));
                     }}>Update Map</DialogAction>
                 </DialogFooter>
             </DialogContent>

@@ -203,6 +203,7 @@ function Profile() {
     setSecondMajor(sessionStorage.getItem("secondMajor") || "");
   }, []);
 
+
   return (
     <>
       {!userExists && (
@@ -426,7 +427,7 @@ function Profile() {
             <h2 className="text-center mb-4 text-4xl font-bold" style={{ color: "#102b72" }}>Your Saved Maps</h2>
             <div className="row justify-content-lg-center justify-content-md-start">
               {savedMaps.map((map) => (
-                <ExistingMap key={map.id} mapId={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps}/>
+                <ExistingMap key={map.id} mapId={map.id} map={map} setSavedMaps={setSavedMaps} />
               ))}
             </div>
             {savedMaps.length === 0 && (
