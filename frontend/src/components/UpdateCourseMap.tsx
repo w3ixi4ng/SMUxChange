@@ -40,13 +40,13 @@ export function UpdateCourseMap({ courseArea, university, map }: ChildProps) {
     return (
         <>
         {courses.length > 0 && (
-            <div className="col-lg-6">
-                <p className="text-black-200 mb-1 font-bold">{courseAreaName}</p>
-                    <p className="text-gray-500 mb-2 text-sm">Selected: {selectedCount}/{courseLimit}</p>
-                    {courses.map((course: any, index: number) => (
-                        <p className="text-gray-400 mb-1" key={index}>{course['Course Title']}</p>
-                    ))}
-                </div>
+            <div className="col-lg-6 bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-xl p-4 mb-4">
+                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>{courseAreaName}</p>
+                <p className="mb-2 text-sm" style={{ color: "#102b72", opacity: 0.7 }}>Selected: {selectedCount}/{courseLimit}</p>
+                {courses.map((course: any, index: number) => (
+                    <p className="mb-1 text-sm" style={{ color: "#102b72", opacity: 0.8 }} key={index}>{course['Course Title']}</p>
+                ))}
+            </div>
             )}
         </>
     )

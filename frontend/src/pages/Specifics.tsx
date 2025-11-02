@@ -203,7 +203,7 @@ export default function Specifics() {
   /* ========== Scroll listener (unchanged) ========== */
   useEffect(() => {
     function handleScroll() {
-      if (window.scrollY > 100) {
+      if (window.scrollY > 200) {
         setShowScrollButton(true);
       } else {
         setShowScrollButton(false);
@@ -411,16 +411,20 @@ export default function Specifics() {
   });
 
   /* ===========================
-     RENDER
+    RENDER
      =========================== */
   return (
-    <div className="min-h-screen text-white bg-[#0b0b0b] bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.05)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.03)_0%,transparent_30%)]">
-      <div className="container mx-auto px-6 py-12 space-y-10">
+    <div className="min-h-screen" style={{ backgroundColor: "#eeeeee", color: "#102b72" }}>
+      {/* === Subtle gradient + grid overlay === */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      
+      <div className="container mx-auto px-6 py-12 space-y-10 relative z-10">
         <div id="top" />
         {/* === HEADER === */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
-            <h1 className="text-4xl font-bold mb-2">
+            <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>
               {data && data.host_university}
             </h1>
             <div className="flex items-center gap-3">
@@ -429,13 +433,13 @@ export default function Specifics() {
                 alt={data && data.country}
                 className="w-8 h-5 rounded-md"
               />
-              <span className="text-gray-300">{data && data.country}</span>
+              <span style={{ color: "#102b72" }}>{data && data.country}</span>
             </div>
           </div>
 
           {data?.website && (
-            <Button asChild variant="secondary" className="mt-4 md:mt-0">
-              <a href={data.website} target="_blank" rel="noopener noreferrer">
+            <Button asChild variant="secondary" className="mt-4 md:mt-0" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
+              <a href={data.website} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#ffffff' }}>
                 Visit Website
               </a>
             </Button>
@@ -462,44 +466,44 @@ export default function Specifics() {
         </div>
 
         {/* === DETAILS CARD === */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20">
           <CardHeader>
-            <CardTitle className="text-2xl text-gray-300 font-semibold">
+            <CardTitle className="text-2xl font-semibold" style={{ color: "#102b72" }}>
               About the University
             </CardTitle>
-            <CardDescription className="text-white/90 leading-relaxed">
+            <CardDescription className="leading-relaxed" style={{ color: "#102b72" }}>
               {data && data.description}
             </CardDescription>
           </CardHeader>
           <CardContent className="grid md:grid-cols-3 gap-6 mt-4">
             <div>
-              <p className="text-sm text-gray-400">Email</p>
-              <p>{data?.contact || "N/A"}</p>
+              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>Email</p>
+              <p style={{ color: "#102b72" }}>{data?.contact || "N/A"}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-400">Phone</p>
-              <p>{data?.phone || "N/A"}</p>
+              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>Phone</p>
+              <p style={{ color: "#102b72" }}>{data?.phone || "N/A"}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-400">Rating</p>
+              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>Rating</p>
               <div className="flex items-center gap-2">
                 <StarRating rating={(data && data.rating) || 0} />
-                <span className="text-sm text-gray-300">
+                <span className="text-sm" style={{ color: "#102b72" }}>
                   {(data?.rating || 0).toFixed(1)} ({data?.reviews} reviews)
                 </span>
               </div>
 
-              <p className="text-sm text-gray-400 mt-3 font-semibold">
+              <p className="text-sm mt-3 font-semibold" style={{ color: "#102b72" }}>
                 GPA Requirements
               </p>
               <div className="flex gap-4 text-sm font-semibold">
-                <span className="text-green-400">
+                <span style={{ color: "#16a34a" }}>
                   Max GPA: {data && data.max_gpa}
                 </span>
-                <span className="text-red-400">
+                <span style={{ color: "#dc2626" }}>
                   Min GPA: {data && data.min_gpa}
                 </span>
-                <span className="text-blue-400">
+                <span style={{ color: "#2563eb" }}>
                   Places: {data && data.places}
                 </span>
               </div>
@@ -508,15 +512,16 @@ export default function Specifics() {
         </Card>
 
         {/* === WEBSITE LINK SECTION === */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20">
+        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20">
           <CardHeader>
-            <CardTitle className="text-lg text-white font-semibold">
+            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
               Website Link
             </CardTitle>
-            <CardDescription className="text-gray-300">
+            <CardDescription>
               <a
                 href="https://placeholder-university-website.com"
-                className="text-blue-400 hover:underline"
+                className="hover:underline"
+                style={{ color: "#2563eb" }}
                 target="_blank"
               >
                 https://placeholder-university-website.com
@@ -526,12 +531,12 @@ export default function Specifics() {
         </Card>
 
         {/* === ELECTIVES === */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 mt-10">
+        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
           <CardHeader>
-            <CardTitle className="text-lg text-white font-semibold">
+            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
               Your Maps
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription style={{ color: "#102b72" }}>
               Explore all electives available for this university.
             </CardDescription>
           </CardHeader>
@@ -547,7 +552,7 @@ export default function Specifics() {
                 {data &&
                   data.mappable_basket?.map((basket: string, i: number) => (
                     <div key={i} className="flex justify-center">
-                      <span className="bg-[#1e1f23] text-white/90 px-5 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-[#2a2b30] hover:text-white transition-all duration-200 text-center w-full max-w-[280px]">
+                      <span className="bg-[#102b72] px-5 py-2 rounded-full text-sm font-medium shadow-sm hover:bg-[#0d2259] transition-all duration-200 text-center w-full max-w-[280px]" style={{ color: "#ffffff" }}>
                         {basket}
                       </span>
                     </div>
@@ -557,7 +562,8 @@ export default function Specifics() {
               {data && data.mappable_basket?.length > 6 && (
                 <button
                   onClick={() => setShowAllBaskets((prev) => !prev)}
-                  className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full bg-white/10 text-gray-200 text-sm font-semibold hover:bg-white/20 transition-all"
+                  className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full text-sm font-semibold hover:bg-[#102b72]/10 transition-all"
+                  style={{ color: "#102b72", backgroundColor: "transparent", border: "1px solid rgba(16,43,114,0.3)" }}
                 >
                   {showAllBaskets ? (
                     <>
@@ -575,26 +581,26 @@ export default function Specifics() {
         </Card>
 
         {/* === STUDENT REVIEWS (includes IMPORTANT login-gated form) === */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 mt-10">
+        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
           <CardHeader>
-            <CardTitle className="text-lg text-white font-semibold">
+            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
               Student Reviews
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription style={{ color: "#102b72" }}>
               What other SMU students say about {data?.host_university}.
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
             {/* Summary bar */}
-            <div className="flex items-center justify-between bg-white/5 border border-white/10 p-4 rounded-lg">
+            <div className="flex items-center justify-between bg-white border border-[#102b72]/20 p-4 rounded-lg">
               <div className="flex items-center gap-3">
                 <StarRating rating={avgRating || 0} />
-                <span className="text-white font-semibold">
+                <span className="font-semibold" style={{ color: "#102b72" }}>
                   {avgRating ? avgRating.toFixed(2) : "–"}/5
                 </span>
               </div>
-              <span className="text-gray-300 text-sm">
+              <span className="text-sm" style={{ color: "#102b72" }}>
                 {reviews.length} review{reviews.length === 1 ? "" : "s"}
               </span>
             </div>
@@ -605,38 +611,38 @@ export default function Specifics() {
                 {sortedReviews.map((r: any, i: number) => (
                   <div
                     key={i}
-                    className="bg-white/5 border border-white/10 p-4 rounded-lg"
+                    className="bg-white border border-[#102b72]/20 p-4 rounded-lg"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col">
-                        <p className="font-semibold text-white">{r.name}</p>
-                        <span className="text-xs text-gray-400">
+                        <p className="font-semibold" style={{ color: "#102b72" }}>{r.name}</p>
+                        <span className="text-xs" style={{ color: "#102b72", opacity: 0.7 }}>
                           {timeAgo(r.createdAt)}
                         </span>
                       </div>
                       <div className="flex items-center gap-2">
                         <StarRating rating={Number(r.rating) || 0} />
-                        <span className="text-sm text-gray-300">
+                        <span className="text-sm" style={{ color: "#102b72" }}>
                           {(Number(r.rating) || 0).toFixed(1)}/5
                         </span>
                       </div>
                     </div>
                     {r.comment && (
-                      <p className="text-gray-300 mt-2">{r.comment}</p>
+                      <p className="mt-2" style={{ color: "#102b72" }}>{r.comment}</p>
                     )}
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-400 italic">
+              <p className="italic" style={{ color: "#102b72", opacity: 0.7 }}>
                 No reviews yet. Be the first ✍️
               </p>
             )}
 
             {/* IMPORTANT: Login-gated submit form */}
             {currentUser ? (
-              <div className="bg-white/10 p-4 rounded-lg space-y-4">
-                <h3 className="text-white font-semibold">Leave a Review</h3>
+              <div className="bg-white border border-[#102b72]/20 p-4 rounded-lg space-y-4">
+                <h3 className="font-semibold" style={{ color: "#102b72" }}>Leave a Review</h3>
 
                 <Input
                   type="number"
@@ -644,7 +650,8 @@ export default function Specifics() {
                   max="5"
                   step="0.1"
                   placeholder="Rating out of 5"
-                  className="bg-white/20 text-white"
+                  className="bg-white border border-[#102b72]/30"
+                  style={{ color: "#102b72" }}
                   value={ratingInput}
                   onChange={(e) => setRatingInput(e.target.value)}
                 />
@@ -652,23 +659,26 @@ export default function Specifics() {
                 <Input
                   type="text"
                   placeholder="Your comment"
-                  className="bg-white/20 text-white"
+                  className="bg-white border border-[#102b72]/30"
+                  style={{ color: "#102b72" }}
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                 />
 
                 <Button
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="font-semibold"
+                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
                   onClick={submitReview}
                 >
                   Submit Review ✅
                 </Button>
               </div>
             ) : (
-              <p className="text-gray-400 italic">
+              <p className="italic" style={{ color: "#102b72", opacity: 0.7 }}>
                 <a
                   href="/login"
-                  className="text-blue-400 underline hover:text-blue-300"
+                  className="underline"
+                  style={{ color: "#2563eb" }}
                 >
                   Login
                 </a>{" "}
@@ -679,12 +689,12 @@ export default function Specifics() {
         </Card>
 
         {/* === PLAN YOUR STAY & EXPLORE NEARBY === */}
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 mt-10">
+        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
           <CardHeader>
-            <CardTitle className="text-lg text-white font-semibold">
+            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
               Plan Your Stay & Explore Nearby
             </CardTitle>
-            <CardDescription className="text-gray-400">
+            <CardDescription style={{ color: "#102b72" }}>
               Discover nearby accommodations and events — all connected on the
               same interactive map.
             </CardDescription>
@@ -692,14 +702,14 @@ export default function Specifics() {
 
           <CardContent className="space-y-6">
             {/* Map Placeholder */}
-            <div className="relative w-full h-96 rounded-xl overflow-hidden border border-white/20 shadow-lg">
+            <div className="relative w-full h-96 rounded-xl overflow-hidden border border-[#102b72]/20 shadow-lg">
               <img
                 src="/images/map_placeholder_api.jpg"
                 alt="Interactive Map Placeholder"
                 className="w-full h-full object-cover opacity-90"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0b]/40 to-transparent flex items-end justify-center p-4">
-                <p className="text-sm text-gray-300 italic">
+              <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent flex items-end justify-center p-4">
+                <p className="text-sm italic" style={{ color: "#102b72" }}>
                   🗺️ Map placeholder — backend to replace with Map API (Google
                   Maps / Mapbox)
                 </p>
@@ -710,7 +720,7 @@ export default function Specifics() {
             <div className="grid sm:grid-cols-2 gap-6 mt-6">
               {/* Price filter temporarily hidden
               <div>
-                <label className="block mb-2 text-gray-400 text-sm">
+                <label className="block mb-2 text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
                   Filter by max price (${maxPrice})
                 </label>
                 <Input
@@ -720,12 +730,13 @@ export default function Specifics() {
                   step={100}
                   value={maxPrice}
                   onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full accent-amber-400"
+                  className="w-full"
+                  style={{ accentColor: "#102b72" }}
                 />
               </div>*/}
 
               <div>
-                <label className="block mb-2 text-gray-400 text-sm">
+                <label className="block mb-2 text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
                   Filter by max distance ({data?.maxDistance ?? "2.0"} km)
                 </label>
                 <Input
@@ -740,14 +751,15 @@ export default function Specifics() {
                       maxDistance: parseFloat(e.target.value),
                     }))
                   }
-                  className="w-full accent-blue-400"
+                  className="w-full"
+                  style={{ accentColor: "#102b72" }}
                 />
               </div>
             </div>
 
             {/* Accommodations */}
             <div>
-              <h3 className="text-xl font-semibold mb-3 text-white">
+              <h3 className="text-xl font-semibold mb-3" style={{ color: "#102b72" }}>
                 Nearby Accommodations
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
@@ -759,7 +771,7 @@ export default function Specifics() {
                   .map((a, i) => (
                     <div
                       key={i}
-                      className="bg-white/5 border border-white/10 rounded-xl w-72 shrink-0 hover:bg-white/10 transition-all duration-200"
+                      className="bg-white border border-[#102b72]/20 rounded-xl w-72 shrink-0 hover:bg-[#102b72]/5 transition-all duration-200"
                     >
                       <img
                         src={a.icon}
@@ -771,26 +783,28 @@ export default function Specifics() {
                         className="w-full h-40 object-cover rounded-t-xl"
                       />
                       <div className="p-4">
-                        <h5 className="font-semibold text-lg mb-1">
+                        <h5 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
                           {a.name}
                         </h5>
-                        <p className="text-gray-300 text-sm mb-3">
+                        <p className="text-sm mb-3" style={{ color: "#102b72", opacity: 0.7 }}>
                           {a.distance}km from campus
                         </p>
-                        <p>Address: {a.formatted_address}</p>
-                        <p>
+                        <p style={{ color: "#102b72" }}>Address: {a.formatted_address}</p>
+                        <p style={{ color: "#102b72" }}>
                           <div>🚗 Driving time: {a.DRIVE}</div>
                           <div>🚶 Walking time: {a.WALK}</div>
                           <div>🚌 Public transport: {a.TRANSIT}</div>
                         </p>
                         <Button
                           asChild
-                          className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white no-underline"
+                          className="w-full text-sm font-semibold no-underline"
+                          style={{ backgroundColor: "#102b72", color: "#ffffff" }}
                         >
                           <a
                             href="#"
                             title="View on shared map"
                             data-map-marker={a.name}
+                            style={{ textDecoration: 'none', color: '#ffffff' }}
                           >
                             📍 View on Map
                           </a>
@@ -803,7 +817,7 @@ export default function Specifics() {
 
             {/* Events */}
             <div>
-              <h3 className="text-xl font-semibold mb-3 text-white">
+              <h3 className="text-xl font-semibold mb-3" style={{ color: "#102b72" }}>
                 Nearby Events & Activities
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
@@ -815,7 +829,7 @@ export default function Specifics() {
                   .map((ev, i) => (
                     <div
                       key={i}
-                      className="bg-white/5 border border-white/10 rounded-xl w-72 shrink-0 hover:bg-white/10 transition-all duration-200"
+                      className="bg-white border border-[#102b72]/20 rounded-xl w-72 shrink-0 hover:bg-[#102b72]/5 transition-all duration-200"
                     >
                       <img
                         src={`/images/event_${i + 1}.jpg`}
@@ -827,26 +841,28 @@ export default function Specifics() {
                         className="w-full h-40 object-cover rounded-t-xl"
                       />
                       <div className="p-4">
-                        <h4 className="font-semibold text-lg mb-1">
+                        <h4 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
                           {ev.title}
                         </h4>
-                        <p className="text-gray-300 text-sm mb-3">
+                        <p className="text-sm mb-3" style={{ color: "#102b72", opacity: 0.7 }}>
                           {ev.distance}km from campus
                         </p>
-                        <p>Address: {ev.address[0]}</p>
-                        <p>
+                        <p style={{ color: "#102b72" }}>Address: {ev.address[0]}</p>
+                        <p style={{ color: "#102b72" }}>
                           <div>🚗 Driving time: {ev.DRIVE}</div>
                           <div>🚶 Walking time: {ev.WALK}</div>
                           <div>🚌 Public transport: {ev.TRANSIT}</div>
                         </p>
                         <Button
                           asChild
-                          className="w-full text-sm bg-blue-600 hover:bg-blue-700 text-white no-underline"
+                          className="w-full text-sm font-semibold no-underline"
+                          style={{ backgroundColor: "#102b72", color: "#ffffff" }}
                         >
                           <a
                             href="#"
                             title="View on shared map"
                             data-map-marker={ev.title}
+                            style={{ textDecoration: 'none', color: '#ffffff' }}
                           >
                             🎯 View on Map
                           </a>
@@ -863,9 +879,9 @@ export default function Specifics() {
         {showScrollButton && (
           <button
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-black/70 text-white shadow-md hover:bg-black/90 transition-opacity"
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-md transition-opacity"
             aria-label="Scroll to top"
-            style={{ backdropFilter: "blur(5px)" }}
+            style={{ backgroundColor: "#102b72", color: "#ffffff", backdropFilter: "blur(5px)" }}
           >
             ↑
           </button>
