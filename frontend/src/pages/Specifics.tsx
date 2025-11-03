@@ -11,6 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Star, ChevronDown, ChevronUp } from "lucide-react";
 import axios from "axios";
 import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import AccomodationSkeleton from "@/components/SpecificSchool/AccomodationSkeleton";
+import EventsSkeleton from "@/components/SpecificSchool/EventsSkeleton";
 const key =import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY
 
 
@@ -184,7 +186,8 @@ export default function Specifics() {
   const [showAllBaskets, setShowAllBaskets] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [distanceCalculated, setDistanceCalculated] = useState(false);
-
+  const[isEventsLoading, setIsEventsLoading] = useState(true);
+  const[isAccommodationsLoading, setIsAccommodationsLoading] = useState(true);
   /* =========================================================
      LOGIN STATE (IMPORTANT): Use sessionStorage set by LoginForm
      - We read uid/email/name (set after successful login)
@@ -420,6 +423,8 @@ export default function Specifics() {
 
     setAccommodations(Array.isArray(updatedAccomodations)? updatedAccomodations: []);
     setEvents(Array.isArray(updatedEvents) ? updatedEvents: []);
+    setIsAccommodationsLoading(false);
+    setIsEventsLoading(false);
   }
 
 
@@ -829,6 +834,9 @@ export default function Specifics() {
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
                 {
+                isAccommodationsLoading ? (
+                  <AccomodationSkeleton />
+                ) : 
                 accommodations
                   .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20))
                   .map((a, i) => (
@@ -889,7 +897,7 @@ export default function Specifics() {
                   ))
                   }
 
-                {accommodations.length ===0 || accommodations=== undefined ?
+                {!isAccommodationsLoading && (accommodations.length ===0 || accommodations=== undefined) ?
                     <div
                         style={{
                         padding: "12px 20px",
@@ -913,6 +921,9 @@ export default function Specifics() {
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
                 {
+                  isEventsLoading ? (
+                    <EventsSkeleton />
+                  ) : 
                 events
                 .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20))
                 .map((ev, i) => (
@@ -973,7 +984,7 @@ export default function Specifics() {
                     </div>
                   ))}
 
-                    {events=== undefined || events.length ==0?
+                    {!isEventsLoading && (events=== undefined || events.length ==0)?
                     <div
                     style={{
                     padding: "12px 20px",
@@ -984,7 +995,7 @@ export default function Specifics() {
                     fontWeight: 500
                     }}
                 >
-                    No accommodations found
+                    No events found
                 </div>
                 :null}
               </div>

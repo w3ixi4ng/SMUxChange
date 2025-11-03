@@ -10,6 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import CardSkeleton from "@/components/SchoolCardSkeleton";
 
 function scrollToTop() {
   const topElement = document.getElementById("top");
@@ -63,6 +64,7 @@ function Information() {
           b["mappable_basket"].length - a["mappable_basket"].length
       )
     );
+    setIsLoading(false);
   };
 
   const getAllCourseAreas = async () => {
@@ -87,6 +89,7 @@ function Information() {
           b["mappable_basket"].length - a["mappable_basket"].length
       )
     );
+    setIsLoading(false);
   };
 
   const getSchoolsByCourseAreaAndCountry = async (
@@ -106,6 +109,7 @@ function Information() {
           b["mappable_basket"].length - a["mappable_basket"].length
       )
     );
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -118,7 +122,7 @@ function Information() {
 
   useEffect(() => {
     setCurrentPage(1); // Reset to page 1 when filters change
-    
+    setIsLoading(true);
     if (courseArea !== "" && country !== "") {
       getSchoolsByCourseAreaAndCountry(courseArea, country);
     } else if (courseArea !== "") {
@@ -220,9 +224,15 @@ function Information() {
           {/* School Results */}
           <div className="container mx-auto mt-5 text-center">
             <div className="row justify-content-center">
-              {currentSchools.map((school: any) => (
-                <SchoolCard key={school["host_university"]} school={school} />
-              ))}
+              { isLoading ? (
+                Array.from({ length: 6 }).map((_, index) => (
+                  <CardSkeleton key={index} />
+                ))
+              ) : (
+                currentSchools.map((school: any) => (
+                  <SchoolCard key={school["host_university"]} school={school} />
+                ))
+              )}
             </div>
           </div>
 
