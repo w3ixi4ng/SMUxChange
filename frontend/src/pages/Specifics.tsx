@@ -655,7 +655,7 @@ export default function Specifics() {
               <div className="flex items-center gap-3">
                 <StarRating rating={avgRating || 0} />
                 <span className="font-semibold" style={{ color: "#102b72" }}>
-                  {avgRating ? avgRating.toFixed(2) : "–"}/5
+                  {avgRating ? avgRating.toFixed(1) + "/5.0" : ""}
                 </span>
               </div>
               <span className="text-sm" style={{ color: "#102b72" }}>
@@ -673,7 +673,17 @@ export default function Specifics() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                      <img src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(r.name)}`} alt="Profile" className="w-6 h-6 rounded-full" />
+                      <img
+                        src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(r.name)}`}
+                        alt="Profile"
+                        className="w-6 h-6 rounded-full"
+                        decoding="async"
+                        width={24}
+                        height={24}
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = "/images/university.jpg";
+                        }}
+                      />
                         <span className="font-semibold" style={{ color: "#102b72" }}>{r.name}</span>
                         <span className="text-xs" style={{ color: "#102b72", opacity: 0.7 }}>
                           {timeAgo(r.createdAt)}
@@ -682,7 +692,7 @@ export default function Specifics() {
                       <div className="flex items-center gap-2">
                         <StarRating rating={Number(r.rating) || 0} />
                         <span className="text-sm" style={{ color: "#102b72" }}>
-                          {(Number(r.rating) || 0).toFixed(1)}/5
+                          {(Number(r.rating) || 0).toFixed(1)}/5.0
                         </span>
                       </div>
                     </div>

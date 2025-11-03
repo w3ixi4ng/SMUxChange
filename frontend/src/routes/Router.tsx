@@ -196,7 +196,7 @@ function RouterView() {
                   style={{ textDecoration: 'none', border: 'none', cursor: 'pointer', borderRadius: '0.5rem' }}
                 >
                   {/* <User size={18} strokeWidth={2} /> */}
-                  <img src={`https://avatar.iran.liara.run/username?username=${name}`} alt="Profile" className="w-6 h-6 rounded-full" />
+                  <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
                   <span style={{ textDecoration: 'none' }}>Profile</span>
                   {isExpanded ? (
                     <ChevronUp size={16} strokeWidth={2} />

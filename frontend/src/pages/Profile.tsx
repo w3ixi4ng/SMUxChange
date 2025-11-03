@@ -26,7 +26,7 @@ function Profile() {
         window.location.href = backToUrl;
       }
       getSavedMaps(uid);
-    }
+    } 
   }, []);
 
 

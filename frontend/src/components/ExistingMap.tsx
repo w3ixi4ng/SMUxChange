@@ -13,6 +13,7 @@ type ChildProps = {
 function ExistingMap({ mapId, map, setSavedMaps }: ChildProps) {
 
     const uid = sessionStorage.getItem("uid") || "";
+    
 
 
     return (
@@ -26,7 +27,7 @@ function ExistingMap({ mapId, map, setSavedMaps }: ChildProps) {
                     <div className="p-4">
                         <h5 className="text-center text-lg font-semibold mb-1" style={{ color: "#102b72" }}>{map.university}</h5>
                         <p className="text-center text-xs mb-3" style={{ color: "#102b72", opacity: 0.7 }}>{map.country}</p>
-                        <div className="space-y-1.5 mb-3 max-h-96 overflow-y-auto">
+                        <div className="space-y-1.5 mb-3 overflow-y-auto">
                             {Object.keys(map['map']).filter((courseArea) => map['map'][courseArea].courses.length > 0).map((courseArea) => (
                                 <div key={courseArea} className="bg-white border border-[#102b72]/20 rounded-lg p-2">
                                     <p className="font-semibold text-xs mb-1" style={{ color: "#102b72" }}>{courseArea}</p>

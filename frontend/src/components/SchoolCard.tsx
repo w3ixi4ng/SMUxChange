@@ -1,4 +1,6 @@
+import axios from "axios";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 type ChildProps = {
     school: any;
@@ -10,6 +12,29 @@ function SchoolCard({ school }: ChildProps) {
         const basketColor = ['primary bg-gradient', 'success bg-gradient', 'danger bg-gradient', 'warning bg-gradient', 'info bg-gradient', 'secondary bg-gradient'];
         return basketColor[number];
     }
+
+    const [avgRating, setAvgRating] = useState<number>(0);
+    const [numberOfReviews, setNumberOfReviews] = useState<number>(0);
+
+    const getReviews = async () => {
+        try {
+            const response = await axios.get(`http://54.206.13.109:3001/database/getReviews/${encodeURIComponent(school['host_university'])}`);
+            const reviews = Array.isArray(response.data) ? response.data : [];
+            const count = reviews.length;
+            const sum = reviews.reduce((acc: number, r: any) => acc + Number(r?.rating || 0), 0);
+            setNumberOfReviews(count);
+            setAvgRating(count ? sum / count : 0);
+        } catch (e) {
+            console.log(e);
+            setNumberOfReviews(0);
+            setAvgRating(0);
+        }
+    }
+
+    useEffect(() => {
+        getReviews();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [school?.host_university]);
 
     return (
         <>
@@ -48,8 +73,10 @@ function SchoolCard({ school }: ChildProps) {
                             </div>
 
                             <p className="mb-2">
-                                <span className="rating text-warning">★★★★★</span>
-                                <small className="text-muted">(110 reviews)</small>
+                                <span className="text-warning">
+                                    {"★★★★★".slice(0, Math.round(avgRating))}
+                                </span>
+                                <small className="text-muted ms-1">{avgRating ? avgRating.toFixed(1) + "/5.0 ·" : ""}  {numberOfReviews} review{numberOfReviews === 1 ? "" : "s"}</small>
                             </p>
                             <div className="d-flex justify-content-between gap-2">
                                 <Link
@@ -60,15 +87,15 @@ function SchoolCard({ school }: ChildProps) {
                                 </Link>
                                 {/* ✅ CHANGE 1: Use <Link> instead of <a> so React Router handles navigation */}
                                 <Link
-                                // ✅ CHANGE 2: Dynamic URL with encoded university name
-                                to={`/specifics/${encodeURIComponent(school['host_university'])}`}
+                                    // ✅ CHANGE 2: Dynamic URL with encoded university name
+                                    to={`/specifics/${encodeURIComponent(school['host_university'])}`}
 
-                                // ✅ CHANGE 3: Pass the school object along via state so no re-fetch needed
-                                onClick={() =>  sessionStorage.setItem("school", JSON.stringify(school))} 
+                                    // ✅ CHANGE 3: Pass the school object along via state so no re-fetch needed
+                                    onClick={() => sessionStorage.setItem("school", JSON.stringify(school))}
 
-                                className="btn btn-outline-success btn-sm w-100"
+                                    className="btn btn-outline-success btn-sm w-100"
                                 >
-                                Learn More
+                                    Learn More
                                 </Link>
                             </div>
                         </div>

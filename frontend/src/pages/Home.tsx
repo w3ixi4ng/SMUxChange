@@ -57,19 +57,6 @@ function Home() {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
     
-    // Also scroll after render completes
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      
-      // One more attempt after a short delay
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-      }, 100);
-    });
   }, []);
 
   return (
@@ -100,7 +87,7 @@ function Home() {
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl font-normal mb-12 max-w-3xl mx-auto leading-relaxed" style={{ color: "#102b72", opacity: 0.8 }}>
-            A web application designed to help SMU students plan their exchange opportunities effectively
+            An application designed to help SMU students plan their exchange opportunities effectively
           </p>
 
           {/* CTA Buttons */}
@@ -119,9 +106,27 @@ function Home() {
                 className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg border-2 hover:shadow-md"
                 style={{ borderColor: "#102b72", color: "#102b72", backgroundColor: "transparent" }}
               >
-                Browse Universities
+                Browse Schools
               </Button>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* === Quick Stats === */}
+      <section className="relative px-6 md:px-12 lg:px-24 mb-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
+          <div className="bg-white/70 dark:bg-white/10 rounded-xl p-6 border border-[#102b72]/10">
+            <div className="text-3xl font-bold" style={{ color: "#102b72" }}>300+</div>
+            <div className="opacity-70">Partner Schools</div>
+          </div>
+          <div className="bg-white/70 dark:bg-white/10 rounded-xl p-6 border border-[#102b72]/10">
+            <div className="text-3xl font-bold" style={{ color: "#102b72" }}>20k+</div>
+            <div className="opacity-70">Mapped Modules</div>
+          </div>
+          <div className="bg-white/70 dark:bg-white/10 rounded-xl p-6 border border-[#102b72]/10 col-span-2 md:col-span-1">
+            <div className="text-3xl font-bold" style={{ color: "#102b72" }}>1k+</div>
+            <div className="opacity-70">Students Helped</div>
           </div>
         </div>
       </section>
