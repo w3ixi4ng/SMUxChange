@@ -1,20 +1,61 @@
 import MapSearch from "../components/MapSearch";
+import { useState, useEffect } from "react";
+
+function scrollToTop() {
+  const topElement = document.getElementById("top");
+  if (topElement) {
+    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
+  }
+}
 
 function Mappable() {
+
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  /* ========== Scroll listener (unchanged) ========== */
+  useEffect(() => {
+    function handleScroll() {
+      if (window.scrollY > 200) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    //  Main wrapper: switched to full-screen black backdrop, matches Home.tsx theme
+    <div id="top">
     <div
-      className="relative min-h-screen flex flex-col items-center justify-start text-white overflow-hidden"
+      className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden"
       style={{
-        backgroundColor: "#0a0a0a", // 📝 Deep black background
-        backgroundImage:
-          "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 25%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.04) 0%, transparent 30%)",
+        backgroundColor: "#eeeeee",
+        color: "#102b72",
       }}
     >
+      {/* === Subtle gradient + grid overlay === */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
       {/*  Keeps MapSearch above the animated background */}
       <div className="relative z-10 container mx-auto px-4 py-10">
         <MapSearch />
+      </div>
+      {/* Scroll to top */}
+        {showScrollButton && (
+          <button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-md transition-opacity"
+            aria-label="Scroll to top"
+            style={{ backgroundColor: "#102b72", color: "#ffffff", backdropFilter: "blur(5px)" }}
+          >
+            ↑
+          </button>
+        )}
       </div>
     </div>
   );

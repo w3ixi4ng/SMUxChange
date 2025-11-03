@@ -161,6 +161,7 @@ function Profile() {
     try {
       const response = await axios.get(`http://localhost:3001/database/getSavedMaps/${uid}`);
       setSavedMaps(response.data);
+      console.log(response.data);
     }
     catch (error) {
       console.log("API error getting saved maps:", error);
@@ -186,7 +187,7 @@ function Profile() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+      await axios.post('http://localhost:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
       setUserExists(true);
       setErrorMessage([]);
     } catch (error) {
@@ -311,20 +312,30 @@ function Profile() {
           </Modal.Footer>
         </Modal>
       )}
-      <div className={`${userExists ? "relative min-h-screen w-full text-white bg-[#0a0a0a] bg-[radial-gradient(circle_at_25%_25%,rgba(255,255,255,0.06)_0%,transparent_25%),radial-gradient(circle_at_75%_75%,rgba(255,255,255,0.04)_0%,transparent_30%)]"
-        : "bg-black"}`}>
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+      <div className={`${userExists ? "relative min-h-screen w-full"
+        : "bg-black"}`}
+        style={{
+          backgroundColor: userExists ? "#eeeeee" : undefined,
+          color: userExists ? "#102b72" : undefined,
+        }}>
+        {/* === Subtle gradient + grid overlay === */}
+        {userExists && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+          </>
+        )}
         <div className="relative z-10 container mx-auto px-4 py-10" style={{ opacity: userExists ? 1 : 0 }}>
           <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold mb-2">Profile</h1>
-            <p className="text-gray-400 text-sm">
+            <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Profile</h1>
+            <p className="text-sm" style={{ color: "#102b72" }}>
               Update your profile or update your existing map.
             </p>
           </div>
-          <div className="container col-12 mx-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg py-8 px-6 mb-10">
+          <div className="container col-12 mx-auto bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg py-8 px-6 mb-10">
             <div className="row justify-content-center">
               <div className="col-lg-6 col-12 mb-2">
-                <p className="text-gray-200 mb-1 font-bold">Name</p>
+                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Name</p>
                 <input
                   type="text"
                   className="form-control"
@@ -334,9 +345,10 @@ function Profile() {
                 />
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="text-gray-200 mb-1 font-bold">Faculty</p>
+                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Faculty</p>
                 <select
                   className="form-select"
+                  style={{ color: "#102b72" }}
                   value={faculty}
                   onChange={(e) => setFaculty(e.target.value)}
                 >
@@ -349,9 +361,10 @@ function Profile() {
                 </select>
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="text-gray-200 mb-1 font-bold">Major</p>
+                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Major</p>
                 <select
                   className="form-select"
+                  style={{ color: "#102b72" }}
                   value={major}
                   onChange={(e) => setMajor(e.target.value)}
                   disabled={toggleMajor}
@@ -365,9 +378,10 @@ function Profile() {
                 </select>
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="text-gray-200 mb-1 font-bold">Track</p>
+                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Track</p>
                 <select
                   className="form-select"
+                  style={{ color: "#102b72" }}
                   value={track}
                   onChange={(e) => setTrack(e.target.value)}
                   disabled={toggleTrack}
@@ -381,9 +395,10 @@ function Profile() {
                 </select>
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="text-gray-200 mb-1 font-bold">Second Major</p>
+                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Second Major</p>
                 <select
                   className="form-select"
+                  style={{ color: "#102b72" }}
                   value={secondMajor}
                   onChange={(e) => setSecondMajor(e.target.value)}
                 >
@@ -408,15 +423,15 @@ function Profile() {
             </div>
           </div>
           <div className="container col-12 mx-auto">
-            <h2 className="text-center mb-4 text-4xl text-bold">Your Saved Maps</h2>
+            <h2 className="text-center mb-4 text-4xl font-bold" style={{ color: "#102b72" }}>Your Saved Maps</h2>
             <div className="row justify-content-lg-center justify-content-md-start">
               {savedMaps.map((map) => (
-                <ExistingMap key={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps}/>
+                <ExistingMap key={map.id} mapId={map.id} map={map} setSavedMaps={setSavedMaps} savedMaps={savedMaps}/>
               ))}
             </div>
             {savedMaps.length === 0 && (
               <div className="col-12 mb-2 text-center">
-                <p className="text-gray-400 text-sm">No saved maps found. Start exploring!</p>
+                <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>No saved maps found. Start exploring!</p>
               </div>
             )}
           </div>

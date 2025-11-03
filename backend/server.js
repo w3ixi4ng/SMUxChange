@@ -12,6 +12,8 @@ import databaseRoutes from './routes/database_functions/database.js';
 import apartmentRoutes from './routes/api_functions/apartment.js';
 import loginRoutes from './routes/database_functions/login.js';
 import signupRoutes from './routes/database_functions/signup.js';
+import qrCodeRoutes from './routes/api_functions/qrCode.js';
+import geocodingRoutes from './routes/api_functions/geocoding.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -46,6 +48,9 @@ app.use('/api/apartments', apartmentRoutes);
 app.use('/database', databaseRoutes);
 app.use('/login', loginRoutes);
 app.use('/signup', signupRoutes);
+app.use('/api/qrCode', qrCodeRoutes);
+app.use('/api/geocoding', geocodingRoutes);
+
 
 
 // Start server
