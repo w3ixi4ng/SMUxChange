@@ -13,8 +13,6 @@ function Profile() {
 
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(true);
-
 
 
 
@@ -121,9 +119,7 @@ function Profile() {
     if (sessionStorage.getItem("name")) {
       setUserExists(true);
     }
-    if (userExists) {
-      setIsLoading(false);
-    }
+
   }, []);
 
   useEffect(() => {
@@ -199,10 +195,28 @@ function Profile() {
     setSecondMajor(sessionStorage.getItem("secondMajor") || "");
   }, []);
 
+  const fetchUser = async (uid: string) => {
+    try {
+      const response = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
+      const user = response.data;
+      sessionStorage.setItem("name", user.name);
+      sessionStorage.setItem("faculty", user.faculty);
+      sessionStorage.setItem("major", user.major);
+      sessionStorage.setItem("track", user.track);
+      sessionStorage.setItem("secondMajor", user.secondMajor);
+      setUserExists(true);
+    } catch (error) {
+      console.log("API error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser(uid || "");
+  }, []);
 
   return (
     <>
-      {!userExists && !isLoading && (
+      {!userExists &&  (
         <Modal
           show={!userExists}
           size="lg"

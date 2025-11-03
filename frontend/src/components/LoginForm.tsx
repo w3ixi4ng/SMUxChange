@@ -42,7 +42,7 @@ export function LoginForm({
         // Signed in 
         const user = userCredential.user;
         sessionStorage.setItem("uid", user.uid);
-        fetchUser(user.uid);
+        nav("/profile");
       })
       .catch((error) => {
         console.log(error);
@@ -50,20 +50,6 @@ export function LoginForm({
       });
   }
 
-  const fetchUser = async (uid: string) => {
-    try {
-      const response = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
-      const user = response.data;
-      sessionStorage.setItem("name", user.name);
-      sessionStorage.setItem("faculty", user.faculty);
-      sessionStorage.setItem("major", user.major);
-      sessionStorage.setItem("track", user.track);
-      sessionStorage.setItem("secondMajor", user.secondMajor);
-      nav("/profile");
-    } catch (error) {
-      console.log("API error:", error);
-    }
-  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
