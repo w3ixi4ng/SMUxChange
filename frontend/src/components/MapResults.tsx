@@ -34,7 +34,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   const fetchSchoolCores = async (faculty: string, major: string, track: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/database/getTracksByMajor/${faculty}`);
+      const response = await axios.get(`http://54.206.13.109:3001/database/getTracksByMajor/${faculty}`);
       const mapable_mods = JSON.parse(response.data[0].Mappable);
       let major_electives = mapable_mods[0]['Majors']['First Major'][major]['Major Elective'];
       setMajorElectives(major_electives);
@@ -71,7 +71,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   const fetchSecondMajors = async (secondMajor: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/database/getAllFaculty`);
+      const response = await axios.get(`http://54.206.13.109:3001/database/getAllFaculty`);
       const faculty = response.data;
       let records = {} as { [key: string]: string };
       for (let f of faculty) {
@@ -154,7 +154,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
   const saveMap = async () => {
     try {
       let filteredCourses = Object.fromEntries(Object.entries(selectedCourses).filter(([key, _]) => key != "undefined"));
-      await axios.post(`http://localhost:3001/database/saveMap`, {
+      await axios.post(`http://54.206.13.109:3001/database/saveMap`, {
         uid: uid,
         country: country,
         university: university,
@@ -176,7 +176,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   const getSavedMaps = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/database/getSavedMaps/${uid}`);
+      const response = await axios.get(`http://54.206.13.109:3001/database/getSavedMaps/${uid}`);
       setSavedMaps(response.data);
     }
     catch (error) {

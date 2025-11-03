@@ -37,7 +37,7 @@ function Information() {
 
   const getAllSchools = async () => {
     const response = await axios.get(
-      "http://localhost:3001/database/getAllExchangeSchools"
+      "http://54.206.13.109:3001/database/getAllExchangeSchools"
     );
     const schools = response.data;
     const uniqueCountries = [
@@ -55,7 +55,7 @@ function Information() {
 
   const getSchoolsByCountry = async (country: string) => {
     const response = await axios.get(
-      `http://localhost:3001/database/getAllExchangeSchoolsByCountry/${country}`
+      `http://54.206.13.109:3001/database/getAllExchangeSchoolsByCountry/${country}`
     );
     setSchools(
       response.data.sort(
@@ -67,7 +67,7 @@ function Information() {
 
   const getAllCourseAreas = async () => {
     const response = await axios.get(
-      "http://localhost:3001/database/getAllCourseAreas"
+      "http://54.206.13.109:3001/database/getAllCourseAreas"
     );
     const courseAreas = response.data;
     setCourseAreas(Object.keys(courseAreas[0]));
@@ -75,7 +75,7 @@ function Information() {
 
   const getSchoolsByCourseArea = async (courseArea: string) => {
     const response = await axios.get(
-      `http://localhost:3001/database/getAllExchangeSchools/`
+      `http://54.206.13.109:3001/database/getAllExchangeSchools/`
     );
     const schools = response.data;
     const schoolsByCourseArea = schools.filter((school: any) =>
@@ -94,7 +94,7 @@ function Information() {
     country: string
   ) => {
     const response = await axios.get(
-      `http://localhost:3001/database/getAllExchangeSchoolsByCountry/${country}`
+      `http://54.206.13.109:3001/database/getAllExchangeSchoolsByCountry/${country}`
     );
     const schools = response.data;
     const schoolsByCourseArea = schools.filter((school: any) =>

@@ -9,32 +9,22 @@ import { UpdateProfileAlert } from "@/components/UpdateProfileAlert";
 
 function Profile() {
   const uid = sessionStorage.getItem("uid");
+  const backToUrl = sessionStorage.getItem("backToUrl");
 
   const navigate = useNavigate();
 
-  const fetchUser = async (uid: string) => {
-    try {
-      const response = await axios.get(`http://localhost:3001/database/getProfile/${uid}`);
-      const user = response.data;
+  const [isLoading, setIsLoading] = useState(true);
 
-      setUserExists(true);
-      setName(user.name);
-      setFaculty(user.faculty);
-      setMajor(user.major);
-      setTrack(user.track);
-      setSecondMajor(user.secondMajor);
-    } catch (error) {
-      console.log("API error:", error);
-      setUserExists(false);
-    }
-  };
+
 
 
   useEffect(() => {
     if (!uid) {
       navigate("/login");
     } else {
-      fetchUser(uid);
+      if (backToUrl) {
+        window.location.href = backToUrl;
+      }
       getSavedMaps(uid);
     }
   }, []);
@@ -60,7 +50,7 @@ function Profile() {
   const fetchFaculties = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getAllFaculty`
+        `http://54.206.13.109:3001/database/getAllFaculty`
       );
       const faculties = response.data;
       const uniqueFaculties = [
@@ -75,7 +65,7 @@ function Profile() {
   const fetchMajors = async (faculty: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getFaculty/${faculty}`
+        `http://54.206.13.109:3001/database/getFaculty/${faculty}`
       );
       const majors = response.data;
       let mappable_mods = JSON.parse(majors[0].Mappable);
@@ -90,7 +80,7 @@ function Profile() {
   const fetchTracks = async (faculty: string, major: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getTracksByMajor/${faculty}`
+        `http://54.206.13.109:3001/database/getTracksByMajor/${faculty}`
       );
       const tracks = response.data;
       let mappable_mods = JSON.parse(tracks[0].Mappable);
@@ -106,7 +96,7 @@ function Profile() {
   const fetchSecondMajors = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getAllFaculty`
+        `http://54.206.13.109:3001/database/getAllFaculty`
       );
       const faculty = response.data;
       let records: string[] = [];
@@ -128,6 +118,12 @@ function Profile() {
   useEffect(() => {
     fetchFaculties();
     fetchSecondMajors();
+    if (sessionStorage.getItem("name")) {
+      setUserExists(true);
+    }
+    if (userExists) {
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -160,9 +156,8 @@ function Profile() {
 
   const getSavedMaps = async (uid: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/database/getSavedMaps/${uid}`);
+      const response = await axios.get(`http://54.206.13.109:3001/database/getSavedMaps/${uid}`);
       setSavedMaps(response.data);
-      console.log(response.data);
     }
     catch (error) {
       console.log("API error getting saved maps:", error);
@@ -188,7 +183,7 @@ function Profile() {
     }
 
     try {
-      await axios.post('http://localhost:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+      await axios.post('http://54.206.13.109:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
       setUserExists(true);
       setErrorMessage([]);
     } catch (error) {
@@ -207,7 +202,7 @@ function Profile() {
 
   return (
     <>
-      {!userExists && (
+      {!userExists && !isLoading && (
         <Modal
           show={!userExists}
           size="lg"
@@ -316,7 +311,7 @@ function Profile() {
         </Modal>
       )}
       <div className={`${userExists ? "relative min-h-screen w-full"
-        : "bg-black min-h-screen w-full"}`}
+        : ""}`}
         style={{
           backgroundColor: userExists ? "#eeeeee" : undefined,
           color: userExists ? "#102b72" : undefined,

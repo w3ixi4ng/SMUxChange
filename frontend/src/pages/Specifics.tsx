@@ -201,7 +201,7 @@ export default function Specifics() {
 
   async function get_cooridnates(address: string) {
     try {
-        const response = await axios.get(`http://localhost:3001/api/geocoding/${address}`);
+        const response = await axios.get(`http://54.206.13.109:3001/api/geocoding/${address}`);
         return response.data.results[0].geometry.location
     } catch(err) {
         console.log(err)
@@ -261,7 +261,7 @@ export default function Specifics() {
   async function get_events() {
     try {
       const response_data = await axios.get(
-        `http://localhost:3001/api/events/${data.city}/${data.country}`
+        `http://54.206.13.109:3001/api/events/${data.city}/${data.country}`
       );
       setEvents(Array.isArray(response_data.data.events_results)? response_data.data.events_results: []);
     } catch (err) {
@@ -272,7 +272,7 @@ export default function Specifics() {
   async function get_accomodations() {
     try {
       const response_data = await axios.get(
-        `http://localhost:3001/api/apartments/${data.host_university}`
+        `http://54.206.13.109:3001/api/apartments/${data.host_university}`
       );
       setAccommodations(Array.isArray(response_data.data)? response_data.data: []);
     } catch (err) {
@@ -289,7 +289,7 @@ export default function Specifics() {
   async function fetchReviews() {
     try {
       if (!data?.host_university) return;
-      const url = `http://localhost:3001/database/getReviews/${encodeURIComponent(
+      const url = `http://54.206.13.109:3001/database/getReviews/${encodeURIComponent(
         data.host_university
       )}`;
       const res = await axios.get(url);
@@ -336,7 +336,7 @@ export default function Specifics() {
         createdAt: Date.now(), // client timestamp for UI sorting (backend also tracks updated_at)
       };
 
-      await axios.post("http://localhost:3001/database/saveReview", payload);
+      await axios.post("http://54.206.13.109:3001/database/saveReview", payload);
 
       // reset inputs + refresh list
       setRatingInput("");
@@ -370,7 +370,7 @@ export default function Specifics() {
     for (let i = 0; i < mode_values.length; i++) {
       try {
         const response = await axios.get(
-          `http://localhost:3001/api/distance/${origin}/${destination}/${mode_values[i]}`
+          `http://54.206.13.109:3001/api/distance/${origin}/${destination}/${mode_values[i]}`
         );
         if (i == 0) {
           return_values["distance"] =
@@ -667,8 +667,9 @@ export default function Specifics() {
                     className="bg-white border border-[#102b72]/20 p-4 rounded-lg"
                   >
                     <div className="flex items-center justify-between">
-                      <div className="flex flex-col">
-                        <p className="font-semibold" style={{ color: "#102b72" }}>{r.name}</p>
+                      <div className="flex items-center gap-2">
+                      <img src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(r.name)}`} alt="Profile" className="w-6 h-6 rounded-full" />
+                        <span className="font-semibold" style={{ color: "#102b72" }}>{r.name}</span>
                         <span className="text-xs" style={{ color: "#102b72", opacity: 0.7 }}>
                           {timeAgo(r.createdAt)}
                         </span>

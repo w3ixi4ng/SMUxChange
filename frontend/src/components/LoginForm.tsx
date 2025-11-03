@@ -12,6 +12,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import axios from "axios";
+
 
 export function LoginForm({
   className,
@@ -40,13 +42,28 @@ export function LoginForm({
         // Signed in 
         const user = userCredential.user;
         sessionStorage.setItem("uid", user.uid);
-        nav("/profile");
+        fetchUser(user.uid);
       })
       .catch((error) => {
         console.log(error);
         setError("Invalid email or password");
       });
   }
+
+  const fetchUser = async (uid: string) => {
+    try {
+      const response = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
+      const user = response.data;
+      sessionStorage.setItem("name", user.name);
+      sessionStorage.setItem("faculty", user.faculty);
+      sessionStorage.setItem("major", user.major);
+      sessionStorage.setItem("track", user.track);
+      sessionStorage.setItem("secondMajor", user.secondMajor);
+      nav("/profile");
+    } catch (error) {
+      console.log("API error:", error);
+    }
+  };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

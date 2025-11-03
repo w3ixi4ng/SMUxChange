@@ -29,7 +29,7 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
 
     const updateMap = async () => {
         try {
-            await axios.post(`http://localhost:3001/database/updateMap`, {
+            await axios.post(`http://54.206.13.109:3001/database/updateMap`, {
                 mapId: mapId,
                 uid: uid,
                 map: selectedCourses

@@ -38,7 +38,7 @@ function RouterView() {
 
   const checkAdmin = async () => {
     try {
-    const response = await axios.post('http://localhost:3001/database/checkAdmin',
+    const response = await axios.post('http://54.206.13.109:3001/database/checkAdmin',
       { uid: sessionStorage.getItem("uid") })
       if (response.data.message === "admin") {
         setIsAdmin(true);

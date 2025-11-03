@@ -45,7 +45,7 @@ function MapSearch() {
   const fetchCountries = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3001/database/getAllExchangeSchools"
+        "http://54.206.13.109:3001/database/getAllExchangeSchools"
       );
 
       // Gets all exchange schools from backend, extracts unique country names for dropdown
@@ -62,7 +62,7 @@ function MapSearch() {
   const fetchUniversities = async (country: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getAllExchangeSchoolsByCountry/${country}`
+        `http://54.206.13.109:3001/database/getAllExchangeSchoolsByCountry/${country}`
       );
       const universities = response.data;
       const uniqueUniversities = [
@@ -79,7 +79,7 @@ function MapSearch() {
   const fetchFaculties = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getAllFaculty`
+        `http://54.206.13.109:3001/database/getAllFaculty`
       );
       const faculties = response.data;
       const uniqueFaculties = [
@@ -94,7 +94,7 @@ function MapSearch() {
   const fetchMajors = async (faculty: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getFaculty/${faculty}`
+        `http://54.206.13.109:3001/database/getFaculty/${faculty}`
       );
       const majors = response.data;
       let mappable_mods = JSON.parse(majors[0].Mappable);
@@ -109,7 +109,7 @@ function MapSearch() {
   const fetchTracks = async (faculty: string, major: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getTracksByMajor/${faculty}`
+        `http://54.206.13.109:3001/database/getTracksByMajor/${faculty}`
       );
       const tracks = response.data;
       let mappable_mods = JSON.parse(tracks[0].Mappable);
@@ -125,7 +125,7 @@ function MapSearch() {
   const fetchSecondMajors = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/database/getAllFaculty`
+        `http://54.206.13.109:3001/database/getAllFaculty`
       );
       const faculty = response.data;
       let records: string[] = [];

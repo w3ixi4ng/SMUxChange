@@ -31,7 +31,7 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
 
   const fetchSchoolCores = async (faculty: string, major: string, track: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/database/getTracksByMajor/${faculty}`);
+      const response = await axios.get(`http://54.206.13.109:3001/database/getTracksByMajor/${faculty}`);
       const mapable_mods = JSON.parse(response.data[0].Mappable);
       let major_electives = mapable_mods[0]['Majors']['First Major'][major]['Major Elective'];
       setMajorElectives(major_electives);
@@ -68,7 +68,7 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
 
   const fetchSecondMajors = async (secondMajor: string) => {
     try {
-      const response = await axios.get(`http://localhost:3001/database/getAllFaculty`);
+      const response = await axios.get(`http://54.206.13.109:3001/database/getAllFaculty`);
       const faculty = response.data;
       let records = {} as { [key: string]: string };
       for (let f of faculty) {
