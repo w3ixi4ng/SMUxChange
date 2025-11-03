@@ -1,5 +1,6 @@
 import MapSearch from "../components/MapSearch";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function scrollToTop() {
   const topElement = document.getElementById("top");
@@ -11,6 +12,7 @@ function scrollToTop() {
 function Mappable() {
 
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const navigate = useNavigate();
   /* ========== Scroll listener (unchanged) ========== */
   useEffect(() => {
     function handleScroll() {
@@ -26,6 +28,15 @@ function Mappable() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("uid") &&
+      !(sessionStorage.getItem("name") || "").trim()
+    ) {
+      navigate("/profile");
+    }
   }, []);
 
   return (

@@ -15,6 +15,7 @@ import {
   LogIn,
   LogOut,
   UserPlus,
+  ShieldCheck,
 } from "lucide-react";
 import Home from "../pages/Home.tsx";
 import Information from "../pages/Information.tsx";
@@ -37,9 +38,6 @@ function RouterView() {
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [name, setName] = useState<string>(sessionStorage.getItem("name") || "");
-
-
-
 
 
   const checkAdmin = async () => {
@@ -76,12 +74,9 @@ function RouterView() {
     // Listen for auth changes
     window.addEventListener("authChange", checkLogin);
 
-    // Poll for changes (in case of same-tab navigation)
-    const interval = setInterval(checkLogin, 1000);
-
+    // Remove frequent polling to avoid repeated admin checks
     return () => {
       window.removeEventListener("authChange", checkLogin);
-      clearInterval(interval);
     };
   }, []);
 
@@ -127,7 +122,7 @@ function RouterView() {
 
           {/* Nav links */}
           <div className="flex flex-1 flex-col lg:flex-row items-center justify-end gap-1 lg:gap-2 mt-4 lg:mt-0">
-            {isLoggedIn && isAdmin ? (
+            {isAdmin ? (
               <>
                 <NavLink
                   to="/admin"
@@ -138,6 +133,7 @@ function RouterView() {
                     }`}
                   style={{ textDecoration: 'none' }}
                 >
+                  <ShieldCheck size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Admin</span>
                 </NavLink>
                 <NavLink
@@ -282,17 +278,26 @@ function RouterView() {
       {/* ===== Page Content ===== */}
       <main>
         <Routes>
+          {!isAdmin && (
+            <>
           <Route path="/" element={<Home />} />
           <Route path="/information" element={<Information />} />
           <Route path="/mappable" element={<Mappable />} />
           <Route path="/mappable/:school/:country" element={<Mappable />} />
           <Route path="/specifics/:universityName" element={<Specifics />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/shareMap" element={<ShareMap />} />
+          </>
+          )}
+          {isAdmin && (
+            <>
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/logout" element={<Logout />} />
+            </>
+          )}
         </Routes>
       </main>
     </Router>

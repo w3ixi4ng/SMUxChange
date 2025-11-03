@@ -2,9 +2,12 @@ import express from 'express';
 import admin from 'firebase-admin';
 import dotenv from 'dotenv';
 const router = express.Router();
-
+import OpenAI from "openai";
 
 dotenv.config();
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+});
 
 const serviceAccount = JSON.parse(process.env.DATABASE_KEY);
 
@@ -325,6 +328,13 @@ router.post('/saveReview', async (req, res) => {
     }
     // Save / update the student's review
     // Using 'uid' as doc ID = one review per user (can be updated later)
+
+    const moderation = await openai.moderations.create({ input: comment });
+    if (moderation.results[0].flagged) {
+        console.log(moderation.results[0]);
+      return res.status(400).json({ error: "Review contains inappropriate content" });
+    }
+
     await db.collection("school_reviews")
       .doc(schoolId)
       .collection("user_reviews")
@@ -377,5 +387,42 @@ router.get('/getReviews/:university', async (req, res) => {
   } catch (err) {
     console.error("Error getting reviews:", err);
     res.status(500).json({ error: "Failed to get reviews" });
+  }
+});
+
+router.post('/getSchoolsWithReviews', async(req,res) => {
+    try {
+        const ref = await db.collection('school_reviews').get();
+        let records = [];
+        ref.forEach(doc => {
+            let data = doc.data();
+            records.push(data.name);
+        });
+        res.json(records);
+        
+    } catch(err) {
+        console.log(err);
+    }
+})
+
+router.delete('/deleteReview/:uid/:school', async (req, res) => {
+  try {
+    const { uid, school } = req.params;
+    // Find the school document first
+    const schoolSnap = await db
+      .collection('school_reviews')
+      .where('name', '==', school)
+      .get();
+
+    if (schoolSnap.empty) {
+      return res.status(404).json({ error: 'School not found' });
+    }
+
+    const schoolDocRef = schoolSnap.docs[0].ref;
+    await schoolDocRef.collection('user_reviews').doc(uid).delete();
+    res.json({ message: 'Review deleted successfully' });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: 'Failed to delete review' });
   }
 });

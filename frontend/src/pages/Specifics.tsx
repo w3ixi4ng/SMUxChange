@@ -14,6 +14,7 @@ import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps
 import AccomodationSkeleton from "@/components/SpecificSchool/AccomodationSkeleton";
 import EventsSkeleton from "@/components/SpecificSchool/EventsSkeleton";
 const key =import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY
+import { toast } from "sonner";
 
 
 /* ===========================
@@ -339,16 +340,20 @@ export default function Specifics() {
         createdAt: Date.now(), // client timestamp for UI sorting (backend also tracks updated_at)
       };
 
-      await axios.post("http://54.206.13.109:3001/database/saveReview", payload);
+      await axios.post("http://localhost:3001/database/saveReview", payload);
 
       // reset inputs + refresh list
       setRatingInput("");
       setCommentInput("");
       await fetchReviews();
-      alert("✅ Review submitted!");
+      toast.success("Review submitted!", {
+        description: "Your review has been submitted successfully.",
+      });
     } catch (e) {
       console.log("Error submitting review:", e);
-      alert("Failed to submit review.");
+      toast.error("Failed to submit review.", {
+        description: "Error: " + (e as any).response?.data?.error,
+      });
     }
   }
 

@@ -11,6 +11,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 import CardSkeleton from "@/components/SchoolCardSkeleton";
+import { useNavigate } from "react-router-dom";
 
 function scrollToTop() {
   const topElement = document.getElementById("top");
@@ -22,7 +23,7 @@ function scrollToTop() {
 function Information() {
   // Scroll constant
   const [showScrollButton, setShowScrollButton] = useState(false);
-
+  const navigate = useNavigate();
   const [schools, setSchools] = useState<string[]>([]);
   const [countries, setCountries] = useState<string[]>([]);
   const [country, setCountry] = useState<string>("");
@@ -152,6 +153,15 @@ function Information() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentSchools = schools.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("uid") &&
+      !(sessionStorage.getItem("name") || "").trim()
+    ) {
+      navigate("/profile");
+    }
+  }, []);
 
   return (
     <div id="top">
