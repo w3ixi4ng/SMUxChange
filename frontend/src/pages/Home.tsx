@@ -222,9 +222,9 @@ function Home() {
       {showScrollButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-md transition-opacity hover:scale-110"
+          className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
           aria-label="Scroll to top"
-          style={{ backgroundColor: "#102b72", color: "#ffffff", backdropFilter: "blur(5px)" }}
+          style={{ backgroundColor: "#102b72", color: "#ffffff" }}
         >
           ↑
         </button>
