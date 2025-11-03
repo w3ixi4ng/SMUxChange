@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 export function SignupForm({
@@ -47,12 +47,21 @@ export function SignupForm({
       .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
-        sessionStorage.setItem("uid", user.uid);
-        navigate("/login");
       })
       .catch((error) => {
         setError("Email already in use");
         console.log(error);
+      })
+      .finally(() => {
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            sessionStorage.setItem("uid", user.uid);
+            navigate("/profile");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       });
   };
 
