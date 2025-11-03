@@ -42,12 +42,25 @@ export function LoginForm({
         // Signed in 
         const user = userCredential.user;
         sessionStorage.setItem("uid", user.uid);
-        nav("/profile");
+        checkAdmin();
       })
       .catch((error) => {
         console.log(error);
         setError("Invalid email or password");
       });
+  }
+
+  const checkAdmin = async () => {
+    try {
+      const response = await axios.post('http://54.206.13.109:3001/database/checkAdmin', { uid: sessionStorage.getItem("uid") });
+      if (response.data.message === "admin") {
+        nav("/admin");
+      } else {
+        nav("/profile");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 

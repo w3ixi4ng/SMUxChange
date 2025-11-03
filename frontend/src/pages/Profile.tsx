@@ -10,12 +10,37 @@ import { UpdateProfileAlert } from "@/components/UpdateProfileAlert";
 function Profile() {
   const uid = sessionStorage.getItem("uid");
   const backToUrl = sessionStorage.getItem("backToUrl");
-
+  
   const navigate = useNavigate();
-
-
-
-
+  
+  
+  
+  const fetchUser = async (uid: string) => {
+    try {
+      const response = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
+      const user = response.data;
+      sessionStorage.setItem("name", user.name);
+      sessionStorage.setItem("faculty", user.faculty);
+      sessionStorage.setItem("major", user.major);
+      sessionStorage.setItem("track", user.track);
+      sessionStorage.setItem("secondMajor", user.secondMajor);
+      // update controlled inputs immediately
+      setName(user.name || "");
+      setFaculty(user.faculty || "");
+      setMajor(user.major || "");
+      setTrack(user.track || "");
+      setSecondMajor(user.secondMajor || "");
+      setUserExists(true);
+    } catch (error) {
+      console.log("API error:", error);
+      setUserExists(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchUser(uid || "");
+  }, [uid]);
+  
   useEffect(() => {
     if (!uid) {
       navigate("/login");
@@ -136,16 +161,6 @@ function Profile() {
     }
   }, [major]);
 
-  useEffect(() => {
-    if (userExists) {
-      sessionStorage.setItem("name", name);
-      sessionStorage.setItem("faculty", faculty);
-      sessionStorage.setItem("major", major);
-      sessionStorage.setItem("track", track);
-      sessionStorage.setItem("secondMajor", secondMajor);
-
-    }
-  }, [userExists, name, faculty, major, track, secondMajor]);
 
 
   const [savedMaps, setSavedMaps] = useState<any[]>([]);
@@ -195,24 +210,6 @@ function Profile() {
     setSecondMajor(sessionStorage.getItem("secondMajor") || "");
   }, []);
 
-  const fetchUser = async (uid: string) => {
-    try {
-      const response = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
-      const user = response.data;
-      sessionStorage.setItem("name", user.name);
-      sessionStorage.setItem("faculty", user.faculty);
-      sessionStorage.setItem("major", user.major);
-      sessionStorage.setItem("track", user.track);
-      sessionStorage.setItem("secondMajor", user.secondMajor);
-      setUserExists(true);
-    } catch (error) {
-      console.log("API error:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUser(uid || "");
-  }, []);
 
   return (
     <>
