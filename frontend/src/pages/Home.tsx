@@ -13,6 +13,7 @@ function scrollToTop() {
 function Home() {
   // Scroll constant
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [logoLoaded, setLogoLoaded] = useState(false);
 
   const features = [
     {
@@ -62,7 +63,7 @@ function Home() {
   return (
     <div id="top">
     <div
-      className="relative w-full"
+      className="relative w-full min-h-screen"
       style={{
         backgroundColor: "#eeeeee",
         color: "#102b72",
@@ -77,43 +78,48 @@ function Home() {
         <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-5xl mx-auto">
           {/* Logo */}
           <div className="mb-12">
-            <ThreeDLogo/>
+            <ThreeDLogo onLoaded={() => setLogoLoaded(true)} />
           </div>
 
           {/* Main Title */}
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{ color: "#102b72" }}>
-            SMUxChange
-          </h1>
+          {logoLoaded && (
+            <>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{ color: "#102b72" }}>
+                SMUxChange
+              </h1>
 
-          {/* Subtitle */}
-          <p className="text-xl md:text-2xl font-normal mb-12 max-w-3xl mx-auto leading-relaxed" style={{ color: "#102b72", opacity: 0.8 }}>
-            An application designed to help SMU students plan their exchange opportunities effectively
-          </p>
+              {/* Subtitle */}
+              <p className="text-xl md:text-2xl font-normal mb-12 max-w-3xl mx-auto leading-relaxed" style={{ color: "#102b72", opacity: 0.8 }}>
+                An application designed to help SMU students plan their exchange opportunities effectively
+              </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/Mappable">
-              <Button
-                className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg shadow-md hover:shadow-lg"
-                style={{ backgroundColor: "#102b72", color: "#ffffff" }}
-              >
-                Start Planning
-              </Button>
-            </Link>
-            <Link to="/information">
-              <Button
-                variant="outline"
-                className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg border-2 hover:shadow-md"
-                style={{ borderColor: "#102b72", color: "#102b72", backgroundColor: "transparent" }}
-              >
-                Browse Schools
-              </Button>
-            </Link>
-          </div>
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Link to="/Mappable">
+                  <Button
+                    className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg shadow-md hover:shadow-lg"
+                    style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                  >
+                    Start Planning
+                  </Button>
+                </Link>
+                <Link to="/information">
+                  <Button
+                    variant="outline"
+                    className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg border-2 hover:shadow-md"
+                    style={{ borderColor: "#102b72", color: "#102b72", backgroundColor: "transparent" }}
+                  >
+                    Browse Schools
+                  </Button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </section>
 
       {/* === Quick Stats === */}
+      {logoLoaded && (
       <section className="relative px-6 md:px-12 lg:px-24 mb-4">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 text-center">
           <div className="bg-white/70 dark:bg-white/10 rounded-xl p-6 border border-[#102b72]/10">
@@ -130,8 +136,10 @@ function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* === Key Features Section === */}
+      {logoLoaded && (
       <section className="relative py-20 px-6 md:px-12 lg:px-24" style={{ backgroundColor: "#987d4d" }}>
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
@@ -186,8 +194,10 @@ function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* === Call to Action Section === */}
+      {logoLoaded && (
       <section className="relative py-20 px-6 md:px-12 lg:px-24">
         <div className="max-w-4xl mx-auto text-center bg-white/80 backdrop-blur-sm border border-[#102b72]/20 rounded-3xl shadow-lg p-12 md:p-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6" style={{ color: "#102b72" }}>
@@ -206,6 +216,7 @@ function Home() {
           </Link>
         </div>
       </section>
+      )}
 
       {/* Scroll to top */}
       {showScrollButton && (

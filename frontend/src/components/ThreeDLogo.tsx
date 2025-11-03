@@ -3,7 +3,11 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 
-export default function ThreeDLogo() {
+type ThreeDLogoProps = {
+    onLoaded?: () => void;
+};
+
+export default function ThreeDLogo({ onLoaded }: ThreeDLogoProps) {
     const mountRef = useRef<HTMLDivElement>(null);
     const logoRef = useRef<THREE.Group>(null);
 
@@ -36,6 +40,7 @@ export default function ThreeDLogo() {
                 const logo = gltf.scene;
                 scene.add(logo);
                 logoRef.current = logo;
+                if (onLoaded) onLoaded();
             },
             function (xhr) {
                 console.log((xhr.loaded / xhr.total * 100) + '% loaded');
@@ -43,6 +48,7 @@ export default function ThreeDLogo() {
             function (error) {
                 console.log('An error happened');
                 console.log(error);
+                if (onLoaded) onLoaded();
             }
         );
 
