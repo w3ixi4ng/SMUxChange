@@ -11,7 +11,7 @@ export default function Admin() {
 
     const deleteReview = async (uid: string, school: string) => {
         try {
-            await axios.delete(`http://localhost:3001/database/deleteReview/${uid}/${school}`);
+            await axios.delete(`http://54.206.13.109:3001/database/deleteReview/${uid}/${school}`);
             setReviews((prev: any) => prev.filter((r: any) => !(r.uid === uid && r.school === school)));
         } catch (error) {
             console.log(error);
@@ -20,7 +20,7 @@ export default function Admin() {
 
     const getSchoolsWithReviews = async () => {
         try {
-            const response = await axios.post('http://localhost:3001/database/getSchoolsWithReviews');
+            const response = await axios.post('http://54.206.13.109:3001/database/getSchoolsWithReviews');
             setSchools(response.data);
         } catch (error) {
             console.log(error);
@@ -34,7 +34,7 @@ export default function Admin() {
 
     useEffect(() => {
         schools.forEach(async (school: string) => {
-            const response = await axios.get(`http://localhost:3001/database/getReviews/${school}`);
+            const response = await axios.get(`http://54.206.13.109:3001/database/getReviews/${school}`);
             const enriched = (Array.isArray(response.data) ? response.data : []).map((r: any) => ({ ...r, school }));
             setReviews(prevReviews => [...prevReviews, ...enriched] as any);
         });

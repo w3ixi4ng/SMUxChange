@@ -340,7 +340,7 @@ export default function Specifics() {
         createdAt: Date.now(), // client timestamp for UI sorting (backend also tracks updated_at)
       };
 
-      await axios.post("http://localhost:3001/database/saveReview", payload);
+      await axios.post("http://54.206.13.109:3001/database/saveReview", payload);
 
       // reset inputs + refresh list
       setRatingInput("");
