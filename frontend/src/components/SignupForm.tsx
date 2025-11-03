@@ -47,22 +47,20 @@ export function SignupForm({
       .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
+        signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          sessionStorage.setItem("uid", user.uid);
+          navigate("/profile");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
       })
       .catch((error) => {
         setError("Email already in use");
         console.log(error);
       })
-      .finally(() => {
-        signInWithEmailAndPassword(auth, email, password)
-          .then((userCredential) => {
-            const user = userCredential.user;
-            sessionStorage.setItem("uid", user.uid);
-            navigate("/profile");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
   };
 
   useEffect(() => {
