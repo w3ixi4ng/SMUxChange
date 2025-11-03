@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,10 +10,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Star, ChevronDown, ChevronUp } from "lucide-react";
 import axios from "axios";
+import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+const key =import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY
+
 
 /* ===========================
    HELPERS (unchanged)
    =========================== */
+
+declare global {
+    interface Window {
+        google: any;
+    }
+}
+
 function filenameFromName(name: string) {
   return (name || "")
     .toLowerCase()
@@ -21,6 +31,7 @@ function filenameFromName(name: string) {
     .replace(/[,.'"`()/&:+\-]/g, "")
     .replace(/\s+/g, "_");
 }
+
 
 function getCountryCode(countryName?: string) {
   const map: Record<string, string> = {
@@ -156,7 +167,6 @@ export default function Specifics() {
   /* ========== School data (unchanged) ========== */
   const [data, setData] = useState(() => {
     const schoolData = sessionStorage.getItem("school");
-    console.log(schoolData);
     if (schoolData) {
       const parse_data = JSON.parse(schoolData);
       return {
@@ -168,7 +178,7 @@ export default function Specifics() {
     return null;
   });
 
-  const [maxPrice, setMaxPrice] = useState(2000);
+
   const [accommodations, setAccommodations] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [showAllBaskets, setShowAllBaskets] = useState(false);
@@ -180,7 +190,41 @@ export default function Specifics() {
      - We read uid/email/name (set after successful login)
      - This is what controls whether the review form shows up
      ========================================================= */
-  const [currentUser, setCurrentUser] = useState<null | { uid: string; email?: string | null; name?: string | null }>(null);
+    const [currentUser, setCurrentUser] = useState<null | { uid: string; email?: string | null; name?: string | null }>(null);
+
+    const [showMap, setShowMap] = useState(false);
+    const [mapCoords, setMapCoords] = useState<{lat: number, lng: number} | null>(null);
+
+    const [updateRequired, setUpdateRequired] = useState(false);
+
+
+
+  async function get_cooridnates(address: string) {
+    try {
+        const response = await axios.get(`http://localhost:3001/api/geocoding/${address}`);
+        return response.data.results[0].geometry.location
+    } catch(err) {
+        console.log(err)
+    }
+  }
+
+  function handleShowMap(address: string) {
+    return async () => {
+        const coords = await get_cooridnates(address);
+        console.log(coords);
+        if (coords) {
+            setMapCoords(coords);
+            setShowMap(true);
+            setUpdateRequired(true);
+
+            const mapElement = document.getElementById("map-section");
+            if (mapElement) {
+                mapElement.scrollIntoView({behavior : "smooth"})
+            }
+        }
+    }
+  }
+
 
   useEffect(() => {
     // IMPORTANT: this is the ONLY source of truth for UI login state right now
@@ -219,8 +263,7 @@ export default function Specifics() {
       const response_data = await axios.get(
         `http://localhost:3001/api/events/${data.city}/${data.country}`
       );
-      console.log(response_data.data.events_results);
-      setEvents(response_data.data.events_results);
+      setEvents(Array.isArray(response_data.data.events_results)? response_data.data.events_results: []);
     } catch (err) {
       console.log(err);
     }
@@ -231,7 +274,7 @@ export default function Specifics() {
       const response_data = await axios.get(
         `http://localhost:3001/api/apartments/${data.host_university}`
       );
-      setAccommodations(response_data.data);
+      setAccommodations(Array.isArray(response_data.data)? response_data.data: []);
     } catch (err) {
       console.log(err);
     }
@@ -347,11 +390,15 @@ export default function Specifics() {
   async function get_distance() {
     const updatedAccomodations: any[] = [];
     const updatedEvents: any[] = [];
+    console.log(accommodations)
+    console.log(events);
     for (let i = 0; i < accommodations.length; i++) {
       const distanceData = await helper_distance(
         data["host_university"],
         accommodations[i]["formatted_address"]
       );
+
+      console.log(distanceData);
 
       updatedAccomodations.push({
         ...accommodations[i],
@@ -368,9 +415,15 @@ export default function Specifics() {
         ...distance_event_data,
       });
     }
-    setAccommodations(updatedAccomodations);
-    setEvents(updatedEvents);
+    updatedAccomodations.sort((a,b) => a.distance-b.distance);
+    updatedEvents.sort((a,b) => a.distance-b.distance);
+
+    setAccommodations(Array.isArray(updatedAccomodations)? updatedAccomodations: []);
+    setEvents(Array.isArray(updatedEvents) ? updatedEvents: []);
   }
+
+
+
 
   /* ========== Effects bootstrapping (unchanged) ========== */
   useEffect(() => {
@@ -689,20 +742,24 @@ export default function Specifics() {
         </Card>
 
         {/* === PLAN YOUR STAY & EXPLORE NEARBY === */}
+
         <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
-              Plan Your Stay & Explore Nearby
-            </CardTitle>
-            <CardDescription style={{ color: "#102b72" }}>
-              Discover nearby accommodations and events — all connected on the
-              same interactive map.
-            </CardDescription>
-          </CardHeader>
+                <div id="map-section">
+                <CardHeader>
+                    <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
+                    Plan Your Stay & Explore Nearby
+                    </CardTitle>
+                    <CardDescription style={{ color: "#102b72" }}>
+                    Discover nearby accommodations and events — all connected on the
+                    same interactive map.
+                    </CardDescription>
+                </CardHeader>
+                </div>
 
           <CardContent className="space-y-6">
             {/* Map Placeholder */}
-            <div className="relative w-full h-96 rounded-xl overflow-hidden border border-[#102b72]/20 shadow-lg">
+            {!showMap && (
+            <div className="mapplaceholder relative w-full h-96 rounded-xl overflow-hidden border border-[#102b72]/20 shadow-lg">
               <img
                 src="/images/map_placeholder_api.jpg"
                 alt="Interactive Map Placeholder"
@@ -714,37 +771,44 @@ export default function Specifics() {
                   Maps / Mapbox)
                 </p>
               </div>
-            </div>
+            </div>)
+            }
 
-            {/* Filters */}
+            {showMap && mapCoords && (
+            <APIProvider apiKey={key}>
+                <Map
+                style={{
+                    width: "100%",
+                    height: "384px",
+                    borderRadius: "1rem",
+                    position: "relative"
+                }}
+                center={updateRequired? mapCoords: undefined}
+                zoom={16}
+                
+                mapId="DEMO_MAP_ID"
+                disableDefaultUI={false}
+                >
+                <AdvancedMarker position={mapCoords} title="Selected Location">
+                    <Pin background="#FFD700" glyphColor="#000" borderColor="#000" />
+                </AdvancedMarker>
+                </Map>
+            </APIProvider>
+            )}
+
+
             <div className="grid sm:grid-cols-2 gap-6 mt-6">
-              {/* Price filter temporarily hidden
-              <div>
-                <label className="block mb-2 text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
-                  Filter by max price (${maxPrice})
-                </label>
-                <Input
-                  type="range"
-                  min={500}
-                  max={2000}
-                  step={100}
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(Number(e.target.value))}
-                  className="w-full"
-                  style={{ accentColor: "#102b72" }}
-                />
-              </div>*/}
 
               <div>
-                <label className="block mb-2 text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
-                  Filter by max distance ({data?.maxDistance ?? "2.0"} km)
+                <label className="block mb-2 text-gray-400 text-sm">
+                  Filter by max distance ({data.maxDistance ?? "20"} km)
                 </label>
                 <Input
                   type="range"
                   min={0.5}
-                  max={5}
-                  step={0.1}
-                  value={data?.maxDistance ?? 2.0}
+                  max={20}
+                  step={0.5}
+                  value={data.maxDistance ?? 20}
                   onChange={(e) =>
                     setData((prev: any) => ({
                       ...prev,
@@ -763,11 +827,9 @@ export default function Specifics() {
                 Nearby Accommodations
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
-                {accommodations
-                  .filter(
-                    (a) =>
-                      parseFloat(a.distance) <= (data?.maxDistance ?? 2.0)
-                  )
+                {
+                accommodations
+                  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20))
                   .map((a, i) => (
                     <div
                       key={i}
@@ -791,11 +853,23 @@ export default function Specifics() {
                         </p>
                         <p style={{ color: "#102b72" }}>Address: {a.formatted_address}</p>
                         <p style={{ color: "#102b72" }}>
-                          <div>🚗 Driving time: {a.DRIVE}</div>
-                          <div>🚶 Walking time: {a.WALK}</div>
-                          <div>🚌 Public transport: {a.TRANSIT}</div>
+                          <div>🚗 Driving time: {
+                          !a.DRIVE || String(a.DRIVE).toLowerCase().includes('nan')?
+                          <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
+                          :a.DRIVE}</div>
+
+                          <div>🚶 Walking time: {
+                          !a.WALK || String(a.WALK).toLowerCase().includes('nan')?
+                          <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
+                          :a.WALK}</div>
+
+                          <div>🚌 Public transport: {
+                          !a.TRANSIT || String(a.TRANSIT).toLowerCase().includes('nan')?
+                          <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
+                          :a.TRANSIT}</div>
                         </p>
                         <Button
+                          onClick={handleShowMap(a.formatted_address)}
                           asChild
                           className="w-full text-sm font-semibold no-underline"
                           style={{ backgroundColor: "#102b72", color: "#ffffff" }}
@@ -811,7 +885,23 @@ export default function Specifics() {
                         </Button>
                       </div>
                     </div>
-                  ))}
+                  ))
+                  }
+
+                {accommodations.length ===0 || accommodations=== undefined ?
+                    <div
+                        style={{
+                        padding: "12px 20px",
+                        background: "#fee2e2",
+                        color: "#b91c1c",
+                        borderRadius: "8px",
+                        textAlign: "center",
+                        fontWeight: 500
+                        }}
+                    >
+                        No accommodations found
+                    </div>
+                :null}
               </div>
             </div>
 
@@ -821,39 +911,50 @@ export default function Specifics() {
                 Nearby Events & Activities
               </h3>
               <div className="flex overflow-x-auto gap-6 pb-3">
-                {events
-                  .filter(
-                    (ev) =>
-                      parseFloat(ev.distance) <= (data?.maxDistance ?? 2.0)
-                  )
-                  .map((ev, i) => (
-                    <div
-                      key={i}
-                      className="bg-white border border-[#102b72]/20 rounded-xl w-72 shrink-0 hover:bg-[#102b72]/5 transition-all duration-200"
-                    >
-                      <img
-                        src={`/images/event_${i + 1}.jpg`}
-                        onError={(e) =>
-                          ((e.currentTarget as HTMLImageElement).src =
-                            ev.thumbnail)
-                        }
-                        alt={ev.title}
-                        className="w-full h-40 object-cover rounded-t-xl"
-                      />
-                      <div className="p-4">
-                        <h4 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
-                          {ev.title}
-                        </h4>
-                        <p className="text-sm mb-3" style={{ color: "#102b72", opacity: 0.7 }}>
-                          {ev.distance}km from campus
-                        </p>
-                        <p style={{ color: "#102b72" }}>Address: {ev.address[0]}</p>
-                        <p style={{ color: "#102b72" }}>
-                          <div>🚗 Driving time: {ev.DRIVE}</div>
-                          <div>🚶 Walking time: {ev.WALK}</div>
-                          <div>🚌 Public transport: {ev.TRANSIT}</div>
+                {
+                events
+                .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20))
+                .map((ev, i) => (
+                  <div
+                    key={i}
+                    className="bg-white/5 border border-white/10 rounded-xl w-72 shrink-0 hover:bg-white/10 transition-all duration-200"
+                  >
+                    <img
+                      src={`/images/event_${i + 1}.jpg`}
+                      onError={(e) =>
+                        ((e.currentTarget as HTMLImageElement).src =
+                          ev.thumbnail)
+                      }
+                      alt={ev.title}
+                      className="w-full h-40 object-cover rounded-t-xl"
+                    />
+                    <div className="p-4">
+                      <h4 className="font-semibold text-lg mb-1">{ev.title}</h4>
+                      <p className="text-gray-300 text-sm mb-3">
+                        {ev.distance}km from campus
+                      </p>
+                      <p>
+                        Address: {ev.address[0]}
+                      </p>
+                      <p>
+                            <div>🚗 Driving time: {
+                            !ev.DRIVE || String(ev.DRIVE).toLowerCase().includes('nan')?
+                            <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
+                            :ev.DRIVE}</div>
+
+
+                             <div>🚶 Walking time: {
+                            !ev.WALK || String(ev.WALK).toLowerCase().includes('nan')?
+                            <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
+                            :ev.WALK}</div>
+
+                            <div>🚌 Public transport: {
+                            !ev.TRANSIT || String(ev.TRANSIT).toLowerCase().includes('nan')?
+                            <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
+                            :ev.TRANSIT}</div>
                         </p>
                         <Button
+                          onClick={handleShowMap(ev.address[0])}
                           asChild
                           className="w-full text-sm font-semibold no-underline"
                           style={{ backgroundColor: "#102b72", color: "#ffffff" }}
@@ -870,6 +971,21 @@ export default function Specifics() {
                       </div>
                     </div>
                   ))}
+
+                    {events=== undefined || events.length ==0?
+                    <div
+                    style={{
+                    padding: "12px 20px",
+                    background: "#fee2e2",
+                    color: "#b91c1c",
+                    borderRadius: "8px",
+                    textAlign: "center",
+                    fontWeight: 500
+                    }}
+                >
+                    No accommodations found
+                </div>
+                :null}
               </div>
             </div>
           </CardContent>

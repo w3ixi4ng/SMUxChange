@@ -11,6 +11,7 @@ import distanceRoutes from './routes/api_functions/distance.js';
 import databaseRoutes from './routes/database_functions/database.js';
 import apartmentRoutes from './routes/api_functions/apartment.js';
 import qrCodeRoutes from './routes/api_functions/qrCode.js';
+import geocodingRoutes from './routes/api_functions/geocoding.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -44,6 +45,8 @@ app.use('/api/distance', distanceRoutes);
 app.use('/api/apartments', apartmentRoutes);
 app.use('/database', databaseRoutes);
 app.use('/api/qrCode', qrCodeRoutes);
+app.use('/api/geocoding', geocodingRoutes);
+
 
 
 
