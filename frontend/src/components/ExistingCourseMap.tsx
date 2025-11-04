@@ -19,7 +19,7 @@ function ExistingCourseMap({ courseArea, university, onSelectedCoursesChange, se
     const [courses, setCourses] = useState([]);
 
     const fetchMappableCourses = async (courseArea: string, university: string) => {
-        const response = await axios.get(`http://54.206.13.109:3001/database/getByCourseAreaAndUniversity/${courseArea}/${university}`);
+        const response = await axios.get(`https://smuxchange-backend.vercel.app/database/getByCourseAreaAndUniversity/${courseArea}/${university}`);
         const courses = response.data;
         setCourses(courses);
         if (courses.length > 0) {

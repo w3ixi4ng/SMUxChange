@@ -43,6 +43,7 @@ export function LoginForm({
         // Signed in 
         const user = userCredential.user;
         sessionStorage.setItem("uid", user.uid);
+        toast.loading("Logging in...");
         checkAdmin();
       })
       .catch((error) => {
@@ -62,6 +63,8 @@ export function LoginForm({
         const profileResponse = await axios.get(`https://smuxchange-backend.vercel.app/database/getProfile/${uid}`);
         if (profileResponse.data?.name) {
           sessionStorage.setItem("name", profileResponse.data.name);
+          toast.dismiss();
+          toast.success("Login successful");
         }
       } catch (profileError) {
         // User might not have a profile yet, that's okay

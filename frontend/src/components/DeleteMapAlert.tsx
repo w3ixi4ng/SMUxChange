@@ -15,7 +15,7 @@ import { toast } from "sonner";
 export function DeleteMapAlert({ uid, mapId, setSavedMaps }: { uid: string, mapId: string, setSavedMaps: (maps: any) => void }) {
     const deleteMap = async (mapId: string) => {
         try {
-            await axios.delete(`http://54.206.13.109:3001/database/deleteMap/${uid}/${mapId}`);
+            await axios.delete(`https://smuxchange-backend.vercel.app/database/deleteMap/${uid}/${mapId}`);
             // Use function form to ensure we're working with the latest state
             setSavedMaps((prev: any[]) => {
                 const filtered = prev.filter((m: any) => String(m.id) !== String(mapId));

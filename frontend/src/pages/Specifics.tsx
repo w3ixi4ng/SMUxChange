@@ -235,12 +235,7 @@ export default function Specifics() {
     }
   }
 
-  /* =========================================================
-     FETCH REVIEWS (IMPORTANT): use port 3001 + path param
-     Backend route shape:
-       GET  /database/getReviews/:university
-       POST /database/saveReview
-     ========================================================= */
+
   async function fetchReviews() {
     try {
       if (!data?.host_university) return;

@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
+import { toast } from "sonner";
 
 export function SignupForm({
   className,
@@ -41,20 +42,36 @@ export function SignupForm({
     if (error !== "") {
       return;
     }
-
     const auth = getAuth(app);
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed up 
         const user = userCredential.user;
         sessionStorage.setItem("uid", user.uid);
-        // Dispatch authChange event to update navbar
+          // Dispatch authChange event to update navbar
         window.dispatchEvent(new Event('authChange'));
+        toast.loading("Signing up...");
+        toast.dismiss();
+        toast.success("Signup successful");
         navigate("/profile");
       })
       .catch((error) => {
-        setError("Email already in use");
-        console.log(error);
+        if (error.code === "auth/email-already-in-use") {
+          setError("Email already in use");
+          toast.error("Email already in use");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          console.log(error);
+        }
+        else if (error.code === "auth/invalid-email") {
+          setError("Invalid email");
+          toast.error("Invalid email");
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          console.log(error);
+        }
       })
   };
 
@@ -90,6 +107,7 @@ export function SignupForm({
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white border border-[#102b72]/30"
                   style={{ color: "#102b72" }}
+                  value={email}
                 />
               </Field>
               <Field>
@@ -103,6 +121,7 @@ export function SignupForm({
                       onChange={(e) => setPassword(e.target.value)}
                       className="bg-white border border-[#102b72]/30"
                       style={{ color: "#102b72" }}
+                      value={password}
                     />
                   </Field>
                   <Field>
@@ -116,6 +135,7 @@ export function SignupForm({
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="bg-white border border-[#102b72]/30"
                       style={{ color: "#102b72" }}
+                      value={confirmPassword}
                     />
                   </Field>
                 </Field>
