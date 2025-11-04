@@ -189,7 +189,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     if (uid != "") {
       getSavedMaps();
     }
-  }, [uid, getSavedMaps]);
+  }, [uid]);
 
 
   useEffect(() => {
