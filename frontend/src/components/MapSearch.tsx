@@ -364,7 +364,7 @@ function MapSearch() {
           {/* === SEARCH BUTTON === */}
           <div className="col-12 text-center mt-2">
             <button
-              className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg"
+              className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg"
               style={{ backgroundColor: "#102b72", color: "#ffffff" }}
               onClick={() => setMapResults(true)}
               disabled={paramsAreValid}

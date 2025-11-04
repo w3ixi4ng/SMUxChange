@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 import AccomodationSkeleton from "@/components/SpecificSchool/AccomodationSkeleton";
@@ -444,14 +445,6 @@ export default function Specifics() {
               <span style={{ color: "#102b72" }}>{data && data.country}</span>
             </div>
           </div>
-
-          {data?.website && (
-            <Button asChild variant="secondary" className="mt-4 md:mt-0" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
-              <a href={data.website} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: '#ffffff' }}>
-                Visit Website
-              </a>
-            </Button>
-          )}
         </div>
 
         {/* === HERO IMAGE === */}
@@ -488,11 +481,11 @@ export default function Specifics() {
             {/* === ROW 1: Email | Phone | Rating === */}
 
             {/* Rating */}
-            <div>
+            <div className="text-center">
               <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
                 Rating
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 justify-center">
                 <StarRating rating={avgRating || 0} />
                 <span className="text-sm" style={{ color: "#102b72" }}>
                   {avgRating ? avgRating.toFixed(1) + "/5.0" : "No ratings yet"}{" "}
@@ -501,11 +494,11 @@ export default function Specifics() {
               </div>
             </div>
             {/* GPA Requirements */}
-            <div>
+            <div className="text-center">
               <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
                 GPA Requirements
               </p>
-              <div className="flex flex-wrap gap-4 text-sm font-semibold mt-1">
+              <div className="flex flex-wrap gap-4 text-sm font-semibold mt-1 justify-center">
                 <span style={{ color: "#16a34a" }}>
                   Max GPA: {data?.max_gpa ?? "N/A"}
                 </span>
@@ -517,7 +510,13 @@ export default function Specifics() {
                 </span>
               </div>
             </div>
-
+            <div className="text-center">
+              <Link to={`/mappable/${data?.host_university}/${data?.country}`}>
+                <button className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
+                  Try Map
+                </button>
+              </Link>
+            </div>
 
 
             {/* Optional Empty Column (keeps layout balanced) */}
@@ -541,7 +540,7 @@ export default function Specifics() {
                 className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 transition-all duration-500 overflow-hidden ${showAllBaskets
                   ? "max-h-[2000px] opacity-100"
                   : "max-h-[260px] opacity-95"
-                }`}
+                  }`}
               >
                 {data && data.mappable_basket?.map((basket: string, i: number) => (
                   <div key={i} className="flex">
@@ -678,8 +677,8 @@ export default function Specifics() {
                     disabled={ratingInput === 0}
                     onClick={submitReview}
                     className={`font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-all duration-200 ${ratingInput === 0
-                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        : "bg-[#102b72] hover:bg-[#0d2360] text-white"
+                      ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                      : "bg-[#102b72] hover:bg-[#0d2360] text-white"
                       }`}
                   >
                     Submit Review
@@ -688,13 +687,12 @@ export default function Specifics() {
               </div>
             ) : (
               <p className="italic text-center" style={{ color: "#102b72", opacity: 0.8 }}>
-                <a
-                  href="/login"
+                <Link to="/login"
                   className="underline font-semibold hover:text-[#2563eb]"
                   style={{ color: "#2563eb" }}
                 >
                   Login
-                </a>{" "}
+                </Link>{" "}
                 to leave a review.
               </p>
             )}
@@ -897,8 +895,8 @@ export default function Specifics() {
                             key={i}
                             onClick={() => setPage(i)}
                             className={`w-3.5 h-3.5 rounded-full cursor-pointer transition-all duration-300 ${i === page
-                                ? "bg-[#102b72] scale-110 shadow-md"
-                                : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
+                              ? "bg-[#102b72] scale-110 shadow-md"
+                              : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
                               }`}
                             style={{
                               aspectRatio: "1 / 1", // ensures perfect circle
@@ -1029,8 +1027,8 @@ export default function Specifics() {
                             key={i}
                             onClick={() => setPage(i)}
                             className={`w-3.5 h-3.5 rounded-full cursor-pointer transition-all duration-300 ${i === page
-                                ? "bg-[#102b72] scale-110 shadow-md"
-                                : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
+                              ? "bg-[#102b72] scale-110 shadow-md"
+                              : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
                               }`}
                             style={{
                               aspectRatio: "1 / 1", // ensures perfect circle

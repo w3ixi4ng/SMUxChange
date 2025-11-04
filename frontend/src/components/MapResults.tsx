@@ -3,6 +3,7 @@ import CoursesMapped from "./CoursesMapped";
 import axios from "axios";
 import { toast } from "sonner";
 import { BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 
 
 type ChildProps = {
@@ -214,11 +215,13 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   return (
     <div className="container mx-auto my-10" style={{ color: "#102b72" }}>
-      <div className="text-center">
-        <h1 className="text-3xl font-semibold mb-6 text-center" style={{ color: "#102b72" }}>{university}</h1>
-        <button className="mb-3 font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
-          <a href={`/specifics/${university}`} className="text-white text-decoration-none">More Info</a>
-        </button>
+      <div className="text-center mb-4">
+        <h1 className="text-3xl font-semibold mb-3 text-center" style={{ color: "#102b72" }}>{university}</h1>
+        <Link to={`/specifics/${university}`}>
+          <button className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
+            More Info
+          </button>
+        </Link>
       </div>
 
       {/* Error message */}
