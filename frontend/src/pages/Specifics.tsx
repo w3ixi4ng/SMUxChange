@@ -302,7 +302,6 @@ export default function Specifics() {
       await axios.post("http://54.206.13.109:3001/database/saveReview", payload);
 
       // reset inputs + refresh list
-      setRatingInput("");
       setCommentInput("");
       await fetchReviews();
       toast.success("Review submitted!", {
