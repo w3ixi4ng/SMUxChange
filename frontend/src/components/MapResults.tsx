@@ -34,7 +34,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   const fetchSchoolCores = async (faculty: string, major: string, track: string) => {
     try {
-      const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getTracksByMajor/${faculty}`);
+      const response = await axios.get(`https://smuxchange-backend.vercel.app/database/getTracksByMajor/${faculty}`);
       const mapable_mods = JSON.parse(response.data[0].Mappable);
       let major_electives = mapable_mods[0]['Majors']['First Major'][major]['Major Elective'];
       setMajorElectives(major_electives);
@@ -71,7 +71,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   const fetchSecondMajors = async (secondMajor: string) => {
     try {
-      const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getAllFaculty`);
+      const response = await axios.get(`https://smuxchange-backend.vercel.app/database/getAllFaculty`);
       const faculty = response.data;
       let records = {} as { [key: string]: string };
       for (let f of faculty) {
@@ -154,7 +154,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
   const saveMap = async () => {
     try {
       let filteredCourses = Object.fromEntries(Object.entries(selectedCourses).filter(([key, _]) => key != "undefined"));
-      await axios.post(`http://smuxchange-backend.vercel.app/database/saveMap`, {
+      await axios.post(`https://smuxchange-backend.vercel.app/database/saveMap`, {
         uid: uid,
         country: country,
         university: university,
@@ -176,7 +176,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   const getSavedMaps = async () => {
     try {
-      const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getSavedMaps/${uid}`);
+      const response = await axios.get(`https://smuxchange-backend.vercel.app/database/getSavedMaps/${uid}`);
       setSavedMaps(response.data);
     }
     catch (error) {

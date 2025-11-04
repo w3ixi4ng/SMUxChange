@@ -156,7 +156,7 @@ export default function Specifics() {
 
   async function get_cooridnates(address: string) {
     try {
-      const response = await axios.get(`http://smuxchange-backend.vercel.app/api/geocoding/${address}`);
+      const response = await axios.get(`https://smuxchange-backend.vercel.app/api/geocoding/${address}`);
       return response.data.results[0].geometry.location
     } catch (err) {
       console.log(err)
@@ -216,7 +216,7 @@ export default function Specifics() {
   async function get_events() {
     try {
       const response_data = await axios.get(
-        `http://smuxchange-backend.vercel.app/api/events/${data.city}/${data.country}`
+        `https://smuxchange-backend.vercel.app/api/events/${data.city}/${data.country}`
       );
       setEvents(Array.isArray(response_data.data.events_results) ? response_data.data.events_results : []);
     } catch (err) {
@@ -227,7 +227,7 @@ export default function Specifics() {
   async function get_accomodations() {
     try {
       const response_data = await axios.get(
-        `http://smuxchange-backend.vercel.app/api/apartments/${data.host_university}`
+        `https://smuxchange-backend.vercel.app/api/apartments/${data.host_university}`
       );
       setAccommodations(Array.isArray(response_data.data) ? response_data.data : []);
     } catch (err) {
@@ -244,7 +244,7 @@ export default function Specifics() {
   async function fetchReviews() {
     try {
       if (!data?.host_university) return;
-      const url = `http://smuxchange-backend.vercel.app/database/getReviews/${encodeURIComponent(
+      const url = `https://smuxchange-backend.vercel.app/database/getReviews/${encodeURIComponent(
         data.host_university
       )}`;
       const res = await axios.get(url);
@@ -291,7 +291,7 @@ export default function Specifics() {
         createdAt: Date.now(), // client timestamp for UI sorting (backend also tracks updated_at)
       };
 
-      await axios.post("http://smuxchange-backend.vercel.app/database/saveReview", payload);
+      await axios.post("https://smuxchange-backend.vercel.app/database/saveReview", payload);
 
       // reset inputs + refresh list
       setCommentInput("");
@@ -328,7 +328,7 @@ export default function Specifics() {
     for (let i = 0; i < mode_values.length; i++) {
       try {
         const response = await axios.get(
-          `http://smuxchange-backend.vercel.app/api/distance/${origin}/${destination}/${mode_values[i]}`
+          `https://smuxchange-backend.vercel.app/api/distance/${origin}/${destination}/${mode_values[i]}`
         );
         if (i == 0) {
           return_values["distance"] =

@@ -11,7 +11,7 @@ export default function Admin() {
 
     const deleteReview = async (uid: string, school: string) => {
         try {
-            await axios.delete(`http://smuxchange-backend.vercel.app/database/deleteReview/${uid}/${school}`);
+            await axios.delete(`https://smuxchange-backend.vercel.app/database/deleteReview/${uid}/${school}`);
             setReviews((prev: any) => prev.filter((r: any) => !(r.uid === uid && r.school === school)));
         } catch (error) {
             console.log(error);
@@ -20,7 +20,7 @@ export default function Admin() {
 
     const getSchoolsWithReviews = async () => {
         try {
-            const response = await axios.post('http://smuxchange-backend.vercel.app/database/getSchoolsWithReviews');
+            const response = await axios.post('https://smuxchange-backend.vercel.app/database/getSchoolsWithReviews');
             setSchools(response.data);
         } catch (error) {
             console.log(error);
@@ -34,7 +34,7 @@ export default function Admin() {
 
     useEffect(() => {
         schools.forEach(async (school: string) => {
-            const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getReviews/${school}`);
+            const response = await axios.get(`https://smuxchange-backend.vercel.app/database/getReviews/${school}`);
             const enriched = (Array.isArray(response.data) ? response.data : []).map((r: any) => ({ ...r, school }));
             setReviews(prevReviews => [...prevReviews, ...enriched] as any);
         });

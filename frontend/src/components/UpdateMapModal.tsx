@@ -29,7 +29,7 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
 
     const updateMap = async () => {
         try {
-            await axios.post(`http://smuxchange-backend.vercel.app/database/updateMap`, {
+            await axios.post(`https://smuxchange-backend.vercel.app/database/updateMap`, {
                 mapId: mapId,
                 uid: uid,
                 map: selectedCourses

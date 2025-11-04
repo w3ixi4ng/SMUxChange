@@ -42,7 +42,7 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
         }
 
         try {
-            await axios.post('http://smuxchange-backend.vercel.app/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+            await axios.post('https://smuxchange-backend.vercel.app/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
             setErrorMessage([]);
         } catch (error) {
             console.log("API error saving profile:", error);

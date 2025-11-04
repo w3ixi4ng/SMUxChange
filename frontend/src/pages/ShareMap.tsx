@@ -34,7 +34,7 @@ export function ShareMap() {
                 return;
             }
             try {
-                const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getSavedMaps/${uid}`);
+                const response = await axios.get(`https://smuxchange-backend.vercel.app/database/getSavedMaps/${uid}`);
                 if (response.data && response.data.length >= 3) {
                     setSaveMapDisabled(true);
                 } else {
@@ -60,7 +60,7 @@ export function ShareMap() {
             return;
         }
         try {
-            await axios.post(`http://smuxchange-backend.vercel.app/database/saveMap`, {
+            await axios.post(`https://smuxchange-backend.vercel.app/database/saveMap`, {
                 uid: uid,
                 country: map.country,
                 university: map.university,
