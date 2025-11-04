@@ -482,7 +482,7 @@ export default function Specifics() {
 
             {/* Rating */}
             <div className="text-center">
-              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+              <p className="text-lg" style={{ color: "#102b72", opacity: 0.7 }}>
                 Rating
               </p>
               <div className="flex items-center gap-2 justify-center">
@@ -495,7 +495,7 @@ export default function Specifics() {
             </div>
             {/* GPA Requirements */}
             <div className="text-center">
-              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+              <p className="text-lg" style={{ color: "#102b72", opacity: 0.7 }}>
                 GPA Requirements
               </p>
               <div className="flex flex-wrap gap-4 text-sm font-semibold mt-1 justify-center">
@@ -545,7 +545,7 @@ export default function Specifics() {
                 {data && data.mappable_basket?.map((basket: string, i: number) => (
                   <div key={i} className="flex">
                     <span
-                      className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg-[] hover:bg-[#102b72]/10 transition-colors w-full text-center"
+                      className="px-4 py-2 rounded-lg text-sm font-medium bg-[#102b72]/10 border border-[#102b72]/30 hover:bg-[#102b72]/30 transition-colors w-full text-center"
                       style={{ color: "#102b72" }}
                     >
                       {basket}
