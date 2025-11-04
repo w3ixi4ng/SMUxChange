@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef} from "react";
+import StarRating from "@/components/StarRating";
+import StarRatingInput from "@/components/StarRatingInput";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -104,49 +106,6 @@ function scrollToTop() {
 }
 
 /* ===========================
-   Star Rating (unchanged)
-   =========================== */
-function StarRating({ rating }: { rating: number }) {
-  const fullStars = Math.floor(rating);
-  const partialFill = rating - fullStars;
-
-  return (
-    <div className="flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, i) => {
-        const isFull = i < fullStars;
-        const isPartial = i === fullStars && partialFill > 0;
-
-        return (
-          <div key={i} className="relative w-6 h-6">
-            <Star
-              size={24}
-              stroke="#FFD700"
-              fill="rgba(255,255,255,0.1)"
-              className="absolute top-0 left-0"
-            />
-            {(isFull || isPartial) && (
-              <div
-                className="absolute top-0 left-0 overflow-hidden"
-                style={{
-                  width: isFull ? "100%" : `${partialFill * 90}%`,
-                }}
-              >
-                <Star
-                  size={24}
-                  fill="#FFD700"
-                  stroke="#FFD700"
-                  className="absolute top-0 left-0"
-                />
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-/* ===========================
    Time-ago helper (unchanged)
    =========================== */
 function timeAgo(ts?: number) {
@@ -245,7 +204,7 @@ export default function Specifics() {
 
   /* ========== Reviews state (unchanged interface) ========== */
   const [reviews, setReviews] = useState<any[]>([]);
-  const [ratingInput, setRatingInput] = useState<string>("");
+  const [ratingInput, setRatingInput] = useState<number>(0);
   const [commentInput, setCommentInput] = useState<string>("");
 
   /* ========== Scroll listener (unchanged) ========== */
@@ -535,62 +494,88 @@ export default function Specifics() {
               About the University
             </CardTitle>
             <CardDescription className="leading-relaxed" style={{ color: "#102b72" }}>
-              {data && data.description}
+              {data?.description || "No description available."}
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid md:grid-cols-3 gap-6 mt-4">
-            <div>
-              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>Email</p>
-              <p style={{ color: "#102b72" }}>{data?.contact || "N/A"}</p>
-            </div>
-            <div>
-              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>Phone</p>
-              <p style={{ color: "#102b72" }}>{data?.phone || "N/A"}</p>
-            </div>
-            <div>
-              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>Rating</p>
-              <div className="flex items-center gap-2">
-                <StarRating rating={(data && data.rating) || 0} />
-                <span className="text-sm" style={{ color: "#102b72" }}>
-                  {(data?.rating || 0).toFixed(1)} ({data?.reviews} reviews)
-                </span>
+
+          <CardContent className="mt-4 space-y-6">
+            {/* === ROW 1: Email | Phone | Rating === */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Email */}
+              <div>
+                <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+                  Email
+                </p>
+                <p style={{ color: "#102b72" }}>{data?.contact || "N/A"}</p>
               </div>
 
-              <p className="text-sm mt-3 font-semibold" style={{ color: "#102b72" }}>
-                GPA Requirements
-              </p>
-              <div className="flex gap-4 text-sm font-semibold">
-                <span style={{ color: "#16a34a" }}>
-                  Max GPA: {data && data.max_gpa}
-                </span>
-                <span style={{ color: "#dc2626" }}>
-                  Min GPA: {data && data.min_gpa}
-                </span>
-                <span style={{ color: "#2563eb" }}>
-                  Places: {data && data.places}
-                </span>
+              {/* Phone */}
+              <div>
+                <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+                  Phone
+                </p>
+                <p style={{ color: "#102b72" }}>{data?.phone || "N/A"}</p>
               </div>
+
+              {/* Rating */}
+              <div>
+                <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+                  Rating
+                </p>
+                <div className="flex items-center gap-2">
+                  <StarRating rating={avgRating || 0} />
+                  <span className="text-sm" style={{ color: "#102b72" }}>
+                    {avgRating ? avgRating.toFixed(1) + "/5.0" : "No ratings yet"}{" "}
+                    ({reviews.length} review{reviews.length === 1 ? "" : "s"})
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* === ROW 2: Website | GPA Requirements | (Empty) === */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Website */}
+              <div>
+                <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+                  Website
+                </p>
+                {data?.website || data?.website_link || data?.url ? (
+                  <a
+                    href={data.website || data.website_link || data.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium hover:underline break-all"
+                    style={{ color: "#2563eb" }}
+                  >
+                    {data.website || data.website_link || data.url}
+                  </a>
+                ) : (
+                  <p style={{ color: "#102b72" }}>N/A</p>
+                )}
+              </div>
+
+              {/* GPA Requirements */}
+              <div>
+                <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+                  GPA Requirements
+                </p>
+                <div className="flex flex-wrap gap-4 text-sm font-semibold mt-1">
+                  <span style={{ color: "#16a34a" }}>
+                    Max GPA: {data?.max_gpa ?? "N/A"}
+                  </span>
+                  <span style={{ color: "#dc2626" }}>
+                    Min GPA: {data?.min_gpa ?? "N/A"}
+                  </span>
+                  <span style={{ color: "#2563eb" }}>
+                    Places: {data?.places ?? "N/A"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Optional Empty Column (keeps layout balanced) */}
+              <div></div>
             </div>
           </CardContent>
-        </Card>
-
-        {/* === WEBSITE LINK SECTION === */}
-        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20">
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
-              Website Link
-            </CardTitle>
-            <CardDescription>
-              <a
-                href="https://placeholder-university-website.com"
-                className="hover:underline"
-                style={{ color: "#2563eb" }}
-                target="_blank"
-              >
-                https://placeholder-university-website.com
-              </a>
-            </CardDescription>
-          </CardHeader>
         </Card>
 
         {/* === ELECTIVES === */}
@@ -711,47 +696,49 @@ export default function Specifics() {
               <p className="italic" style={{ color: "#102b72", opacity: 0.7 }}>
                 No reviews yet. Be the first ✍️
               </p>
-            )}
-
+            )}  
+              
             {/* IMPORTANT: Login-gated submit form */}
             {currentUser ? (
-              <div className="bg-white border border-[#102b72]/20 p-4 rounded-lg space-y-4">
-                <h3 className="font-semibold" style={{ color: "#102b72" }}>Leave a Review</h3>
+              <div className="bg-white/95 border border-[#102b72]/20 p-6 rounded-2xl shadow-sm space-y-5 max-w-2xl mx-auto">
+                <h3 className="text-2xl font-bold text-[#102b72]">Leave a Review</h3>
 
-                <Input
-                  type="number"
-                  min="0"
-                  max="5"
-                  step="0.1"
-                  placeholder="Rating out of 5"
-                  className="bg-white border border-[#102b72]/30"
-                  style={{ color: "#102b72" }}
-                  value={ratingInput}
-                  onChange={(e) => setRatingInput(e.target.value)}
-                />
+                {/* ⭐ Star Rating Input */}
+                <div className="flex items-center gap-2">
+                  <StarRatingInput value={ratingInput} onChange={setRatingInput} />
+                  <span className="text-sm text-gray-600 mt-[2px]">
+                    {ratingInput > 0 ? `${ratingInput}/5` : "Tap a star to rate"}
+                  </span>
+                </div>
 
-                <Input
-                  type="text"
-                  placeholder="Your comment"
-                  className="bg-white border border-[#102b72]/30"
-                  style={{ color: "#102b72" }}
+                {/* 📝 Comment box */}
+                <textarea
+                  placeholder="Share your thoughts about this university..."
+                  className="w-full min-h-[90px] resize-none rounded-lg border border-[#102b72]/30 p-3 text-[#102b72] text-sm focus:ring-2 focus:ring-[#102b72] focus:border-transparent outline-none transition"
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                 />
 
-                <Button
-                  className="font-semibold"
-                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
-                  onClick={submitReview}
-                >
-                  Submit Review ✅
-                </Button>
+                {/* ✅ Submit Button */}
+                <div className="flex justify-end">
+                  <Button
+                    disabled={ratingInput === 0}
+                    onClick={submitReview}
+                    className={`font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-all duration-200 ${
+                      ratingInput === 0
+                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                        : "bg-[#102b72] hover:bg-[#0d2360] text-white"
+                    }`}
+                  >
+                    Submit Review 
+                  </Button>
+                </div>
               </div>
             ) : (
-              <p className="italic" style={{ color: "#102b72", opacity: 0.7 }}>
+              <p className="italic text-center" style={{ color: "#102b72", opacity: 0.8 }}>
                 <a
                   href="/login"
-                  className="underline"
+                  className="underline font-semibold hover:text-[#2563eb]"
                   style={{ color: "#2563eb" }}
                 >
                   Login
@@ -759,6 +746,7 @@ export default function Specifics() {
                 to leave a review.
               </p>
             )}
+
           </CardContent>
         </Card>
 
@@ -841,180 +829,271 @@ export default function Specifics() {
                 />
               </div>
             </div>
-
+            
             {/* Accommodations */}
             <div>
               <h3 className="text-xl font-semibold mb-3" style={{ color: "#102b72" }}>
                 Nearby Accommodations
               </h3>
-              <div className="flex overflow-x-auto gap-6 pb-3">
-                {
-                isAccommodationsLoading ? (
-                  <AccomodationSkeleton />
-                ) : 
-                accommodations
+
+              {/* Pagination State */}
+              {(() => {
+                const itemsPerPage = 4;
+                const totalPages = Math.ceil(
+                  accommodations.filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20)).length /
+                    itemsPerPage
+                );
+                const [page, setPage] = useState(0);
+
+                const visible = accommodations
                   .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20))
-                  .map((a, i) => (
-                    <div
-                      key={i}
-                      className="bg-white border border-[#102b72]/20 rounded-xl w-72 shrink-0 hover:bg-[#102b72]/5 transition-all duration-200"
-                    >
-                      <img
-                        src={a.icon}
-                        onError={(e) =>
-                          ((e.currentTarget as HTMLImageElement).src =
-                            "/images/accommodations_placeholder.jpg")
-                        }
-                        alt={a.name}
-                        className="w-full h-40 object-cover rounded-t-xl"
-                      />
-                      <div className="p-4">
-                        <h5 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
-                          {a.name}
-                        </h5>
-                        <p className="text-sm mb-3" style={{ color: "#102b72", opacity: 0.7 }}>
-                          {a.distance}km from campus
-                        </p>
-                        <p style={{ color: "#102b72" }}>Address: {a.formatted_address}</p>
-                        <p style={{ color: "#102b72" }}>
-                          <div>🚗 Driving time: {
-                          !a.DRIVE || String(a.DRIVE).toLowerCase().includes('nan')?
-                          <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
-                          :a.DRIVE}</div>
+                  .slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
 
-                          <div>🚶 Walking time: {
-                          !a.WALK || String(a.WALK).toLowerCase().includes('nan')?
-                          <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
-                          :a.WALK}</div>
-
-                          <div>🚌 Public transport: {
-                          !a.TRANSIT || String(a.TRANSIT).toLowerCase().includes('nan')?
-                          <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
-                          :a.TRANSIT}</div>
-                        </p>
-                        <Button
-                          onClick={handleShowMap(a.formatted_address)}
-                          asChild
-                          className="w-full text-sm font-semibold no-underline"
-                          style={{ backgroundColor: "#102b72", color: "#ffffff" }}
-                        >
-                          <a
-                            href="#"
-                            title="View on shared map"
-                            data-map-marker={a.name}
-                            style={{ textDecoration: 'none', color: '#ffffff' }}
+                return (
+                  <>
+                    <div className="flex flex-wrap justify-center gap-6">
+                      {isAccommodationsLoading ? (
+                        <AccomodationSkeleton />
+                      ) : visible.length > 0 ? (
+                        visible.map((a, i) => (
+                          <div
+                            key={i}
+                            className="bg-white border border-[#102b72]/20 rounded-xl w-72 flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
                           >
-                            📍 View on Map
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
-                  ))
-                  }
+                            <img
+                              src={a.icon}
+                              onError={(e) =>
+                                ((e.currentTarget as HTMLImageElement).src =
+                                  "/images/accommodations_placeholder.jpg")
+                              }
+                              alt={a.name}
+                              className="w-full h-40 object-cover rounded-t-xl"
+                            />
 
-                {!isAccommodationsLoading && (accommodations.length ===0 || accommodations=== undefined) ?
-                    <div
-                        style={{
-                        padding: "12px 20px",
-                        background: "#fee2e2",
-                        color: "#b91c1c",
-                        borderRadius: "8px",
-                        textAlign: "center",
-                        fontWeight: 500
-                        }}
-                    >
-                        No accommodations found
+                            <div className="flex flex-col justify-between flex-grow p-4">
+                              <div>
+                                <h5 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
+                                  {a.name}
+                                </h5>
+                                <p className="text-sm mb-3" style={{ color: "#102b72", opacity: 0.7 }}>
+                                  {a.distance}km from campus
+                                </p>
+                                <p className="text-sm mb-2" style={{ color: "#102b72" }}>
+                                  Address: {a.formatted_address}
+                                </p>
+
+                                <div className="space-y-1 text-sm" style={{ color: "#102b72" }}>
+                                  <div>
+                                    🚗 Driving time:{" "}
+                                    {!a.DRIVE || String(a.DRIVE).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      a.DRIVE
+                                    )}
+                                  </div>
+                                  <div>
+                                    🚶 Walking time:{" "}
+                                    {!a.WALK || String(a.WALK).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      a.WALK
+                                    )}
+                                  </div>
+                                  <div>
+                                    🚌 Public transport:{" "}
+                                    {!a.TRANSIT || String(a.TRANSIT).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      a.TRANSIT
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="mt-4 pt-2">
+                                <Button
+                                  onClick={handleShowMap(a.formatted_address)}
+                                  asChild
+                                  className="w-full text-sm font-semibold no-underline rounded-lg"
+                                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                                >
+                                  <a
+                                    href="#"
+                                    title="View on shared map"
+                                    data-map-marker={a.name}
+                                    style={{ textDecoration: "none", color: "#ffffff" }}
+                                  >
+                                    📍 View on Map
+                                  </a>
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
+                          No accommodations found
+                        </div>
+                      )}
                     </div>
-                :null}
-              </div>
+
+                    {/* Pagination Dots */}
+                    {totalPages > 1 && (
+                      <div className="flex justify-center mt-5 gap-3">
+                        {Array.from({ length: totalPages }).map((_, i) => (
+                          <div
+                            key={i}
+                            onClick={() => setPage(i)}
+                            className={`w-3.5 h-3.5 rounded-full cursor-pointer transition-all duration-300 ${
+                              i === page
+                                ? "bg-[#102b72] scale-110 shadow-md"
+                                : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
+                            }`}
+                            style={{
+                              aspectRatio: "1 / 1", // ensures perfect circle
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
 
             {/* Events */}
-            <div>
+            <div className="mt-10">
               <h3 className="text-xl font-semibold mb-3" style={{ color: "#102b72" }}>
                 Nearby Events & Activities
               </h3>
-              <div className="flex overflow-x-auto gap-6 pb-3">
-                {
-                  isEventsLoading ? (
-                    <EventsSkeleton />
-                  ) : 
-                events
-                .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20))
-                .map((ev, i) => (
-                  <div
-                    key={i}
-                    className="bg-white/5 border border-white/10 rounded-xl w-72 shrink-0 hover:bg-white/10 transition-all duration-200"
-                  >
-                    <img
-                      src={`/images/event_${i + 1}.jpg`}
-                      onError={(e) =>
-                        ((e.currentTarget as HTMLImageElement).src =
-                          ev.thumbnail)
-                      }
-                      alt={ev.title}
-                      className="w-full h-40 object-cover rounded-t-xl"
-                    />
-                    <div className="p-4">
-                      <h4 className="font-semibold text-lg mb-1">{ev.title}</h4>
-                      <p className="text-gray-300 text-sm mb-3">
-                        {ev.distance}km from campus
-                      </p>
-                      <p>
-                        Address: {ev.address[0]}
-                      </p>
-                      <p>
-                            <div>🚗 Driving time: {
-                            !ev.DRIVE || String(ev.DRIVE).toLowerCase().includes('nan')?
-                            <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
-                            :ev.DRIVE}</div>
 
+              {(() => {
+                const itemsPerPage = 4;
+                const totalPages = Math.ceil(
+                  events.filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20)).length /
+                    itemsPerPage
+                );
+                const [page, setPage] = useState(0);
 
-                             <div>🚶 Walking time: {
-                            !ev.WALK || String(ev.WALK).toLowerCase().includes('nan')?
-                            <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
-                            :ev.WALK}</div>
+                const visible = events
+                  .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20))
+                  .slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
 
-                            <div>🚌 Public transport: {
-                            !ev.TRANSIT || String(ev.TRANSIT).toLowerCase().includes('nan')?
-                            <span style={{color: "#b91c1c", fontWeight: 600}}>N/A</span>
-                            :ev.TRANSIT}</div>
-                        </p>
-                        <Button
-                          onClick={handleShowMap(ev.address[0])}
-                          asChild
-                          className="w-full text-sm font-semibold no-underline"
-                          style={{ backgroundColor: "#102b72", color: "#ffffff" }}
-                        >
-                          <a
-                            href="#"
-                            title="View on shared map"
-                            data-map-marker={ev.title}
-                            style={{ textDecoration: 'none', color: '#ffffff' }}
+                return (
+                  <>
+                    <div className="flex flex-wrap justify-center gap-6">
+                      {isEventsLoading ? (
+                        <EventsSkeleton />
+                      ) : visible.length > 0 ? (
+                        visible.map((ev, i) => (
+                          <div
+                            key={i}
+                            className="bg-white border border-[#102b72]/20 rounded-xl w-72 flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
                           >
-                            🎯 View on Map
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
+                            <img
+                              src={`/images/event_${i + 1}.jpg`}
+                              onError={(e) =>
+                                ((e.currentTarget as HTMLImageElement).src = ev.thumbnail)
+                              }
+                              alt={ev.title}
+                              className="w-full h-40 object-cover rounded-t-xl"
+                            />
 
-                    {!isEventsLoading && (events=== undefined || events.length ==0)?
-                    <div
-                    style={{
-                    padding: "12px 20px",
-                    background: "#fee2e2",
-                    color: "#b91c1c",
-                    borderRadius: "8px",
-                    textAlign: "center",
-                    fontWeight: 500
-                    }}
-                >
-                    No events found
-                </div>
-                :null}
-              </div>
+                            <div className="flex flex-col justify-between flex-grow p-4">
+                              <div>
+                                <h4 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
+                                  {ev.title}
+                                </h4>
+                                <p
+                                  className="text-sm mb-3"
+                                  style={{ color: "#102b72", opacity: 0.7 }}
+                                >
+                                  {ev.distance}km from campus
+                                </p>
+                                <p className="text-sm mb-2" style={{ color: "#102b72" }}>
+                                  Address: {ev.address[0]}
+                                </p>
+
+                                <div className="space-y-1 text-sm" style={{ color: "#102b72" }}>
+                                  <div>
+                                    🚗 Driving time:{" "}
+                                    {!ev.DRIVE || String(ev.DRIVE).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      ev.DRIVE
+                                    )}
+                                  </div>
+                                  <div>
+                                    🚶 Walking time:{" "}
+                                    {!ev.WALK || String(ev.WALK).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      ev.WALK
+                                    )}
+                                  </div>
+                                  <div>
+                                    🚌 Public transport:{" "}
+                                    {!ev.TRANSIT ||
+                                    String(ev.TRANSIT).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      ev.TRANSIT
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="mt-4 pt-2">
+                                <Button
+                                  onClick={handleShowMap(ev.address[0])}
+                                  asChild
+                                  className="w-full text-sm font-semibold no-underline rounded-lg"
+                                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                                >
+                                  <a
+                                    href="#"
+                                    title="View on shared map"
+                                    data-map-marker={ev.title}
+                                    style={{ textDecoration: "none", color: "#ffffff" }}
+                                  >
+                                    🎯 View on Map
+                                  </a>
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
+                          No events found
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Pagination Dots */}
+                    {totalPages > 1 && (
+                      <div className="flex justify-center mt-5 gap-3">
+                        {Array.from({ length: totalPages }).map((_, i) => (
+                          <div
+                            key={i}
+                            onClick={() => setPage(i)}
+                            className={`w-3.5 h-3.5 rounded-full cursor-pointer transition-all duration-300 ${
+                              i === page
+                                ? "bg-[#102b72] scale-110 shadow-md"
+                                : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
+                            }`}
+                            style={{
+                              aspectRatio: "1 / 1", // ensures perfect circle
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
+
           </CardContent>
         </Card>
 

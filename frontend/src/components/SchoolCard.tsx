@@ -1,6 +1,9 @@
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import StarRating from "@/components/StarRating";
+
+
 
 type ChildProps = {
     school: any;
@@ -72,12 +75,15 @@ function SchoolCard({ school }: ChildProps) {
                                 )}
                             </div>
 
-                            <p className="mb-2">
-                                <span className="text-warning">
-                                    {"★★★★★".slice(0, Math.round(avgRating))}
-                                </span>
-                                <small className="text-muted ms-1">{avgRating ? avgRating.toFixed(1) + "/5.0 ·" : ""}  {numberOfReviews} review{numberOfReviews === 1 ? "" : "s"}</small>
-                            </p>
+                            {/* ⭐ Rating Display */}
+                            <div className="d-flex align-items-center justify-content-center mb-2">
+                            <StarRating rating={avgRating || 0} />
+                            <small className="text-muted ms-2">
+                                {numberOfReviews === 0
+                                ? "No reviews yet"
+                                : `${avgRating.toFixed(1)}/5.0 (${numberOfReviews} review${numberOfReviews === 1 ? "" : "s"})`}
+                            </small>
+                            </div>
                             <div className="d-flex justify-content-between gap-2">
                                 <Link
                                     to={`/mappable/${school['host_university']}/${school['country']}`}
