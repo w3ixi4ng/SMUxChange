@@ -13,11 +13,7 @@ type ChildProps = {
 
 function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildProps) {
 
-  const [uid, setUid] = useState<string>("");
   const [selectedCourseArea, setSelectedCourseArea] = useState<string>("");
-  useEffect(() => {
-    setUid(sessionStorage.getItem('uid') || "");
-  }, []);
 
   const [schoolCourses, setSchoolCourses] = useState<string[][]>([]);
   const [majorElectives, setMajorElectives] = useState<any>(null);
@@ -224,6 +220,12 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
         {/* === RIGHT PANEL (Available Courses) === */}
         <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-3xl p-5 shadow-lg">
           <h2 className="text-xl mb-4 font-semibold text-center" style={{ color: "#102b72" }}>Available Courses</h2>
+          {/* Use availableCourses to avoid unused warning and show helpful feedback */}
+          {!availableCourses && (
+            <div className="text-center mt-2 bg-amber-50 border border-amber-200 text-amber-700 py-2 rounded-lg text-sm">
+              No courses mapped before for this school.
+            </div>
+          )}
           <div className="text-center mb-4">
             <select
               className="w-50 mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"

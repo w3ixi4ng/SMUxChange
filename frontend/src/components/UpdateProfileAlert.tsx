@@ -42,7 +42,7 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
         }
 
         try {
-            const response = await axios.post('http://54.206.13.109:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+            await axios.post('http://54.206.13.109:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
             setErrorMessage([]);
         } catch (error) {
             console.log("API error saving profile:", error);

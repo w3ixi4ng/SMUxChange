@@ -551,7 +551,7 @@ export default function Specifics() {
                 {data && data.mappable_basket?.map((basket: string, i: number) => (
                   <div key={i} className="flex">
                     <span
-                      className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg-[#102b72]/10 hover:bg-[#102b72]/20 transition-colors w-full text-center"
+                      className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg-[] hover:bg-[#102b72]/10 transition-colors w-full text-center"
                       style={{ color: "#102b72" }}
                     >
                       {basket}
