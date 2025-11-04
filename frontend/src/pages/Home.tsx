@@ -60,10 +60,7 @@ function Home() {
         color: "#102b72",
       }}
     >
-      {/* === Subtle gradient + grid overlay === */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
-
+     
       {/* === Hero Section === */}
       <section className="relative flex flex-col items-center justify-center px-6 mb-5">
         <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-5xl mx-auto">

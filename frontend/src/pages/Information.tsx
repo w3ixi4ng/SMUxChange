@@ -173,13 +173,10 @@ function Information() {
           color: "#102b72",
         }}
       >
-        {/* === Subtle gradient + grid overlay === */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
         <div className="relative z-10 container mx-auto px-4 py-10">
           <div className="text-center mb-10">
-            <span className="inline-block ml-2"><img src="/images/school.gif" alt="Schools" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
+            <span className="inline-block ml-2"><img src="/images/school.gif" alt="Schools" className="w-35 h-35 border-2 border-[#102b72]/30 rounded-lg" /></span>
             <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Schools</h1>
             <p className="text-sm" style={{ color: "#102b72" }}>
               Explore different universities and exchange destinations with ease.

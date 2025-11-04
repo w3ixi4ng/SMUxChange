@@ -5,7 +5,6 @@ import {
   NavLink,
 } from "react-router-dom";
 import {
-  Plane,
   House,
   MapIcon,
   GraduationCap,
@@ -116,8 +115,8 @@ function RouterView() {
             className="flex items-center gap-2 text-xl font-semibold text-white hover:text-gray-200 transition-colors"
             style={{ textDecoration: 'none' }}
           >
-            <Plane size={24} className="text-white" strokeWidth={2} />
-            <span style={{ textDecoration: 'none' }}>SMUxChange</span>
+            <img src="/images/earth.png" alt="Logo" className="w-10 h-10 mr-2" />
+            <span style={{ textDecoration: 'none', fontSize: '24px', fontWeight: 'bold' }}>SMUxChange</span>
           </NavLink>
 
           {/* Nav links */}

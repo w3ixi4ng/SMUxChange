@@ -227,7 +227,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
       {/* Error message */}
       {!availableCourses && (
         <div className="text-center mt-8 bg-red-100 border border-red-300 text-red-700 py-3 rounded-lg font-semibold">
-          No courses mapped before. Find out more from the host university here.
+          No courses mapped before. Find out more from the host university above.
         </div>
       )}
 

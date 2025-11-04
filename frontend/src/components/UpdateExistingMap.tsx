@@ -161,7 +161,7 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
 
   useEffect(() => {
     if (selectedCount >= maxCount) {
-      toast("You have reached the maximum number of courses selected (5).");
+      toast.info("You have reached the maximum number of courses selected (5).");
     }
   }, [selectedCount]);
 
@@ -221,7 +221,7 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
           <h2 className="text-xl mb-4 font-semibold text-center" style={{ color: "#102b72" }}>Available Courses</h2>
           <div className="text-center mb-4">
             <select
-              className="w-50 mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+              className="w-full mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
               style={{ color: "#102b72" }}
               onChange={(e) => setSelectedCourseArea(e.target.value)}
             >
