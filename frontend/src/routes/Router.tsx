@@ -47,7 +47,7 @@ function RouterView() {
         setIsAdmin(false);
         return;
       }
-      const response = await axios.post('http://54.206.13.109:3001/database/checkAdmin', { uid });
+      const response = await axios.post('https://smuxchange-backend.vercel.app/database/checkAdmin', { uid });
       setIsAdmin(response?.data?.message === "admin");
     } catch (error) {
       console.log(error);

@@ -44,7 +44,7 @@ export function QRModal({ map }: ChildProps) {
                         Scan the QR code to share your map.
                     </DialogDescription>
                 </DialogHeader>
-                <img src={qrCode || ""} alt="QR Code" className="w-100 mx-auto" />
+                <img src={qrCode || ""} alt="QR Code" className="w-80 mx-auto" />
                 <DialogFooter className='d-flex justify-content-center sticky bottom-0 z-10 bg-[#eeeeee] py-3 w-50 mx-auto rounded-2xl'>
                     <DialogCancel className="bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10" style={{ color: "#102b72" }}>Cancel</DialogCancel>
                 </DialogFooter>
