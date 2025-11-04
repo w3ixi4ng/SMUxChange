@@ -17,7 +17,7 @@ function Profile() {
   
   const fetchUser = async (uid: string) => {
     try {
-      const response = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
+      const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getProfile/${uid}`);
       const user = response.data;
       sessionStorage.setItem("name", user.name);
       sessionStorage.setItem("faculty", user.faculty);
@@ -73,7 +73,7 @@ function Profile() {
   const fetchFaculties = async () => {
     try {
       const response = await axios.get(
-        `http://54.206.13.109:3001/database/getAllFaculty`
+        `http://smuxchange-backend.vercel.app/database/getAllFaculty`
       );
       const faculties = response.data;
       const uniqueFaculties = [
@@ -88,7 +88,7 @@ function Profile() {
   const fetchMajors = async (faculty: string) => {
     try {
       const response = await axios.get(
-        `http://54.206.13.109:3001/database/getFaculty/${faculty}`
+        `http://smuxchange-backend.vercel.app/database/getFaculty/${faculty}`
       );
       const majors = response.data;
       let mappable_mods = JSON.parse(majors[0].Mappable);
@@ -103,7 +103,7 @@ function Profile() {
   const fetchTracks = async (faculty: string, major: string) => {
     try {
       const response = await axios.get(
-        `http://54.206.13.109:3001/database/getTracksByMajor/${faculty}`
+        `http://smuxchange-backend.vercel.app/database/getTracksByMajor/${faculty}`
       );
       const tracks = response.data;
       let mappable_mods = JSON.parse(tracks[0].Mappable);
@@ -119,7 +119,7 @@ function Profile() {
   const fetchSecondMajors = async () => {
     try {
       const response = await axios.get(
-        `http://54.206.13.109:3001/database/getAllFaculty`
+        `http://smuxchange-backend.vercel.app/database/getAllFaculty`
       );
       const faculty = response.data;
       let records: string[] = [];
@@ -167,7 +167,7 @@ function Profile() {
 
   const getSavedMaps = async (uid: string) => {
     try {
-      const response = await axios.get(`http://54.206.13.109:3001/database/getSavedMaps/${uid}`);
+      const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getSavedMaps/${uid}`);
       setSavedMaps(response.data);
     }
     catch (error) {
@@ -194,7 +194,7 @@ function Profile() {
     }
 
     try {
-      await axios.post('http://54.206.13.109:3001/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+      await axios.post('http://smuxchange-backend.vercel.app/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
       setUserExists(true);
       setErrorMessage([]);
     } catch (error) {

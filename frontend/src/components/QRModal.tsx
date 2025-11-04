@@ -21,7 +21,7 @@ export function QRModal({ map }: ChildProps) {
     const [qrCode, setQrCode] = useState<string | null>(null);
 
     const generateQRCode = async () => {
-        const response = await axios.post(`http://54.206.13.109:3001/api/qrCode`, {
+        const response = await axios.post(`http://smuxchange-backend.vercel.app/api/qrCode`, {
             map: map
         });
         setQrCode(response.data.qrCode);

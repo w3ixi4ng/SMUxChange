@@ -59,7 +59,7 @@ export function LoginForm({
       
       // Fetch user profile to get name
       try {
-        const profileResponse = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
+        const profileResponse = await axios.get(`http://smuxchange-backend.vercel.app/database/getProfile/${uid}`);
         if (profileResponse.data?.name) {
           sessionStorage.setItem("name", profileResponse.data.name);
         }
@@ -71,7 +71,7 @@ export function LoginForm({
       // Dispatch authChange event to update navbar
       window.dispatchEvent(new Event('authChange'));
       
-      const response = await axios.post('http://54.206.13.109:3001/database/checkAdmin', { uid });
+      const response = await axios.post('http://smuxchange-backend.vercel.app/database/checkAdmin', { uid });
       if (response.data.message === "admin") {
         nav("/admin");
       } else {

@@ -21,7 +21,7 @@ function SchoolCard({ school }: ChildProps) {
 
     const getReviews = async () => {
         try {
-            const response = await axios.get(`http://54.206.13.109:3001/database/getReviews/${encodeURIComponent(school['host_university'])}`);
+            const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getReviews/${encodeURIComponent(school['host_university'])}`);
             const reviews = Array.isArray(response.data) ? response.data : [];
             const count = reviews.length;
             const sum = reviews.reduce((acc: number, r: any) => acc + Number(r?.rating || 0), 0);

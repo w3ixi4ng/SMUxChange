@@ -11,7 +11,7 @@ export function UpdateCourseMap({ courseArea, university, map }: ChildProps) {
     const [courses, setCourses] = useState([]);
 
     const fetchMappableCourses = async (courseAreaName: string, university: string) => {
-        const response = await axios.get(`http://54.206.13.109:3001/database/getByCourseAreaAndUniversity/${courseAreaName}/${university}`);
+        const response = await axios.get(`http://smuxchange-backend.vercel.app/database/getByCourseAreaAndUniversity/${courseAreaName}/${university}`);
         const courses = response.data;
         setCourses(courses);
     }
