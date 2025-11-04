@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import ThreeDLogo from "@/components/ThreeDLogo";
 import { useEffect, useState } from "react";
+import { ArrowUpIcon } from "lucide-react";
 
 function scrollToTop() {
   const topElement = document.getElementById("top");
@@ -46,18 +47,8 @@ function Home() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Scroll to absolute top on component mount/reload
   useEffect(() => {
-    // Disable browser's automatic scroll restoration
-    if ('scrollRestoration' in window.history) {
-      window.history.scrollRestoration = 'manual';
-    }
-    
-    // Force scroll to absolute top immediately
     window.scrollTo(0, 0);
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-    
   }, []);
 
   return (
@@ -226,7 +217,7 @@ function Home() {
           aria-label="Scroll to top"
           style={{ backgroundColor: "#102b72", color: "#ffffff" }}
         >
-          ↑
+          <ArrowUpIcon className="w-5 h-5" style={{ color: "#ffffff" }} />
         </button>
       )}
       </div>

@@ -52,7 +52,24 @@ export function LoginForm({
 
   const checkAdmin = async () => {
     try {
-      const response = await axios.post('http://54.206.13.109:3001/database/checkAdmin', { uid: sessionStorage.getItem("uid") });
+      const uid = sessionStorage.getItem("uid");
+      if (!uid) return;
+      
+      // Fetch user profile to get name
+      try {
+        const profileResponse = await axios.get(`http://54.206.13.109:3001/database/getProfile/${uid}`);
+        if (profileResponse.data?.name) {
+          sessionStorage.setItem("name", profileResponse.data.name);
+        }
+      } catch (profileError) {
+        // User might not have a profile yet, that's okay
+        console.log("Profile not found, user may need to create one");
+      }
+      
+      // Dispatch authChange event to update navbar
+      window.dispatchEvent(new Event('authChange'));
+      
+      const response = await axios.post('http://54.206.13.109:3001/database/checkAdmin', { uid });
       if (response.data.message === "admin") {
         nav("/admin");
       } else {

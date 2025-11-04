@@ -1,6 +1,7 @@
 import MapSearch from "../components/MapSearch";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowUpIcon } from "lucide-react";
 
 function scrollToTop() {
   const topElement = document.getElementById("top");
@@ -64,7 +65,7 @@ function Mappable() {
             aria-label="Scroll to top"
             style={{ backgroundColor: "#102b72", color: "#ffffff" }}
           >
-            ↑
+            <ArrowUpIcon className="w-5 h-5" style={{ color: "#ffffff" }} />
           </button>
         )}
       </div>

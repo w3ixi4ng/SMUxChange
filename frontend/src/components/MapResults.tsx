@@ -214,7 +214,13 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   return (
     <div className="container mx-auto my-10" style={{ color: "#102b72" }}>
-      <h1 className="text-3xl font-semibold mb-6 text-center" style={{ color: "#102b72" }}>{university}</h1>
+      <div className="text-center">
+        <h1 className="text-3xl font-semibold mb-6 text-center" style={{ color: "#102b72" }}>{university}</h1>
+        <button className="mb-3 font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
+          <a href={`/specifics/${university}`} className="text-white text-decoration-none">More Info</a>
+        </button>
+      </div>
+
       {/* Error message */}
       {!availableCourses && (
         <div className="text-center mt-8 bg-red-100 border border-red-300 text-red-700 py-3 rounded-lg font-semibold">

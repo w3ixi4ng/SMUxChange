@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 export function SignupForm({
@@ -48,6 +48,8 @@ export function SignupForm({
         // Signed up 
         const user = userCredential.user;
         sessionStorage.setItem("uid", user.uid);
+        // Dispatch authChange event to update navbar
+        window.dispatchEvent(new Event('authChange'));
         navigate("/profile");
       })
       .catch((error) => {
