@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import axios from "axios";
+import { toast } from "sonner"
 
 
 export function LoginForm({
@@ -47,6 +48,7 @@ export function LoginForm({
       .catch((error) => {
         console.log(error);
         setError("Invalid email or password");
+        toast.error("Invalid email or password");
       });
   }
 
