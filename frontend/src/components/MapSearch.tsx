@@ -217,7 +217,7 @@ function MapSearch() {
   return (
     <>
       <div className="text-center mb-10">
-        <span className="inline-block ml-2"><img src="/images/maps.gif" alt="Maps" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
+        <span className="inline-block ml-2"><img src="/images/maps.gif" alt="Maps" className="w-35 h-35 border-2 border-[#102b72]/30 rounded-lg" /></span>
         <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search
 
         </h1>
