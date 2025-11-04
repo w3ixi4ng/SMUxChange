@@ -6,7 +6,6 @@ import { ChevronDown, ChevronUp } from "lucide-react"; //  removed Infinity impo
 type ChildProps = {
     courseArea: string | string[]
     university: string
-    setAvailableCourses: (availableCourses: boolean) => void
     onSelectedCoursesChange?: (courseAreaName: string , courseAreaLimit: number , selectedCourses: string[]) => void
     selectedTotalCount: number
     maxTotalCount: number
@@ -16,7 +15,7 @@ type ChildProps = {
     map: any
 };
 
-function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSelectedCoursesChange, selectedTotalCount, maxTotalCount, selectedCourseArea, setSelectedMapCourseAreas, setAvailableCourseAreasList, map }: ChildProps) {
+function ExistingCourseMap({ courseArea, university, onSelectedCoursesChange, selectedTotalCount, maxTotalCount, selectedCourseArea, setSelectedMapCourseAreas, setAvailableCourseAreasList, map }: ChildProps) {
     const [courses, setCourses] = useState([]);
 
     const fetchMappableCourses = async (courseArea: string, university: string) => {
@@ -24,7 +23,6 @@ function ExistingCourseMap({ courseArea, university, setAvailableCourses, onSele
         const courses = response.data;
         setCourses(courses);
         if (courses.length > 0) {
-            setAvailableCourses(true);
             setAvailableCourseAreasList((prev: string[]) => 
               !prev.includes(courseArea) ? [...prev, courseArea] : prev
             );

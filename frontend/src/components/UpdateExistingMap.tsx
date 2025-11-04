@@ -20,7 +20,6 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
   const [trackElectives, setTrackElectives] = useState<string[]>([]);
   const [secondMajorElectives, setSecondMajorElectives] = useState<string>("");
 
-  const [availableCourses, setAvailableCourses] = useState<boolean>(false);
   const [selectedCount, setSelectedCount] = useState(0);
   const [selectedMapCourseAreas, setSelectedMapCourseAreas] = useState<string[]>([]);
   const [availableCourseAreasList, setAvailableCourseAreasList] = useState<string[]>([]);
@@ -220,12 +219,6 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
         {/* === RIGHT PANEL (Available Courses) === */}
         <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-3xl p-5 shadow-lg">
           <h2 className="text-xl mb-4 font-semibold text-center" style={{ color: "#102b72" }}>Available Courses</h2>
-          {/* Use availableCourses to avoid unused warning and show helpful feedback */}
-          {!availableCourses && (
-            <div className="text-center mt-2 bg-amber-50 border border-amber-200 text-amber-700 py-2 rounded-lg text-sm">
-              No courses mapped before for this school.
-            </div>
-          )}
           <div className="text-center mb-4">
             <select
               className="w-50 mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
@@ -248,7 +241,6 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
               key={`${elective[1]}-${index}`}
               courseArea={elective}
               university={map.university}
-              setAvailableCourses={setAvailableCourses}
               onSelectedCoursesChange={handleSelectedCoursesChange}
               selectedTotalCount={selectedCount}
               maxTotalCount={maxCount}
