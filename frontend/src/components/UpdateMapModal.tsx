@@ -50,7 +50,7 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
             <DialogTrigger asChild>
                 <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105" style={{ backgroundColor: "#102b72", color: "#ffffff", border: "none" }}>Update Map</button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95vw] sm:max-w-[95vw] max-h-[90vh] overflow-y-auto bg-[#eeeeee] border-[#102b72]/20 [&_button[data-slot='dialog-close']]:text-[#102b72] [&_button[data-slot='dialog-close']]:hover:bg-[#102b72]/10">
+            <DialogContent className="max-w-[95vw] sm:max-w-[95vw] max-h-[90vh] overflow-y-auto bg-[#eeeeee] border-[#102b72]/20 [&_button[data-slot='dialog-close']]:text-[#102b72] [&_button[data-slot='dialog-close']]:hover:bg-[#102b72]/10 pb-0">
                 <DialogHeader>
                     <DialogTitle className="text-2xl" style={{ color: "#102b72" }}>Update Map</DialogTitle>
                     <DialogDescription style={{ color: "#102b72", opacity: 0.7 }}>

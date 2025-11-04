@@ -903,7 +903,7 @@ export default function Specifics() {
                                 className="text-sm mb-3"
                                 style={{ color: "#102b72", opacity: 0.7 }}
                               >
-                                {a.distance}km from campus
+                                {a.distance}km from campus``
                               </p>
                               <p
                                 className="text-sm mb-2"
