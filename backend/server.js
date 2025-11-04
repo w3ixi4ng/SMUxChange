@@ -31,7 +31,7 @@ const PORT = process.env.PORT;
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: 'https://smuxchange.vercel.app/',
+    origin: ['https://smuxchange.vercel.app', 'http://localhost:5173'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
