@@ -7,7 +7,7 @@ router.post('/', async (req, res) => {
     try {
     const { map } = req.body;
     const encodedMap = encodeURIComponent(JSON.stringify(map));
-    const url = `http://localhost:5173/shareMap?map=${encodedMap}`;
+    const url = `https://smuxchange.vercel.app/shareMap?map=${encodedMap}`;
         const qrCode = await QRCode.toDataURL(url, { width: 700 });
         res.json({ qrCode });
     } catch (error) {
