@@ -179,6 +179,7 @@ function Information() {
 
         <div className="relative z-10 container mx-auto px-4 py-10">
           <div className="text-center mb-10">
+            <span className="inline-block ml-2"><img src="/images/school.gif" alt="Schools" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
             <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Schools</h1>
             <p className="text-sm" style={{ color: "#102b72" }}>
               Explore different universities and exchange destinations with ease.

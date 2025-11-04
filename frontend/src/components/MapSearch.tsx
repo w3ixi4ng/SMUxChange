@@ -217,13 +217,17 @@ function MapSearch() {
   return (
     <>
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search</h1>
+        <span className="inline-block ml-2"><img src="/images/maps.gif" alt="Maps" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
+        <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search
+
+        </h1>
+
         <p className="text-sm" style={{ color: "#102b72" }}>Find exchange mappings with ease.</p>
       </div>
 
       <div className="container col-12 mx-auto bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-4 rounded-3xl shadow-lg font-medium">
         <div className="row justify-content-center">
-          
+
           {/* === SELECT COUNTRY === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>Select Country</p>
@@ -237,7 +241,7 @@ function MapSearch() {
               {countries.map((country) => (
                 <option key={country} value={country}>
                   {country}
-                  
+
                 </option>
               ))}
             </select>
@@ -247,9 +251,8 @@ function MapSearch() {
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>Select University</p>
             <select
-              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${
-                toggleUniversity ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-              }`}
+              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleUniversity ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
               style={{ color: "#102b72" }}
               disabled={toggleUniversity}
               value={selectedUniversity}
@@ -286,9 +289,8 @@ function MapSearch() {
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>Select Major</p>
             <select
-              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${
-                toggleMajor ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-              }`}
+              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleMajor ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
               style={{ color: "#102b72" }}
               disabled={toggleMajor}
               value={selectedMajor}
@@ -310,9 +312,8 @@ function MapSearch() {
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>Select Track</p>
             <select
-              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${
-                toggleTrack ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-              }`}
+              className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleTrack ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }`}
               style={{ color: "#102b72" }}
               disabled={toggleTrack}
               value={selectedTrack}
