@@ -13,13 +13,17 @@ import { Input } from "@/components/ui/input";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import {
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  Pin,
+} from "@vis.gl/react-google-maps";
 import AccomodationSkeleton from "@/components/SpecificSchool/AccomodationSkeleton";
 import EventsSkeleton from "@/components/SpecificSchool/EventsSkeleton";
-const key = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY
+const key = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
 import { toast } from "sonner";
 import { ArrowUpIcon } from "lucide-react";
-
 
 /* ===========================
    HELPERS (unchanged)
@@ -133,7 +137,6 @@ export default function Specifics() {
     return null;
   });
 
-
   const [accommodations, setAccommodations] = useState<any[]>([]);
   const [events, setEvents] = useState<any[]>([]);
   const [showAllBaskets, setShowAllBaskets] = useState(false);
@@ -146,21 +149,28 @@ export default function Specifics() {
      - We read uid/email/name (set after successful login)
      - This is what controls whether the review form shows up
      ========================================================= */
-  const [currentUser, setCurrentUser] = useState<null | { uid: string; email?: string | null; name?: string | null }>(null);
+  const [currentUser, setCurrentUser] = useState<null | {
+    uid: string;
+    email?: string | null;
+    name?: string | null;
+  }>(null);
 
   const [showMap, setShowMap] = useState(false);
-  const [mapCoords, setMapCoords] = useState<{ lat: number, lng: number } | null>(null);
+  const [mapCoords, setMapCoords] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   const [updateRequired, setUpdateRequired] = useState(false);
 
-
-
   async function get_cooridnates(address: string) {
     try {
-      const response = await axios.get(`https://smuxchange-backend.vercel.app/api/geocoding/${address}`);
-      return response.data.results[0].geometry.location
+      const response = await axios.get(
+        `https://smuxchange-backend.vercel.app/api/geocoding/${address}`
+      );
+      return response.data.results[0].geometry.location;
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
@@ -175,12 +185,11 @@ export default function Specifics() {
 
         const mapElement = document.getElementById("map-section");
         if (mapElement) {
-          mapElement.scrollIntoView({ behavior: "smooth" })
+          mapElement.scrollIntoView({ behavior: "smooth" });
         }
       }
-    }
+    };
   }
-
 
   useEffect(() => {
     // IMPORTANT: this is the ONLY source of truth for UI login state right now
@@ -219,7 +228,11 @@ export default function Specifics() {
       const response_data = await axios.get(
         `https://smuxchange-backend.vercel.app/api/events/${data.city}/${data.country}`
       );
-      setEvents(Array.isArray(response_data.data.events_results) ? response_data.data.events_results : []);
+      setEvents(
+        Array.isArray(response_data.data.events_results)
+          ? response_data.data.events_results
+          : []
+      );
     } catch (err) {
       console.log(err);
     }
@@ -230,12 +243,13 @@ export default function Specifics() {
       const response_data = await axios.get(
         `https://smuxchange-backend.vercel.app/api/apartments/${data.host_university}`
       );
-      setAccommodations(Array.isArray(response_data.data) ? response_data.data : []);
+      setAccommodations(
+        Array.isArray(response_data.data) ? response_data.data : []
+      );
     } catch (err) {
       console.log(err);
     }
   }
-
 
   async function fetchReviews() {
     try {
@@ -252,8 +266,8 @@ export default function Specifics() {
           typeof r?.createdAt === "number"
             ? r.createdAt
             : typeof r?.updated_at === "number"
-              ? r.updated_at
-              : undefined,
+            ? r.updated_at
+            : undefined,
       }));
       setReviews(normalized);
     } catch (e) {
@@ -287,7 +301,10 @@ export default function Specifics() {
         createdAt: Date.now(), // client timestamp for UI sorting (backend also tracks updated_at)
       };
 
-      await axios.post("https://smuxchange-backend.vercel.app/database/saveReview", payload);
+      await axios.post(
+        "https://smuxchange-backend.vercel.app/database/saveReview",
+        payload
+      );
 
       // reset inputs + refresh list
       setCommentInput("");
@@ -344,7 +361,7 @@ export default function Specifics() {
   async function get_distance() {
     const updatedAccomodations: any[] = [];
     const updatedEvents: any[] = [];
-    console.log(accommodations)
+    console.log(accommodations);
     console.log(events);
     for (let i = 0; i < accommodations.length; i++) {
       const distanceData = await helper_distance(
@@ -372,14 +389,13 @@ export default function Specifics() {
     updatedAccomodations.sort((a, b) => a.distance - b.distance);
     updatedEvents.sort((a, b) => a.distance - b.distance);
 
-    setAccommodations(Array.isArray(updatedAccomodations) ? updatedAccomodations : []);
+    setAccommodations(
+      Array.isArray(updatedAccomodations) ? updatedAccomodations : []
+    );
     setEvents(Array.isArray(updatedEvents) ? updatedEvents : []);
     setIsAccommodationsLoading(false);
     setIsEventsLoading(false);
   }
-
-
-
 
   /* ========== Effects bootstrapping (unchanged) ========== */
   useEffect(() => {
@@ -423,7 +439,10 @@ export default function Specifics() {
     RENDER
      =========================== */
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#eeeeee", color: "#102b72" }}>
+    <div
+      className="min-h-screen"
+      style={{ backgroundColor: "#eeeeee", color: "#102b72" }}
+    >
       {/* === Subtle gradient + grid overlay === */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
       <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
@@ -433,7 +452,10 @@ export default function Specifics() {
         {/* === HEADER === */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
-            <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>
+            <h1
+              className="text-4xl font-bold mb-2"
+              style={{ color: "#102b72" }}
+            >
               {data && data.host_university}
             </h1>
             <div className="flex items-center gap-3">
@@ -469,10 +491,16 @@ export default function Specifics() {
         {/* === DETAILS CARD === */}
         <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold" style={{ color: "#102b72" }}>
+            <CardTitle
+              className="text-2xl font-semibold"
+              style={{ color: "#102b72" }}
+            >
               About the University
             </CardTitle>
-            <CardDescription className="leading-relaxed" style={{ color: "#102b72" }}>
+            <CardDescription
+              className="leading-relaxed"
+              style={{ color: "#102b72" }}
+            >
               {data?.description || "No description available."}
             </CardDescription>
           </CardHeader>
@@ -512,12 +540,14 @@ export default function Specifics() {
             </div>
             <div className="text-center">
               <Link to={`/mappable/${data?.host_university}/${data?.country}`}>
-                <button className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
+                <button
+                  className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg"
+                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                >
                   Try Map
                 </button>
               </Link>
             </div>
-
 
             {/* Optional Empty Column (keeps layout balanced) */}
             <div></div>
@@ -527,7 +557,10 @@ export default function Specifics() {
         {/* === AVAILABLE COURSE AREAS (with show more/less) === */}
         <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
+            <CardTitle
+              className="text-lg font-semibold"
+              style={{ color: "#102b72" }}
+            >
               Available Course Areas
             </CardTitle>
             <CardDescription style={{ color: "#102b72" }}>
@@ -537,23 +570,30 @@ export default function Specifics() {
           <CardContent>
             <div className="flex flex-col items-center">
               <div
-                className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 transition-all duration-500 overflow-hidden ${showAllBaskets
-                  ? "max-h-[2000px] opacity-100"
-                  : "max-h-[260px] opacity-95"
-                  }`}
+                className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 transition-all duration-500 overflow-hidden ${
+                  showAllBaskets
+                    ? "max-h-[2000px] opacity-100"
+                    : "max-h-[260px] opacity-95"
+                }`}
               >
-                {data && data.mappable_basket?.map((basket: string, i: number) => (
-                  <div key={i} className="flex">
-                    <span
-                      className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg-[] hover:bg-[#102b72]/10 transition-colors w-full text-center"
-                      style={{ color: "#102b72" }}
-                    >
-                      {basket}
-                    </span>
-                  </div>
-                ))}
-                {(!data || !data.mappable_basket || data.mappable_basket.length === 0) && (
-                  <span className="text-sm italic" style={{ color: "#102b72", opacity: 0.7 }}>
+                {data &&
+                  data.mappable_basket?.map((basket: string, i: number) => (
+                    <div key={i} className="flex">
+                      <span
+                        className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg-[] hover:bg-[#102b72]/10 transition-colors w-full text-center"
+                        style={{ color: "#102b72" }}
+                      >
+                        {basket}
+                      </span>
+                    </div>
+                  ))}
+                {(!data ||
+                  !data.mappable_basket ||
+                  data.mappable_basket.length === 0) && (
+                  <span
+                    className="text-sm italic"
+                    style={{ color: "#102b72", opacity: 0.7 }}
+                  >
                     No course areas available.
                   </span>
                 )}
@@ -563,7 +603,11 @@ export default function Specifics() {
                 <button
                   onClick={() => setShowAllBaskets((prev) => !prev)}
                   className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full text-sm font-semibold hover:bg-[#102b72]/10 transition-all"
-                  style={{ color: "#102b72", backgroundColor: "transparent", border: "1px solid rgba(16,43,114,0.3)" }}
+                  style={{
+                    color: "#102b72",
+                    backgroundColor: "transparent",
+                    border: "1px solid rgba(16,43,114,0.3)",
+                  }}
                 >
                   {showAllBaskets ? (
                     <>
@@ -583,7 +627,10 @@ export default function Specifics() {
         {/* === STUDENT REVIEWS (includes IMPORTANT login-gated form) === */}
         <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
+            <CardTitle
+              className="text-lg font-semibold"
+              style={{ color: "#102b72" }}
+            >
               Student Reviews
             </CardTitle>
             <CardDescription style={{ color: "#102b72" }}>
@@ -616,18 +663,29 @@ export default function Specifics() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <img
-                          src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(r.name)}`}
+                          src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(
+                            r.name
+                          )}`}
                           alt="Profile"
                           className="w-6 h-6 rounded-full"
                           decoding="async"
                           width={24}
                           height={24}
                           onError={(e) => {
-                            (e.currentTarget as HTMLImageElement).src = "/images/university.jpg";
+                            (e.currentTarget as HTMLImageElement).src =
+                              "/images/university.jpg";
                           }}
                         />
-                        <span className="font-semibold" style={{ color: "#102b72" }}>{r.name}</span>
-                        <span className="text-xs" style={{ color: "#102b72", opacity: 0.7 }}>
+                        <span
+                          className="font-semibold"
+                          style={{ color: "#102b72" }}
+                        >
+                          {r.name}
+                        </span>
+                        <span
+                          className="text-xs"
+                          style={{ color: "#102b72", opacity: 0.7 }}
+                        >
                           {timeAgo(r.createdAt)}
                         </span>
                       </div>
@@ -639,7 +697,9 @@ export default function Specifics() {
                       </div>
                     </div>
                     {r.comment && (
-                      <p className="mt-2" style={{ color: "#102b72" }}>{r.comment}</p>
+                      <p className="mt-2" style={{ color: "#102b72" }}>
+                        {r.comment}
+                      </p>
                     )}
                   </div>
                 ))}
@@ -653,13 +713,20 @@ export default function Specifics() {
             {/* IMPORTANT: Login-gated submit form */}
             {currentUser ? (
               <div className="bg-white/95 border border-[#102b72]/20 p-6 rounded-2xl shadow-sm space-y-5 max-w-2xl mx-auto">
-                <h3 className="text-2xl font-bold text-[#102b72]">Leave a Review</h3>
+                <h3 className="text-2xl font-bold text-[#102b72]">
+                  Leave a Review
+                </h3>
 
                 {/* ⭐ Star Rating Input */}
                 <div className="flex items-center gap-2">
-                  <StarRatingInput value={ratingInput} onChange={setRatingInput} />
+                  <StarRatingInput
+                    value={ratingInput}
+                    onChange={setRatingInput}
+                  />
                   <span className="text-sm text-gray-600 mt-[2px]">
-                    {ratingInput > 0 ? `${ratingInput}/5` : "Tap a star to rate"}
+                    {ratingInput > 0
+                      ? `${ratingInput}/5`
+                      : "Tap a star to rate"}
                   </span>
                 </div>
 
@@ -676,18 +743,23 @@ export default function Specifics() {
                   <Button
                     disabled={ratingInput === 0}
                     onClick={submitReview}
-                    className={`font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-all duration-200 ${ratingInput === 0
-                      ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                      : "bg-[#102b72] hover:bg-[#0d2360] text-white"
-                      }`}
+                    className={`font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-all duration-200 ${
+                      ratingInput === 0
+                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                        : "bg-[#102b72] hover:bg-[#0d2360] text-white"
+                    }`}
                   >
                     Submit Review
                   </Button>
                 </div>
               </div>
             ) : (
-              <p className="italic text-center" style={{ color: "#102b72", opacity: 0.8 }}>
-                <Link to="/login"
+              <p
+                className="italic text-center"
+                style={{ color: "#102b72", opacity: 0.8 }}
+              >
+                <Link
+                  to="/login"
                   className="underline font-semibold hover:text-[#2563eb]"
                   style={{ color: "#2563eb" }}
                 >
@@ -696,7 +768,6 @@ export default function Specifics() {
                 to leave a review.
               </p>
             )}
-
           </CardContent>
         </Card>
 
@@ -705,7 +776,10 @@ export default function Specifics() {
         <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
           <div id="map-section">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold" style={{ color: "#102b72" }}>
+              <CardTitle
+                className="text-lg font-semibold"
+                style={{ color: "#102b72" }}
+              >
                 Plan Your Stay & Explore Nearby
               </CardTitle>
               <CardDescription style={{ color: "#102b72" }}>
@@ -730,8 +804,8 @@ export default function Specifics() {
                     Maps / Mapbox)
                   </p>
                 </div>
-              </div>)
-            }
+              </div>
+            )}
 
             {showMap && mapCoords && (
               <APIProvider apiKey={key}>
@@ -740,24 +814,28 @@ export default function Specifics() {
                     width: "100%",
                     height: "384px",
                     borderRadius: "1rem",
-                    position: "relative"
+                    position: "relative",
                   }}
                   center={updateRequired ? mapCoords : undefined}
                   zoom={16}
-
                   mapId="DEMO_MAP_ID"
                   disableDefaultUI={false}
                 >
-                  <AdvancedMarker position={mapCoords} title="Selected Location">
-                    <Pin background="#FFD700" glyphColor="#000" borderColor="#000" />
+                  <AdvancedMarker
+                    position={mapCoords}
+                    title="Selected Location"
+                  >
+                    <Pin
+                      background="#FFD700"
+                      glyphColor="#000"
+                      borderColor="#000"
+                    />
                   </AdvancedMarker>
                 </Map>
               </APIProvider>
             )}
 
-
             <div className="grid sm:grid-cols-2 gap-6 mt-6">
-
               <div>
                 <label className="block mb-2 text-gray-400 text-sm">
                   Filter by max distance ({data.maxDistance ?? "20"} km)
@@ -782,266 +860,309 @@ export default function Specifics() {
 
             {/* Accommodations */}
             <div>
-              <h3 className="text-xl font-semibold mb-3" style={{ color: "#102b72" }}>
+              <h3
+                className="text-xl font-semibold mb-3"
+                style={{ color: "#102b72" }}
+              >
                 Nearby Accommodations
               </h3>
 
-              {/* Pagination State */}
-              {(() => {
-                const itemsPerPage = 4;
-                const totalPages = Math.ceil(
-                  accommodations.filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20)).length /
-                  itemsPerPage
-                );
-                const [page, setPage] = useState(0);
-
-                const visible = accommodations
-                  .filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20))
-                  .slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
-
-                return (
-                  <>
-                    <div className="flex flex-wrap justify-center gap-6">
-                      {isAccommodationsLoading ? (
-                        <AccomodationSkeleton />
-                      ) : visible.length > 0 ? (
-                        visible.map((a, i) => (
-                          <div
-                            key={i}
-                            className="bg-white border border-[#102b72]/20 rounded-xl w-72 flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
-                          >
-                            <img
-                              src={a.icon}
-                              onError={(e) =>
+              <div className="w-full">
+                <div className="flex overflow-x-auto gap-4 pb-3 snap-x snap-proximity">
+                  {isAccommodationsLoading ? (
+                    <AccomodationSkeleton />
+                  ) : (
+                    accommodations
+                      .filter(
+                        (a) =>
+                          parseFloat(a.distance) <= (data.maxDistance ?? 20)
+                      )
+                      .map((a, i) => (
+                        <div
+                          key={i}
+                          className="shrink-0 w-72 snap-center bg-white border border-[#102b72]/20 rounded-xl flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                        >
+                          <img
+                            src={a.icon}
+                            onError={(e) =>
                               ((e.currentTarget as HTMLImageElement).src =
                                 "/images/accommodations_placeholder.jpg")
-                              }
-                              alt={a.name}
-                              className="w-full h-40 object-cover rounded-t-xl"
-                            />
-
-                            <div className="flex flex-col justify-between flex-grow p-4">
-                              <div>
-                                <h5 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
-                                  {a.name}
-                                </h5>
-                                <p className="text-sm mb-3" style={{ color: "#102b72", opacity: 0.7 }}>
-                                  {a.distance}km from campus
-                                </p>
-                                <p className="text-sm mb-2" style={{ color: "#102b72" }}>
-                                  Address: {a.formatted_address}
-                                </p>
-
-                                <div className="space-y-1 text-sm" style={{ color: "#102b72" }}>
-                                  <div>
-                                    🚗 Driving time:{" "}
-                                    {!a.DRIVE || String(a.DRIVE).toLowerCase().includes("nan") ? (
-                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
-                                    ) : (
-                                      a.DRIVE
-                                    )}
-                                  </div>
-                                  <div>
-                                    🚶 Walking time:{" "}
-                                    {!a.WALK || String(a.WALK).toLowerCase().includes("nan") ? (
-                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
-                                    ) : (
-                                      a.WALK
-                                    )}
-                                  </div>
-                                  <div>
-                                    🚌 Public transport:{" "}
-                                    {!a.TRANSIT || String(a.TRANSIT).toLowerCase().includes("nan") ? (
-                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
-                                    ) : (
-                                      a.TRANSIT
-                                    )}
-                                  </div>
+                            }
+                            alt={a.name}
+                            className="w-full h-40 object-cover rounded-t-xl"
+                          />
+                          <div className="flex flex-col justify-between flex-grow p-4">
+                            <div>
+                              <h5
+                                className="font-semibold text-lg mb-1"
+                                style={{ color: "#102b72" }}
+                              >
+                                {a.name}
+                              </h5>
+                              <p
+                                className="text-sm mb-3"
+                                style={{ color: "#102b72", opacity: 0.7 }}
+                              >
+                                {a.distance}km from campus
+                              </p>
+                              <p
+                                className="text-sm mb-2"
+                                style={{ color: "#102b72" }}
+                              >
+                                Address: {a.formatted_address}
+                              </p>
+                              <div
+                                className="space-y-1 text-sm"
+                                style={{ color: "#102b72" }}
+                              >
+                                <div>
+                                  🚗 Driving time:{" "}
+                                  {!a.DRIVE ||
+                                  String(a.DRIVE)
+                                    .toLowerCase()
+                                    .includes("nan") ? (
+                                    <span
+                                      style={{
+                                        color: "#b91c1c",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      N/A
+                                    </span>
+                                  ) : (
+                                    a.DRIVE
+                                  )}
+                                </div>
+                                <div>
+                                  🚶 Walking time:{" "}
+                                  {!a.WALK ||
+                                  String(a.WALK)
+                                    .toLowerCase()
+                                    .includes("nan") ? (
+                                    <span
+                                      style={{
+                                        color: "#b91c1c",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      N/A
+                                    </span>
+                                  ) : (
+                                    a.WALK
+                                  )}
+                                </div>
+                                <div>
+                                  🚌 Public transport:{" "}
+                                  {!a.TRANSIT ||
+                                  String(a.TRANSIT)
+                                    .toLowerCase()
+                                    .includes("nan") ? (
+                                    <span
+                                      style={{
+                                        color: "#b91c1c",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      N/A
+                                    </span>
+                                  ) : (
+                                    a.TRANSIT
+                                  )}
                                 </div>
                               </div>
-
-                              <div className="mt-4 pt-2">
-                                <Button
-                                  onClick={handleShowMap(a.formatted_address)}
-                                  asChild
-                                  className="w-full text-sm font-semibold no-underline rounded-lg"
-                                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                            </div>
+                            <div className="mt-4 pt-2">
+                              <Button
+                                onClick={handleShowMap(a.formatted_address)}
+                                asChild
+                                className="w-full text-sm font-semibold no-underline rounded-lg"
+                                style={{
+                                  backgroundColor: "#102b72",
+                                  color: "#ffffff",
+                                }}
+                              >
+                                <a
+                                  href="#"
+                                  title="View on shared map"
+                                  data-map-marker={a.name}
+                                  style={{
+                                    textDecoration: "none",
+                                    color: "#ffffff",
+                                  }}
                                 >
-                                  <a
-                                    href="#"
-                                    title="View on shared map"
-                                    data-map-marker={a.name}
-                                    style={{ textDecoration: "none", color: "#ffffff" }}
-                                  >
-                                    📍 View on Map
-                                  </a>
-                                </Button>
-                              </div>
+                                  📍 View on Map
+                                </a>
+                              </Button>
                             </div>
                           </div>
-                        ))
-                      ) : (
-                        <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
-                          No accommodations found
                         </div>
-                      )}
-                    </div>
+                      ))
+                  )}
+                </div>
 
-                    {/* Pagination Dots */}
-                    {totalPages > 1 && (
-                      <div className="flex justify-center mt-5 gap-3">
-                        {Array.from({ length: totalPages }).map((_, i) => (
-                          <div
-                            key={i}
-                            onClick={() => setPage(i)}
-                            className={`w-3.5 h-3.5 rounded-full cursor-pointer transition-all duration-300 ${i === page
-                              ? "bg-[#102b72] scale-110 shadow-md"
-                              : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
-                              }`}
-                            style={{
-                              aspectRatio: "1 / 1", // ensures perfect circle
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
+                {!isAccommodationsLoading &&
+                  accommodations.filter(
+                    (a) => parseFloat(a.distance) <= (data.maxDistance ?? 20)
+                  ).length === 0 && (
+                    <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
+                      No accommodations found
+                    </div>
+                  )}
+              </div>
             </div>
 
             {/* Events */}
             <div className="mt-10">
-              <h3 className="text-xl font-semibold mb-3" style={{ color: "#102b72" }}>
+              <h3
+                className="text-xl font-semibold mb-3"
+                style={{ color: "#102b72" }}
+              >
                 Nearby Events & Activities
               </h3>
 
-              {(() => {
-                const itemsPerPage = 4;
-                const totalPages = Math.ceil(
-                  events.filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20)).length /
-                  itemsPerPage
-                );
-                const [page, setPage] = useState(0);
-
-                const visible = events
-                  .filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20))
-                  .slice(page * itemsPerPage, page * itemsPerPage + itemsPerPage);
-
-                return (
-                  <>
-                    <div className="flex flex-wrap justify-center gap-6">
-                      {isEventsLoading ? (
-                        <EventsSkeleton />
-                      ) : visible.length > 0 ? (
-                        visible.map((ev, i) => (
-                          <div
-                            key={i}
-                            className="bg-white border border-[#102b72]/20 rounded-xl w-72 flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
-                          >
-                            <img
-                              src={`/images/event_${i + 1}.jpg`}
-                              onError={(e) =>
-                                ((e.currentTarget as HTMLImageElement).src = ev.thumbnail)
-                              }
-                              alt={ev.title}
-                              className="w-full h-40 object-cover rounded-t-xl"
-                            />
-
-                            <div className="flex flex-col justify-between flex-grow p-4">
-                              <div>
-                                <h4 className="font-semibold text-lg mb-1" style={{ color: "#102b72" }}>
-                                  {ev.title}
-                                </h4>
-                                <p
-                                  className="text-sm mb-3"
-                                  style={{ color: "#102b72", opacity: 0.7 }}
-                                >
-                                  {ev.distance}km from campus
-                                </p>
-                                <p className="text-sm mb-2" style={{ color: "#102b72" }}>
-                                  Address: {ev.address[0]}
-                                </p>
-
-                                <div className="space-y-1 text-sm" style={{ color: "#102b72" }}>
-                                  <div>
-                                    🚗 Driving time:{" "}
-                                    {!ev.DRIVE || String(ev.DRIVE).toLowerCase().includes("nan") ? (
-                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
-                                    ) : (
-                                      ev.DRIVE
-                                    )}
-                                  </div>
-                                  <div>
-                                    🚶 Walking time:{" "}
-                                    {!ev.WALK || String(ev.WALK).toLowerCase().includes("nan") ? (
-                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
-                                    ) : (
-                                      ev.WALK
-                                    )}
-                                  </div>
-                                  <div>
-                                    🚌 Public transport:{" "}
-                                    {!ev.TRANSIT ||
-                                      String(ev.TRANSIT).toLowerCase().includes("nan") ? (
-                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
-                                    ) : (
-                                      ev.TRANSIT
-                                    )}
-                                  </div>
+              <div className="w-full">
+                <div className="flex overflow-x-auto gap-4 pb-3 snap-x snap-proximity">
+                  {isEventsLoading ? (
+                    <EventsSkeleton />
+                  ) : (
+                    events
+                      .filter(
+                        (ev) =>
+                          parseFloat(ev.distance) <= (data.maxDistance ?? 20)
+                      )
+                      .map((ev, i) => (
+                        <div
+                          key={i}
+                          className="shrink-0 w-72 snap-center bg-white border border-[#102b72]/20 rounded-xl flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                        >
+                          <img
+                            src={`/images/event_${i + 1}.jpg`}
+                            onError={(e) =>
+                              ((e.currentTarget as HTMLImageElement).src =
+                                ev.thumbnail)
+                            }
+                            alt={ev.title}
+                            className="w-full h-40 object-cover rounded-t-xl"
+                          />
+                          <div className="flex flex-col justify-between flex-grow p-4">
+                            <div>
+                              <h4
+                                className="font-semibold text-lg mb-1"
+                                style={{ color: "#102b72" }}
+                              >
+                                {ev.title}
+                              </h4>
+                              <p
+                                className="text-sm mb-3"
+                                style={{ color: "#102b72", opacity: 0.7 }}
+                              >
+                                {ev.distance}km from campus
+                              </p>
+                              <p
+                                className="text-sm mb-2"
+                                style={{ color: "#102b72" }}
+                              >
+                                Address: {ev.address[0]}
+                              </p>
+                              <div
+                                className="space-y-1 text-sm"
+                                style={{ color: "#102b72" }}
+                              >
+                                <div>
+                                  🚗 Driving time:{" "}
+                                  {!ev.DRIVE ||
+                                  String(ev.DRIVE)
+                                    .toLowerCase()
+                                    .includes("nan") ? (
+                                    <span
+                                      style={{
+                                        color: "#b91c1c",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      N/A
+                                    </span>
+                                  ) : (
+                                    ev.DRIVE
+                                  )}
+                                </div>
+                                <div>
+                                  🚶 Walking time:{" "}
+                                  {!ev.WALK ||
+                                  String(ev.WALK)
+                                    .toLowerCase()
+                                    .includes("nan") ? (
+                                    <span
+                                      style={{
+                                        color: "#b91c1c",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      N/A
+                                    </span>
+                                  ) : (
+                                    ev.WALK
+                                  )}
+                                </div>
+                                <div>
+                                  🚌 Public transport:{" "}
+                                  {!ev.TRANSIT ||
+                                  String(ev.TRANSIT)
+                                    .toLowerCase()
+                                    .includes("nan") ? (
+                                    <span
+                                      style={{
+                                        color: "#b91c1c",
+                                        fontWeight: 600,
+                                      }}
+                                    >
+                                      N/A
+                                    </span>
+                                  ) : (
+                                    ev.TRANSIT
+                                  )}
                                 </div>
                               </div>
-
-                              <div className="mt-4 pt-2">
-                                <Button
-                                  onClick={handleShowMap(ev.address[0])}
-                                  asChild
-                                  className="w-full text-sm font-semibold no-underline rounded-lg"
-                                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                            </div>
+                            <div className="mt-4 pt-2">
+                              <Button
+                                onClick={handleShowMap(ev.address[0])}
+                                asChild
+                                className="w-full text-sm font-semibold no-underline rounded-lg"
+                                style={{
+                                  backgroundColor: "#102b72",
+                                  color: "#ffffff",
+                                }}
+                              >
+                                <a
+                                  href="#"
+                                  title="View on shared map"
+                                  data-map-marker={ev.title}
+                                  style={{
+                                    textDecoration: "none",
+                                    color: "#ffffff",
+                                  }}
                                 >
-                                  <a
-                                    href="#"
-                                    title="View on shared map"
-                                    data-map-marker={ev.title}
-                                    style={{ textDecoration: "none", color: "#ffffff" }}
-                                  >
-                                    🎯 View on Map
-                                  </a>
-                                </Button>
-                              </div>
+                                  🎯 View on Map
+                                </a>
+                              </Button>
                             </div>
                           </div>
-                        ))
-                      ) : (
-                        <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
-                          No events found
                         </div>
-                      )}
+                      ))
+                  )}
+                </div>
+
+                {!isEventsLoading &&
+                  events.filter(
+                    (ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20)
+                  ).length === 0 && (
+                    <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
+                      No events found
                     </div>
-
-                    {/* Pagination Dots */}
-                    {totalPages > 1 && (
-                      <div className="flex justify-center mt-5 gap-3">
-                        {Array.from({ length: totalPages }).map((_, i) => (
-                          <div
-                            key={i}
-                            onClick={() => setPage(i)}
-                            className={`w-3.5 h-3.5 rounded-full cursor-pointer transition-all duration-300 ${i === page
-                              ? "bg-[#102b72] scale-110 shadow-md"
-                              : "bg-gray-300 hover:bg-gray-400 hover:scale-105"
-                              }`}
-                            style={{
-                              aspectRatio: "1 / 1", // ensures perfect circle
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
+                  )}
+              </div>
             </div>
-
           </CardContent>
         </Card>
 

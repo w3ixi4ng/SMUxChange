@@ -97,6 +97,7 @@ export function LoginForm({
           <form className="p-6 md:p-8 bg-white">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
+                <span className="inline-block ml-2"><img src="/images/user.gif" alt="Login" className="w-30 h-30" /></span>
                 <h1 className="text-2xl font-bold" style={{ color: "#102b72" }}>Welcome back</h1>
                 <p className="text-sm text-balance" style={{ color: "#102b72" }}>
                   Login to your SMUxChange account
