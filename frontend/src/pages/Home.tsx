@@ -92,7 +92,7 @@ function Home() {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link to="/Mappable">
-                    <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold px-10 py-7 text-lg rounded-lg shadow-2xl transition-all duration-300 hover:scale-105 min-w-[220px]">
+                    <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold px-10 py-7 text-lg rounded-lg shadow-2xl transition-all duration-300 hover:scale-105">
                     <span className="relative z-10 flex items-center gap-2">
                         Start Planning
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ function Home() {
                     </Button>
                 </Link>
                  <Link to="/information">
-                     <Button className="group relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white font-semibold px-10 py-7 text-lg rounded-lg transition-all duration-300 hover:scale-105 min-w-[220px]">
+                     <Button className="group relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white font-semibold px-10 py-7 text-lg rounded-lg transition-all duration-300 hover:scale-105">
                     <span className="relative z-10 flex items-center gap-2">
                         Browse Schools
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
