@@ -8,7 +8,6 @@ import {
   House,
   MapIcon,
   GraduationCap,
-  User,
   ChevronDown,
   ChevronUp,
   LogIn,
