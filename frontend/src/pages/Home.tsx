@@ -60,7 +60,7 @@ function Home() {
             color: "#102b72",
         }}
         >
-             <div className="fixed inset-0 overflow-hidden pointer-events-none">
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
             <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700" />
             <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-indigo-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
@@ -68,7 +68,7 @@ function Home() {
 
 
         
-     
+
       {/* === Hero Section === */}
       <section className="relative flex flex-col items-center justify-center px-6 mb-5">
         <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-5xl mx-auto">
@@ -144,10 +144,10 @@ function Home() {
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#102b72" }}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#eeee" }}>
               Key Features
             </h2>
-            <p className="text-lg md:text-xl font-normal max-w-3xl mx-auto" style={{ color: "#102b72", opacity: 0.7 }}>
+            <p className="text-lg md:text-xl font-normal max-w-3xl mx-auto" style={{ color: "#eeee", opacity: 0.7 }}>
               Everything you need to plan your SMU exchange journey efficiently
             </p>
           </div>
