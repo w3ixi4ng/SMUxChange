@@ -163,6 +163,8 @@ export default function Specifics() {
 
   const [updateRequired, setUpdateRequired] = useState(false);
 
+  const [new_obj, set_new_obj] = useState<Record<string, any>>({});
+
   async function get_cooridnates(address: string) {
     try {
       const response = await axios.get(
@@ -198,6 +200,17 @@ export default function Specifics() {
 
       }
     };
+  }
+
+  function on_event_click(item_selected: Record<string, any>) {
+    return (e: React.MouseEvent) => {
+        set_new_obj(item_selected);
+        if (item_selected.type == "accomodation") {
+            return handleShowMap(item_selected.formatted_address)(e);
+        } else {
+            return handleShowMap(item_selected.address[0])(e)
+        }
+    }
   }
 
 
@@ -384,6 +397,7 @@ export default function Specifics() {
       updatedAccomodations.push({
         ...accommodations[i],
         ...distanceData,
+        "type": "accomodation"
       });
     }
     for (let j = 0; j < events.length; j++) {
@@ -394,6 +408,7 @@ export default function Specifics() {
       updatedEvents.push({
         ...events[j],
         ...distance_event_data,
+        "type": "event"
       });
     }
     updatedAccomodations.sort((a, b) => a.distance - b.distance);
@@ -797,6 +812,27 @@ export default function Specifics() {
                 same interactive map.
               </CardDescription>
             </CardHeader>
+
+            {new_obj && new_obj.type == "accomodation" &&(
+                <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                    <strong>Currently Selected {new_obj.type}:</strong> {new_obj.name}
+                    address: {new_obj.formatted_address}
+                    </div>
+            )}
+
+            {new_obj && new_obj.type == "event" &&(
+                 <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                    <strong>Currently Selected {new_obj.type}:</strong> {new_obj.title}
+                    address: {new_obj.address[0]}
+                    </div>
+            )}
+
+            {Object.keys(new_obj).length === 0 && (
+                <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                    nothing selected
+                </div>
+            )}
+
           </div>
 
           <CardContent className="space-y-6">
@@ -988,7 +1024,7 @@ export default function Specifics() {
                             </div>
                             <div className="mt-4 pt-2">
                               <Button
-                                onClick={handleShowMap(a.formatted_address)}
+                                onClick={on_event_click(a)}
                                 asChild
                                 className="w-full text-sm font-semibold no-underline rounded-lg"
                                 style={{
@@ -1141,7 +1177,7 @@ export default function Specifics() {
                             </div>
                             <div className="mt-4 pt-2">
                               <Button
-                                onClick={handleShowMap(ev.address[0])}
+                                onClick={on_event_click(ev)}
                                 asChild
                                 className="w-full text-sm font-semibold no-underline rounded-lg"
                                 style={{
