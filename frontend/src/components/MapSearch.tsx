@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import MapResults from "./MapResults";
 import { useParams } from "react-router-dom";
+import { Search, Globe, GraduationCap, BookOpen, Map } from "lucide-react";
 
 function MapSearch() {
   const { school: schoolParam, country: countryParam } = useParams();
@@ -241,8 +242,12 @@ function MapSearch() {
     <>
       <div className="text-center mb-10">
         <span className="inline-block ml-2"><img src="/images/maps.gif" alt="Maps" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
-        <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search</h1>
-        <p className="text-sm" style={{ color: "#102b72" }}>Find exchange mappings with ease.</p>
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
+            Module Mapping
+          </h1>
+            <p className="text-xl md:text-2xl text-slate-700 font-medium">
+            Discover exchange opportunities and map your modules
+            </p>
       </div>
 
 
@@ -252,7 +257,10 @@ function MapSearch() {
 
           {/* === SELECT COUNTRY === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="mb-1" style={{ color: "#102b72" }}>Select Country</p>
+
+
+            <p className="mb-1" style={{ color: "#102b72" }}>
+                <Globe className="w-4 h-4 text-indigo-600 d-inline" /> Select Country</p>
             <select
               className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
               style={{ color: "#102b72" }}
@@ -273,7 +281,8 @@ function MapSearch() {
 
           {/* === SELECT UNIVERSITY === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="mb-1" style={{ color: "#102b72" }}>Select University</p>
+            <p className="mb-1" style={{ color: "#102b72" }}>
+                <GraduationCap className="w-4 h-4 text-indigo-600 d-inline" /> Select University</p>
             <select
               className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleUniversity ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
@@ -294,7 +303,8 @@ function MapSearch() {
 
           {/* === SELECT FACULTY === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="mb-1" style={{ color: "#102b72" }}>Select Faculty</p>
+            <p className="mb-1" style={{ color: "#102b72" }}>
+                <BookOpen className="w-4 h-4 text-indigo-600 d-inline" /> Select Faculty</p>
             <select
               className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
               style={{ color: "#102b72" }}
@@ -313,7 +323,8 @@ function MapSearch() {
 
           {/* === SELECT MAJOR === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="mb-1" style={{ color: "#102b72" }}>Select Major</p>
+            <p className="mb-1" style={{ color: "#102b72" }}>
+                <GraduationCap className="w-4 h-4 text-indigo-600 d-inline" /> Select Major</p>
             <select
               className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleMajor ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
@@ -337,7 +348,8 @@ function MapSearch() {
 
           {/* === SELECT TRACK === */}
           <div className="col-lg-6 col-12 mb-3">
-            <p className="mb-1" style={{ color: "#102b72" }}>Select Track</p>
+            <p className="mb-1" style={{ color: "#102b72" }}> 
+                <Map className="w-4 h-4 text-indigo-600 d-inline" /> Select Track</p>
             <select
               className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleTrack ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
@@ -359,7 +371,7 @@ function MapSearch() {
           {/* === SECOND MAJOR (optional) === */}
           {secondMajor && (
             <div className="col-lg-6 col-12 mb-3">
-              <p className="mb-1" style={{ color: "#102b72" }}>Select Second Major</p>
+              <p className="mb-1" style={{ color: "#102b72" }}><GraduationCap className="w-4 h-4 text-indigo-600 d-inline" /> Select Second Major</p>
               <select
                 className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
                 style={{ color: "#102b72" }}
@@ -393,14 +405,14 @@ function MapSearch() {
 
 
           {/* === SEARCH BUTTON === */}
-          <div className="col-12 text-center mt-2">
+          <div className="col-3 text-center mt-2">
             <button
-              className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg"
+              className="rounded w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold px-8 py-4 shadow-lg hover:shadow-indigo-500/50 transition-all duration-300 hover:scale-105"
               style={{ backgroundColor: "#102b72", color: "#ffffff" }}
               onClick={() => setMapResults(true)}
               disabled={paramsAreValid}
             >
-              Search
+                <Search className="w-6 h-6 d-inline" /> Search
             </button>
           </div>
         </div>

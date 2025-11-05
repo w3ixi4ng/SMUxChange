@@ -9,11 +9,11 @@ router.get('/:photo', async (req, res) => {
         const { photo } = req.params;
         const decodedphoto= decodeURIComponent(photo);
         
-        const response = await axios.get('https://maps.googleapis.com/maps/api/place/photo', {
+        const response = await axios.get('https://places.googleapis.com/v1', {
             params: {
-                "maxheight": 400,
-                "key":process.env.GOOGLE_MAPS_API_KEY,
-                "photoreference": decodedphoto
+                "NAME": decodedphoto,
+                "API_KEY": process.env.GOOGLE_MAPS_API_KEY,
+                "maxHeightpx": "40px"
             }
         });
 

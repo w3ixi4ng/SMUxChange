@@ -231,18 +231,11 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
 
   return (
-    <div className="container mx-auto my-10" style={{ color: "#102b72" }}>
+      <div className="container mx-auto my-10" style={{ color: "#102b72" }}>
       <div className="text-center mb-4">
         <h1 className="text-3xl font-semibold mb-3 text-center" style={{ color: "#102b72" }}>{university}</h1>
-        <Link to={`/specifics/${university}`}>
-          <button
-            className="px-8 py-2 text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-transform"
-            style={{
-              backgroundColor: "#102b72",
-              color: "#ffffff",
-              boxShadow: "0 4px 10px rgba(16, 43, 114, 0.2)",
-            }}
-          >
+        <Link to={'/specifics/${university}'}>
+          <button className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
             More Info
           </button>
         </Link>
