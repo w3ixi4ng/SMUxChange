@@ -219,13 +219,6 @@ function MapSearch() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!mapResults) return;
-    const raf = requestAnimationFrame(() => {
-      document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [mapResults, selectedCountry, selectedFaculty, selectedMajor, selectedSecondMajor, selectedUniversity, selectedTrack]);
 
   return (
     <>
@@ -415,8 +408,7 @@ function MapSearch() {
       {/* === MAP RESULTS === */}
       
       {mapResults && (
-        <>
-        <div id = "results"/>
+        <>     
         <MapResults
           university={selectedUniversity}
           country={selectedCountry}
@@ -425,6 +417,7 @@ function MapSearch() {
           track={selectedTrack}
           secondMajor={selectedSecondMajor}
         />
+        <div id = "results"/>
         </>
       )}
     </>
