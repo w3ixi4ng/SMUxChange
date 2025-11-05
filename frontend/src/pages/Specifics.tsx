@@ -180,7 +180,6 @@ export default function Specifics() {
     return async (e: React.MouseEvent) => {
       e.preventDefault();
       const coords = await get_cooridnates(address);
-      console.log(coords);
       if (coords) {
         setMapCoords(coords);
         setShowMap(true);
@@ -384,15 +383,12 @@ export default function Specifics() {
   async function get_distance() {
     const updatedAccomodations: any[] = [];
     const updatedEvents: any[] = [];
-    console.log(accommodations);
-    console.log(events);
     for (let i = 0; i < accommodations.length; i++) {
       const distanceData = await helper_distance(
         data["host_university"],
         accommodations[i]["formatted_address"]
       );
 
-      console.log(distanceData);
 
       updatedAccomodations.push({
         ...accommodations[i],
@@ -434,7 +430,7 @@ export default function Specifics() {
 
   useEffect(() => {
     async function calculateDistanceOnce() {
-      if (accommodations.length > 0 && !distanceCalculated) {
+      if ((accommodations.length > 0  || events.length>0 )&& !distanceCalculated) {
         await get_distance();
         setDistanceCalculated(true);
       }
@@ -487,7 +483,7 @@ export default function Specifics() {
               <img
                 src={`https://flagcdn.com/${getCountryCode(data?.country)}.svg`}
                 alt={data && data.country}
-                className="w-8 h-5 rounded-md"
+                className="w-6 h-5 rounded-md"
               />
               <span style={{ color: "#102b72" }}>{data && data.country}</span>
             </div>
@@ -815,15 +811,15 @@ export default function Specifics() {
 
             {new_obj && new_obj.type == "accomodation" &&(
                 <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
-                    <strong>Currently Selected {new_obj.type}:</strong> {new_obj.name}
-                    address: {new_obj.formatted_address}
+                    <strong>Currently Selected {new_obj.type}:</strong> {new_obj.name}<br/>
+                    <strong> Currently Selected Address: </strong> {new_obj.formatted_address}
                     </div>
             )}
 
             {new_obj && new_obj.type == "event" &&(
                  <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
-                    <strong>Currently Selected {new_obj.type}:</strong> {new_obj.title}
-                    address: {new_obj.address[0]}
+                    <strong>Currently Selected {new_obj.type}</strong>: {new_obj.title}<br/>
+                    <strong>Currently Selected Address: </strong>{new_obj.address[0]}
                     </div>
             )}
 
@@ -931,7 +927,8 @@ export default function Specifics() {
                       .map((a, i) => (
                         <div
                           key={i}
-                          className="shrink-0 w-72 snap-center bg-white border border-[#102b72]/20 rounded-xl flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                         className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
+                            ${new_obj === a ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-[#102b72]/20 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <img
                             src={a.icon}
@@ -1084,7 +1081,8 @@ export default function Specifics() {
                       .map((ev, i) => (
                         <div
                           key={i}
-                          className="shrink-0 w-72 snap-center bg-white border border-[#102b72]/20 rounded-xl flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                          className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
+                            ${new_obj === ev ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-[#102b72]/20 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <img
                             src={`/images/event_${i + 1}.jpg`}
