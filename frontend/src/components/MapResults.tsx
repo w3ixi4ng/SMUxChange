@@ -189,7 +189,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
     if (uid != "") {
       getSavedMaps();
     }
-  }, [uid, getSavedMaps]);
+  }, [uid]);
 
 
   useEffect(() => {
@@ -250,8 +250,13 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
       )}
 
 
-      {/* Replaced Bootstrap row with responsive grid */}
-      <div className="row gap-6" style={{ display: availableCourses ? "" : "none" }}>
+  {/* Split Layout: 30% / 70% */}
+      <div
+        className={`grid grid-cols-1 lg:grid-cols-[30%_70%] gap-6 ${
+          availableCourses ? "" : "hidden"
+        }`}
+      >
+        {/* LEFT PANEL — Your Map (30%) */}
         <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg p-8">
           <div className="flex items-center gap-2 mb-6">
             <BookOpen className="w-6 h-6" style={{ color: "#102b72" }} />
@@ -316,6 +321,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
           )}
         </div>
 
+        {/* RIGHT PANEL — Available Courses (70%) */}
         <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-3xl p-5 shadow-lg">
           <h2 className="text-xl mb-4 font-semibold text-center" style={{ color: "#102b72" }}>Available Courses</h2>
           <div className="text-center mb-4">
@@ -350,10 +356,8 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
           ))}
         </div>
       </div>
-  
-      
     </div>
   );
 }
 
-export default MapResults;
+export default MapResults
