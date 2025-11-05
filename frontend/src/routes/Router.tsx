@@ -8,7 +8,6 @@ import {
   House,
   MapIcon,
   GraduationCap,
-  User,
   ChevronDown,
   ChevronUp,
   LogIn,
@@ -264,8 +263,8 @@ function RouterView() {
                           style={{ textDecoration: 'none' }}
                         >
                           <div className="flex items-center gap-2">
-                            <User size={16} strokeWidth={2} />
-                            <span style={{ textDecoration: 'none' }}>My Profile</span>
+                          <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
+                          <span style={{ textDecoration: 'none' }}>My Profile</span>
                           </div>
                         </NavLink>
                         <NavLink
