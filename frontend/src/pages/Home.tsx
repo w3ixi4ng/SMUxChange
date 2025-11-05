@@ -171,9 +171,9 @@ function Home() {
           {/* Main Title */}
           {logoLoaded && (
                             <div className="space-y-6 animate-fade-in-up">
-                                <h1 className="text-7xl md:text-8xl lg:text-9xl xl:text-[160px] font-extrabold mb-6 leading-none" style={{ fontSize: 'clamp(3.75rem, 8vw, 10rem)', fontFamily: 'inherit' }}>
+                                <h1 className="text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold mb-6 leading-none" style={{ fontSize: 'clamp(2.5rem, 6vw, 9rem)', fontFamily: 'inherit' }}>
                                     <TypingAnimation text="SMUxChange" speed={150} />
-              </h1>
+                                </h1>
 
               {/* Subtitle */}
                                 <p className="text-xl md:text-2xl lg:text-3xl font-medium text-slate-700 mb-12 max-w-3xl mx-auto leading-relaxed">
