@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import ThreeDLogo from "@/components/ThreeDLogo";
 import { useEffect, useState } from "react";
-import { ArrowUpIcon, ArrowUp, Globe2, BookOpen, Users, Sparkles } from "lucide-react";
+import { ArrowUp, Globe2 } from "lucide-react";
 
 //function scrollToTop() {
 //  const topElement = document.getElementById("top");
