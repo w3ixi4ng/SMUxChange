@@ -1217,7 +1217,7 @@ export default function Specifics() {
           </CardContent>
         </Card>
 
-        Scroll to top
+        {/* Scroll to top */}
         {showScrollButton && (
           <button
             onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
