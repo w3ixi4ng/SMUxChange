@@ -168,11 +168,12 @@ function MapSearch() {
 
 
   useEffect(() => {
+    setMapResults(false);
+    setSelectedUniversity(""); 
     if (selectedCountry !== "") {
       fetchUniversities(selectedCountry);
       setToggleUniversity(false);
     } else {
-      setSelectedUniversity("");
       setToggleUniversity(true);
     }
   }, [selectedCountry]);
