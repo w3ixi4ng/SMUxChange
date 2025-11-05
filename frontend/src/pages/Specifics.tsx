@@ -95,12 +95,12 @@ function getCountryCode(countryName?: string) {
   return map[key] || "xx";
 }
 
-function scrollToTop() {
-  const topElement = document.getElementById("top");
-  if (topElement) {
-    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
-  }
-}
+//function scrollToTop() {
+//  const topElement = document.getElementById("top");
+//  if (topElement) {
+//    topElement.scrollIntoView(); // instant scroll
+//  }
+//}
 
 /* ===========================
    Time-ago helper (unchanged)
@@ -175,7 +175,8 @@ export default function Specifics() {
   }
 
   function handleShowMap(address: string) {
-    return async () => {
+    return async (e: React.MouseEvent) => {
+      e.preventDefault();
       const coords = await get_cooridnates(address);
       console.log(coords);
       if (coords) {
@@ -183,13 +184,22 @@ export default function Specifics() {
         setShowMap(true);
         setUpdateRequired(true);
 
-        const mapElement = document.getElementById("map-section");
-        if (mapElement) {
-          mapElement.scrollIntoView({ behavior: "smooth" });
-        }
+        setTimeout(() => {
+            const mapElement = document.getElementById("map-section");
+            if (mapElement) {
+                mapElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"    
+                });
+            }
+            setUpdateRequired(false);
+        },100)
+
       }
     };
   }
+
 
   useEffect(() => {
     // IMPORTANT: this is the ONLY source of truth for UI login state right now
@@ -817,9 +827,14 @@ export default function Specifics() {
                     position: "relative",
                   }}
                   center={updateRequired ? mapCoords : undefined}
-                  zoom={16}
+                  zoom={updateRequired?16:undefined}
+
+                  defaultCenter={!updateRequired?mapCoords:undefined}
+                  defaultZoom={!updateRequired?16:undefined}
+
                   mapId="DEMO_MAP_ID"
                   disableDefaultUI={false}
+                  gestureHandling="greedy"
                 >
                   <AdvancedMarker
                     position={mapCoords}
@@ -1166,10 +1181,10 @@ export default function Specifics() {
           </CardContent>
         </Card>
 
-        {/* Scroll to top */}
+        Scroll to top
         {showScrollButton && (
           <button
-            onClick={scrollToTop}
+            onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
             className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label="Scroll to top"
             style={{ backgroundColor: "#102b72", color: "#ffffff" }}
