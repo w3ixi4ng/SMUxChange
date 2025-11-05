@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import StarRating from "@/components/StarRating";
 import StarRatingInput from "@/components/StarRatingInput";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,45 @@ import AccomodationSkeleton from "@/components/SpecificSchool/AccomodationSkelet
 import EventsSkeleton from "@/components/SpecificSchool/EventsSkeleton";
 const key = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
 import { toast } from "sonner";
-import { ArrowUpIcon } from "lucide-react";
+import { ArrowUpIcon, SearchX, FileX, Home, Calendar } from "lucide-react";
+
+/* ===========================
+   TYPING ANIMATION
+   =========================== */
+function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    setDisplayedText("");
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex < text.length) {
+        setDisplayedText(text.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, speed);
+
+    return () => clearInterval(typingInterval);
+  }, [text, speed]);
+
+  // Cursor blinking effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 530);
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  return (
+    <span className="text-black">
+      {displayedText}
+      <span className={showCursor ? "opacity-100" : "opacity-0"}>|</span>
+    </span>
+  );
+}
 
 /* ===========================
    HELPERS (unchanged)
@@ -119,11 +157,64 @@ function timeAgo(ts?: number) {
   return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
 }
 
+
+function useScrollAnimation() {
+  const [visible, setVisible] = useState<Record<string, boolean>>({});
+  const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    // Create observer
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute("data-scroll-id");
+            if (id) {
+              setVisible((prev) => ({ ...prev, [id]: true }));
+              // Unobserve after it's visible to improve performance
+              if (observerRef.current) {
+                observerRef.current.unobserve(entry.target);
+              }
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+
+    // Observe all elements with data-scroll-id
+    const elements = document.querySelectorAll("[data-scroll-id]");
+    elements.forEach((el) => {
+      if (observerRef.current) {
+        observerRef.current.observe(el);
+      }
+    });
+
+    return () => {
+      if (observerRef.current) {
+        elements.forEach((el) => observerRef.current?.unobserve(el));
+      }
+    };
+  }, []);
+
+  const setRef = (_id: string) => (element: HTMLDivElement | null) => {
+    if (element && observerRef.current) {
+      observerRef.current.observe(element);
+    }
+  };
+
+  return { setRef, visible };
+}
+
 /* ===========================
    MAIN COMPONENT
    =========================== */
 export default function Specifics() {
   /* ========== School data (unchanged) ========== */
+  const { setRef, visible } = useScrollAnimation();
   const [data, setData] = useState(() => {
     const schoolData = sessionStorage.getItem("school");
     if (schoolData) {
@@ -460,38 +551,33 @@ export default function Specifics() {
     RENDER
      =========================== */
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: "#eeeeee", color: "#102b72" }}
-    >
-      {/* === Subtle gradient + grid overlay === */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-
-      <div className="container mx-auto px-6 py-12 space-y-10 relative z-10">
+    <div className="relative w-full min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50">
+    
+      <div className="container mx-auto px-6 py-5 space-y-10 relative z-10">
         <div id="top" />
         {/* === HEADER === */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
-            <h1
-              className="text-4xl font-bold mb-2"
-              style={{ color: "#102b72" }}
-            >
-              {data && data.host_university}
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-2">
+              {data && <TypingAnimation text={data.host_university} speed={100} />}
             </h1>
             <div className="flex items-center gap-3">
               <img
                 src={`https://flagcdn.com/${getCountryCode(data?.country)}.svg`}
                 alt={data && data.country}
-                className="w-6 h-5 rounded-md"
+                className="w-10 h-8 rounded-md animate-flag-wave"
               />
-              <span style={{ color: "#102b72" }}>{data && data.country}</span>
+              <span className="text-slate-700 font-medium text-lg">{data && data.country}</span>
             </div>
           </div>
         </div>
 
         {/* === HERO IMAGE === */}
-        <div className="relative w-full h-80 overflow-hidden rounded-2xl shadow-lg">
+        <div 
+          ref={setRef("hero-image")}
+          data-scroll-id="hero-image"
+          className={`relative w-full h-80 overflow-hidden rounded-2xl shadow-lg scroll-fade-in ${visible["hero-image"] ? "visible" : ""}`}
+        >
           {(() => {
             const derived = `/images/university_pictures/${data?.host_university}.jpg`;
             const src = data?.images?.[0] || derived;
@@ -510,18 +596,18 @@ export default function Specifics() {
         </div>
 
         {/* === DETAILS CARD === */}
-        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20">
+        <Card 
+          ref={setRef("details-card")}
+          data-scroll-id="details-card"
+          className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl scroll-fade-in ${visible["details-card"] ? "visible" : ""}`}
+        >
           <CardHeader>
             <CardTitle
-              className="text-2xl font-semibold"
-              style={{ color: "#102b72" }}
+              className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent"
             >
               About the University
             </CardTitle>
-            <CardDescription
-              className="leading-relaxed"
-              style={{ color: "#102b72" }}
-            >
+            <CardDescription className="leading-relaxed text-slate-600">
               {data?.description || "No description available."}
             </CardDescription>
           </CardHeader>
@@ -530,31 +616,31 @@ export default function Specifics() {
             {/* === ROW 1: Email | Phone | Rating === */}
 
             {/* Rating */}
-            <div className="text-center">
-              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+            <div className="text-center bg-gradient-to-br from-blue-100 to-emerald-100 border-2 border-blue-300 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5">
+              <p className="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-3">
                 Rating
               </p>
-              <div className="flex items-center gap-2 justify-center">
+              <div className="flex items-center gap-3 justify-center mb-2">
                 <StarRating rating={avgRating || 0} />
-                <span className="text-sm" style={{ color: "#102b72" }}>
-                  {avgRating ? avgRating.toFixed(1) + "/5.0" : "No ratings yet"}{" "}
-                  ({reviews.length} review{reviews.length === 1 ? "" : "s"})
-                </span>
               </div>
+              <span className="text-lg font-bold text-slate-800 bg-white px-4 py-2 rounded-lg inline-block shadow-md">
+                {avgRating ? avgRating.toFixed(1) + "/5.0" : "No ratings yet"}{" "}
+                ({reviews.length} review{reviews.length === 1 ? "" : "s"})
+              </span>
             </div>
             {/* GPA Requirements */}
-            <div className="text-center">
-              <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+            <div className="text-center bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-300 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5">
+              <p className="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-3">
                 GPA Requirements
               </p>
-              <div className="flex flex-wrap gap-4 text-sm font-semibold mt-1 justify-center">
-                <span style={{ color: "#16a34a" }}>
+              <div className="flex flex-wrap gap-3 justify-center">
+                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-br from-emerald-200 to-green-200 text-emerald-800 border border-emerald-400 shadow-md hover:scale-105 transition-all duration-200 hover:shadow-lg">
                   Max GPA: {data?.max_gpa ?? "N/A"}
                 </span>
-                <span style={{ color: "#dc2626" }}>
+                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-br from-red-200 to-rose-200 text-red-800 border border-red-400 shadow-md hover:scale-105 transition-all duration-200 hover:shadow-lg">
                   Min GPA: {data?.min_gpa ?? "N/A"}
                 </span>
-                <span style={{ color: "#2563eb" }}>
+                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-br from-blue-200 to-indigo-200 text-blue-800 border border-blue-400 shadow-md hover:scale-105 transition-all duration-200 hover:shadow-lg">
                   Places: {data?.places ?? "N/A"}
                 </span>
               </div>
@@ -562,8 +648,7 @@ export default function Specifics() {
             <div className="text-center">
               <Link to={`/mappable/${data?.host_university}/${data?.country}`}>
                 <button
-                  className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg"
-                  style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+                  className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg bg-blue-600 text-white hover:bg-blue-700 rounded shadow-lg"
                 >
                   Try Map
                 </button>
@@ -576,15 +661,18 @@ export default function Specifics() {
         </Card>
 
         {/* === AVAILABLE COURSE AREAS (with show more/less) === */}
-        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
+        <Card 
+          ref={setRef("course-areas")}
+          data-scroll-id="course-areas"
+          className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl mt-10 scroll-fade-in ${visible["course-areas"] ? "visible" : ""}`}
+        >
           <CardHeader>
             <CardTitle
-              className="text-lg font-semibold"
-              style={{ color: "#102b72" }}
+              className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent"
             >
               Available Course Areas
             </CardTitle>
-            <CardDescription style={{ color: "#102b72" }}>
+            <CardDescription className="text-slate-600">
               Course areas mapped for this university
             </CardDescription>
           </CardHeader>
@@ -601,8 +689,7 @@ export default function Specifics() {
                   data.mappable_basket?.map((basket: string, i: number) => (
                     <div key={i} className="flex">
                       <span
-                        className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg-[] hover:bg-[#102b72]/10 transition-colors w-full text-center"
-                        style={{ color: "#102b72" }}
+                        className="px-4 py-2 rounded-lg text-sm font-medium border border-blue-200 bg-white hover:bg-blue-50 hover:border-blue-300 text-blue-600 transition-colors w-full text-center"
                       >
                         {basket}
                       </span>
@@ -611,10 +698,7 @@ export default function Specifics() {
                 {(!data ||
                   !data.mappable_basket ||
                   data.mappable_basket.length === 0) && (
-                  <span
-                    className="text-sm italic"
-                    style={{ color: "#102b72", opacity: 0.7 }}
-                  >
+                  <span className="text-sm italic text-slate-600">
                     No course areas available.
                   </span>
                 )}
@@ -623,11 +707,9 @@ export default function Specifics() {
               {data && data.mappable_basket?.length > 6 && (
                 <button
                   onClick={() => setShowAllBaskets((prev) => !prev)}
-                  className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full text-sm font-semibold hover:bg-[#102b72]/10 transition-all"
+                  className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full text-sm font-semibold hover:bg-blue-100 text-blue-600 transition-all"
                   style={{
-                    color: "#102b72",
                     backgroundColor: "transparent",
-                    border: "1px solid rgba(16,43,114,0.3)",
                   }}
                 >
                   {showAllBaskets ? (
@@ -646,29 +728,32 @@ export default function Specifics() {
         </Card>
 
         {/* === STUDENT REVIEWS (includes IMPORTANT login-gated form) === */}
-        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
+        <Card 
+          ref={setRef("reviews-card")}
+          data-scroll-id="reviews-card"
+          className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl mt-10 scroll-fade-in ${visible["reviews-card"] ? "visible" : ""}`}
+        >
           <CardHeader>
             <CardTitle
-              className="text-lg font-semibold"
-              style={{ color: "#102b72" }}
+              className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent"
             >
               Student Reviews
             </CardTitle>
-            <CardDescription style={{ color: "#102b72" }}>
+            <CardDescription className="text-slate-600">
               What other SMU students say about {data?.host_university}.
             </CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-6">
             {/* Summary bar */}
-            <div className="flex items-center justify-between bg-white border border-[#102b72]/20 p-4 rounded-lg">
+            <div className="flex items-center justify-between bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-slate-300 rounded-xl p-4 shadow-md">
               <div className="flex items-center gap-3">
                 <StarRating rating={avgRating || 0} />
-                <span className="font-semibold" style={{ color: "#102b72" }}>
+                <span className="font-semibold text-slate-700">
                   {avgRating ? avgRating.toFixed(1) + "/5.0" : ""}
                 </span>
               </div>
-              <span className="text-sm" style={{ color: "#102b72" }}>
+              <span className="text-sm text-slate-700 font-medium">
                 {reviews.length} review{reviews.length === 1 ? "" : "s"}
               </span>
             </div>
@@ -679,7 +764,7 @@ export default function Specifics() {
                 {sortedReviews.map((r: any, i: number) => (
                   <div
                     key={i}
-                    className="bg-white border border-[#102b72]/20 p-4 rounded-lg"
+                    className="bg-white border border-blue-200 p-4 rounded-lg"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -697,28 +782,22 @@ export default function Specifics() {
                               "/images/university.jpg";
                           }}
                         />
-                        <span
-                          className="font-semibold"
-                          style={{ color: "#102b72" }}
-                        >
+                        <span className="font-semibold text-slate-700">
                           {r.name}
                         </span>
-                        <span
-                          className="text-xs"
-                          style={{ color: "#102b72", opacity: 0.7 }}
-                        >
+                        <span className="text-xs text-slate-600">
                           {timeAgo(r.createdAt)}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-300 rounded-lg font-semibold text-sm text-blue-900 shadow-sm">
                         <StarRating rating={Number(r.rating) || 0} />
-                        <span className="text-sm" style={{ color: "#102b72" }}>
+                        <span>
                           {(Number(r.rating) || 0).toFixed(1)}/5.0
                         </span>
                       </div>
                     </div>
                     {r.comment && (
-                      <p className="mt-2" style={{ color: "#102b72" }}>
+                      <p className="mt-2 text-slate-700">
                         {r.comment}
                       </p>
                     )}
@@ -726,15 +805,15 @@ export default function Specifics() {
                 ))}
               </div>
             ) : (
-              <p className="italic" style={{ color: "#102b72", opacity: 0.7 }}>
+              <p className="italic text-slate-600">
                 No reviews yet. Be the first ✍️
               </p>
             )}
 
             {/* IMPORTANT: Login-gated submit form */}
             {currentUser ? (
-              <div className="bg-white/95 border border-[#102b72]/20 p-6 rounded-2xl shadow-sm space-y-5 max-w-2xl mx-auto">
-                <h3 className="text-2xl font-bold text-[#102b72]">
+              <div className="bg-white/95 border border-blue-200 p-6 rounded-2xl shadow-sm space-y-5 max-w-2xl mx-auto">
+                <h3 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">
                   Leave a Review
                 </h3>
 
@@ -754,7 +833,7 @@ export default function Specifics() {
                 {/* 📝 Comment box */}
                 <textarea
                   placeholder="Share your thoughts about this university..."
-                  className="w-full min-h-[90px] resize-none rounded-lg border border-[#102b72]/30 p-3 text-[#102b72] text-sm focus:ring-2 focus:ring-[#102b72] focus:border-transparent outline-none transition"
+                  className="w-full min-h-[90px] resize-none rounded-lg border border-blue-300 p-3 text-slate-700 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
                   value={commentInput}
                   onChange={(e) => setCommentInput(e.target.value)}
                 />
@@ -767,7 +846,7 @@ export default function Specifics() {
                     className={`font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-all duration-200 ${
                       ratingInput === 0
                         ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        : "bg-[#102b72] hover:bg-[#0d2360] text-white"
+                        : "bg-blue-600 hover:bg-blue-700 text-white"
                     }`}
                   >
                     Submit Review
@@ -775,14 +854,10 @@ export default function Specifics() {
                 </div>
               </div>
             ) : (
-              <p
-                className="italic text-center"
-                style={{ color: "#102b72", opacity: 0.8 }}
-              >
+              <p className="italic text-center text-slate-600">
                 <Link
                   to="/login"
-                  className="underline font-semibold hover:text-[#2563eb]"
-                  style={{ color: "#2563eb" }}
+                  className="underline font-semibold text-blue-600 hover:text-blue-700"
                 >
                   Login
                 </Link>{" "}
@@ -794,57 +869,51 @@ export default function Specifics() {
 
         {/* === PLAN YOUR STAY & EXPLORE NEARBY === */}
 
-        <Card className="bg-white/80 backdrop-blur-md border-[#102b72]/20 mt-10">
+        <Card 
+          ref={setRef("plan-stay")}
+          data-scroll-id="plan-stay"
+          className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl mt-10 scroll-fade-in ${visible["plan-stay"] ? "visible" : ""}`}
+        >
           <div id="map-section">
             <CardHeader>
               <CardTitle
-                className="text-lg font-semibold"
-                style={{ color: "#102b72" }}
+                className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent"
               >
                 Plan Your Stay & Explore Nearby
               </CardTitle>
-              <CardDescription style={{ color: "#102b72" }}>
+              <CardDescription className="text-slate-600">
                 Discover nearby accommodations and events — all connected on the
                 same interactive map.
               </CardDescription>
             </CardHeader>
 
             {new_obj && new_obj.type == "accomodation" &&(
-                <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                <div className="mt-4 p-3 bg-blue-50 rounded-md text-blue-600 border border-blue-200">
                     <strong>Currently Selected {new_obj.type}:</strong> {new_obj.name}<br/>
                     <strong> Currently Selected Address: </strong> {new_obj.formatted_address}
                     </div>
             )}
 
             {new_obj && new_obj.type == "event" &&(
-                 <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                 <div className="mt-4 p-3 bg-blue-50 rounded-md text-blue-600 border border-blue-200">
                     <strong>Currently Selected {new_obj.type}</strong>: {new_obj.title}<br/>
                     <strong>Currently Selected Address: </strong>{new_obj.address[0]}
                     </div>
             )}
 
-            {Object.keys(new_obj).length === 0 && (
-                <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
-                    nothing selected
-                </div>
-            )}
 
           </div>
 
           <CardContent className="space-y-6">
             {/* Map Placeholder */}
             {!showMap && (
-              <div className="mapplaceholder relative w-full h-96 rounded-xl overflow-hidden border border-[#102b72]/20 shadow-lg">
+              <div className="mapplaceholder relative w-full h-96 rounded-xl overflow-hidden border border-blue-200 shadow-lg">
                 <img
                   src="/images/map_placeholder_api.jpg"
                   alt="Interactive Map Placeholder"
                   className="w-full h-full object-cover opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent flex items-end justify-center p-4">
-                  <p className="text-sm italic" style={{ color: "#102b72" }}>
-                    🗺️ Map placeholder — backend to replace with Map API (Google
-                    Maps / Mapbox)
-                  </p>
                 </div>
               </div>
             )}
@@ -907,17 +976,39 @@ export default function Specifics() {
 
             {/* Accommodations */}
             <div>
-              <h3
-                className="text-xl font-semibold mb-3"
-                style={{ color: "#102b72" }}
-              >
+              <CardTitle className="text-2xl font-extrabold mb-3 text-black">
                 Nearby Accommodations
-              </h3>
+              </CardTitle>
 
               <div className="w-full">
                 <div className="flex overflow-x-auto gap-4 pb-3 snap-x snap-proximity">
                   {isAccommodationsLoading ? (
                     <AccomodationSkeleton />
+                  ) : accommodations
+                      .filter(
+                        (a) =>
+                          parseFloat(a.distance) <= (data.maxDistance ?? 20)
+                      ).length === 0 ? (
+                    <div className="flex flex-col items-center justify-center w-full py-12">
+                      <div className="text-center border border-blue-200 border-dashed rounded-xl bg-white/90 backdrop-blur-sm p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+                        <div className="flex justify-center isolate">
+                          {/* First stacked icon card */}
+                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                            <SearchX className="w-5 h-5 text-slate-600" />
+                          </div>
+                          {/* Second stacked icon card (center) */}
+                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl z-10 shadow-lg group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                            <Home className="w-5 h-5 text-slate-600" />
+                          </div>
+                          {/* Third stacked icon card */}
+                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative right-2.5 top-1.5 rotate-6 shadow-lg group-hover:translate-x-5 group-hover:rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                            <FileX className="w-5 h-5 text-slate-600" />
+                          </div>
+                        </div>
+                        <h2 className="text-base text-slate-800 font-medium mt-6">No Accommodations Found</h2>
+                        <p className="text-sm text-slate-600 mt-1">Try adjusting the distance filter above.</p>
+                      </div>
+                    </div>
                   ) : (
                     accommodations
                       .filter(
@@ -928,7 +1019,7 @@ export default function Specifics() {
                         <div
                           key={i}
                          className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
-                            ${new_obj === a ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-[#102b72]/20 hover:shadow-md hover:-translate-y-1'}`}
+                            ${new_obj === a ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <img
                             src={a.icon}
@@ -941,28 +1032,16 @@ export default function Specifics() {
                           />
                           <div className="flex flex-col justify-between flex-grow p-4">
                             <div>
-                              <h5
-                                className="font-semibold text-lg mb-1"
-                                style={{ color: "#102b72" }}
-                              >
+                              <h5 className="font-semibold text-lg mb-1 text-blue-600">
                                 {a.name}
                               </h5>
-                              <p
-                                className="text-sm mb-3"
-                                style={{ color: "#102b72", opacity: 0.7 }}
-                              >
+                              <p className="text-sm mb-3 text-slate-600">
                                 {a.distance}km from campus
                               </p>
-                              <p
-                                className="text-sm mb-2"
-                                style={{ color: "#102b72" }}
-                              >
+                              <p className="text-sm mb-2 text-slate-700">
                                 Address: {a.formatted_address}
                               </p>
-                              <div
-                                className="space-y-1 text-sm"
-                                style={{ color: "#102b72" }}
-                              >
+                              <div className="space-y-1 text-sm text-slate-700">
                                 <div>
                                   🚗 Driving time:{" "}
                                   {!a.DRIVE ||
@@ -1048,30 +1127,44 @@ export default function Specifics() {
                   )}
                 </div>
 
-                {!isAccommodationsLoading &&
-                  accommodations.filter(
-                    (a) => parseFloat(a.distance) <= (data.maxDistance ?? 20)
-                  ).length === 0 && (
-                    <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
-                      No accommodations found
-                    </div>
-                  )}
               </div>
             </div>
 
             {/* Events */}
             <div className="mt-10">
-              <h3
-                className="text-xl font-semibold mb-3"
-                style={{ color: "#102b72" }}
-              >
+              <CardTitle className="text-2xl font-extrabold mb-3 text-black">
                 Nearby Events & Activities
-              </h3>
+              </CardTitle>
 
               <div className="w-full">
                 <div className="flex overflow-x-auto gap-4 pb-3 snap-x snap-proximity">
                   {isEventsLoading ? (
                     <EventsSkeleton />
+                  ) : events
+                      .filter(
+                        (ev) =>
+                          parseFloat(ev.distance) <= (data.maxDistance ?? 20)
+                      ).length === 0 ? (
+                    <div className="flex flex-col items-center justify-center w-full py-12">
+                      <div className="text-center border border-blue-200 border-dashed rounded-xl bg-white/90 backdrop-blur-sm p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+                        <div className="flex justify-center isolate">
+                          {/* First stacked icon card */}
+                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                            <SearchX className="w-5 h-5 text-slate-600" />
+                          </div>
+                          {/* Second stacked icon card (center) */}
+                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl z-10 shadow-lg group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                            <Calendar className="w-5 h-5 text-slate-600" />
+                          </div>
+                          {/* Third stacked icon card */}
+                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative right-2.5 top-1.5 rotate-6 shadow-lg group-hover:translate-x-5 group-hover:rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                            <FileX className="w-5 h-5 text-slate-600" />
+                          </div>
+                        </div>
+                        <h2 className="text-base text-slate-800 font-medium mt-6">No Events Found</h2>
+                        <p className="text-sm text-slate-600 mt-1">Try adjusting the distance filter above.</p>
+                      </div>
+                    </div>
                   ) : (
                     events
                       .filter(
@@ -1081,42 +1174,26 @@ export default function Specifics() {
                       .map((ev, i) => (
                         <div
                           key={i}
-                          className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
-                            ${new_obj === ev ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-[#102b72]/20 hover:shadow-md hover:-translate-y-1'}`}
+                          className={`rounded-xl card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
+                            ${new_obj === ev ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <img
-                            src={`/images/event_${i + 1}.jpg`}
-                            onError={(e) =>
-                              ((e.currentTarget as HTMLImageElement).src =
-                                ev.thumbnail)
-                            }
+                            src={ev.thumbnail}
                             alt={ev.title}
-                            className="w-full h-40 object-cover rounded-t-xl"
+                            className="h-40 object-cover rounded-t-xl"
                           />
                           <div className="flex flex-col justify-between flex-grow p-4">
                             <div>
-                              <h4
-                                className="font-semibold text-lg mb-1"
-                                style={{ color: "#102b72" }}
-                              >
+                              <h4 className="font-semibold text-lg mb-1 text-blue-600">
                                 {ev.title}
                               </h4>
-                              <p
-                                className="text-sm mb-3"
-                                style={{ color: "#102b72", opacity: 0.7 }}
-                              >
+                              <p className="text-sm mb-3 text-slate-600">
                                 {ev.distance}km from campus
                               </p>
-                              <p
-                                className="text-sm mb-2"
-                                style={{ color: "#102b72" }}
-                              >
+                              <p className="text-sm mb-2 text-slate-700">
                                 Address: {ev.address[0]}
                               </p>
-                              <div
-                                className="space-y-1 text-sm"
-                                style={{ color: "#102b72" }}
-                              >
+                              <div className="space-y-1 text-sm text-slate-700">
                                 <div>
                                   🚗 Driving time:{" "}
                                   {!ev.DRIVE ||
@@ -1202,14 +1279,6 @@ export default function Specifics() {
                   )}
                 </div>
 
-                {!isEventsLoading &&
-                  events.filter(
-                    (ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20)
-                  ).length === 0 && (
-                    <div className="p-3 bg-red-100 text-red-700 rounded-lg text-center font-medium">
-                      No events found
-                    </div>
-                  )}
               </div>
             </div>
           </CardContent>
@@ -1219,11 +1288,10 @@ export default function Specifics() {
         {showScrollButton && (
           <button
             onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
-            className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
+            className="rounded fixed bottom-8 right-8 z-50 h-14 w-14 flex items-center justify-center rounded-2xl shadow-2xl bg-gradient-to-br from-blue-600 to-emerald-600 text-white transition-all duration-300 hover:scale-110 hover:shadow-blue-500/50 focus:outline-none focus:ring-4 focus:ring-blue-400/50"
             aria-label="Scroll to top"
-            style={{ backgroundColor: "#102b72", color: "#ffffff" }}
           >
-            <ArrowUpIcon className="w-5 h-5" style={{ color: "#ffffff" }} />
+            <ArrowUpIcon className="w-5 h-5" style={{ color: "#ffffff"}} />
           </button>
         )}
       </div>

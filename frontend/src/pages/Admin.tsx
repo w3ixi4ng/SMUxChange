@@ -45,12 +45,7 @@ export default function Admin() {
     }, [reviews]);
 
     return (
-        <div className="min-h-screen flex flex-col p-6 md:p-10"
-            style={{
-                backgroundColor: "#eeeeee",
-                color: "#102b72",
-            }}
-        >
+        <div className="flex flex-col p-6 md:p-10  relative w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
             <table className="table">
                 <thead className="table-dark">
                     <tr>

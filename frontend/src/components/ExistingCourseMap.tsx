@@ -147,7 +147,6 @@ function ExistingCourseMap({
          </div>
 
 
-         {/* ✅ FIXED GRID (2 per row) */}
          <div className="w-full max-w-3xl mx-auto">
             <div
               className={`grid ${

@@ -87,15 +87,7 @@ export function ShareMap() {
 
 
     return (
-        <div
-            className="relative min-h-screen w-full overflow-hidden"
-            style={{
-                backgroundColor: "#eeeeee",
-                color: "#102b72",
-                backgroundImage:
-                    "radial-gradient(circle at 25% 25%, rgba(16,43,114,0.03) 0%, transparent 25%), radial-gradient(circle at 75% 75%, rgba(16,43,114,0.02) 0%, transparent 30%)",
-            }}
-        >
+        <div className=" overflow-hidden relative w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
             {/* Subtle overlay for depth */}
             <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]"></div>
 

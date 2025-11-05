@@ -309,7 +309,7 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
          {/* === COURSE AREA DROPDOWN === */}
          <div className="text-center mb-4">
            <select
-             className="w-50 mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+             className="w-full mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
              style={{ color: "#102b72" }}
              onChange={(e) => setSelectedCourseArea(e.target.value)}
            >

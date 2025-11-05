@@ -19,7 +19,7 @@ function ExistingMap({ mapId, map, setSavedMaps }: ChildProps) {
     return (
         <>
             <div className="col-lg-4 col-md-6 col-sm-12 col-12 mb-2">
-                <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg overflow-hidden">
+                <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl hover:-translate-y-1">
                     <img src={`/images/university_pictures/${map.university}.jpg`} className="w-full h-48 object-cover" alt={map.university}
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).src = "/images/default_university.jpg";
@@ -39,9 +39,13 @@ function ExistingMap({ mapId, map, setSavedMaps }: ChildProps) {
                                 </div>
                             ))}
                         </div>
-                        <div className="flex justify-between gap-2 mb-2">
-                            <UpdateMapModal mapId={mapId} map={map} setSavedMaps={setSavedMaps} />
-                            <DeleteMapAlert uid={uid} mapId={map.id} setSavedMaps={setSavedMaps} />
+                        <div className="flex flex-nowrap justify-between gap-2 mb-2">
+                            <div className="flex-1 min-w-0">
+                                <UpdateMapModal mapId={mapId} map={map} setSavedMaps={setSavedMaps} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <DeleteMapAlert uid={uid} mapId={map.id} setSavedMaps={setSavedMaps} />
+                            </div>
                         </div>
                         <div className="flex justify-center">
                             <QRModal map={map} />

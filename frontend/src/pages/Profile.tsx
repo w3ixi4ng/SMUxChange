@@ -5,7 +5,42 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ExistingMap from "../components/ExistingMap";
 import { UpdateProfileAlert } from "@/components/UpdateProfileAlert";
+import { User, BookOpen, GraduationCap, Map, SearchX, FileX, MapPin } from "lucide-react";
 
+function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    setDisplayedText("");
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex < text.length) {
+        setDisplayedText(text.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, speed);
+
+    return () => clearInterval(typingInterval);
+  }, [text, speed]);
+
+  // Cursor blinking effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 530);
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  return (
+    <span className="leading-none font-extrabold" style={{ fontFamily: 'inherit' }}>
+      {displayedText}
+      <span className={showCursor ? "opacity-100" : "opacity-0"}>|</span>
+    </span>
+  );
+}
 
 function Profile() {
   const uid = sessionStorage.getItem("uid");
@@ -195,6 +230,12 @@ function Profile() {
 
     try {
       await axios.post('https://smuxchange-backend.vercel.app/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+      // Update sessionStorage after successful save
+      sessionStorage.setItem("name", name);
+      sessionStorage.setItem("faculty", faculty);
+      sessionStorage.setItem("major", major);
+      sessionStorage.setItem("track", track);
+      sessionStorage.setItem("secondMajor", secondMajor);
       setUserExists(true);
       setErrorMessage([]);
     } catch (error) {
@@ -321,28 +362,36 @@ function Profile() {
           </Modal.Footer>
         </Modal>
       )}
-      <div className={`${userExists ? "relative min-h-screen w-full"
+      {/*<div className={`${userExists ? "relative min-h-screen w-full"
         : ""}`}
         style={{
           backgroundColor: userExists ? "#eeeeee" : undefined,
           color: userExists ? "#102b72" : undefined,
-        }}>
+        }}>*/}
+        <div className="relative w-full min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50">
+          {/* === Subtle gradient + grid overlay === */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
         <div className="relative z-10 container mx-auto px-4 py-10" style={{ opacity: userExists ? 1 : 0 }}>
           <div className="text-center mb-10">
-            <span className="inline-block ml-2"><img src="/images/social-page.gif" alt="Profile" className="w-35 h-35 border-2 border-[#102b72]/30 rounded-lg" /></span>
-            <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Profile</h1>
-            <p className="text-sm" style={{ color: "#102b72" }}>
+            <span className="inline-block ml-2 animate-gif-pulse-profile"><img src="/images/social-page.gif" alt="Profile" className="w-35 h-35 border-2 border-blue-300 rounded-lg shadow-lg" /></span>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-none bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent" style={{ fontFamily: 'inherit' }}>
+              <TypingAnimation text="Profile" speed={100} />
+            </h1>
+            <p className="text-xl md:text-2xl text-slate-700 font-medium max-w-3xl mx-auto">
               Update your profile or update your existing map.
             </p>
           </div>
-          <div className="container col-12 mx-auto bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg py-8 px-6 mb-10">
+          <div className="container col-12 mx-auto bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl shadow-lg py-8 px-6 mb-10">
             <div className="row justify-content-center">
               <div className="col-lg-6 col-12 mb-2">
-                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Name</p>
+                <p className="mb-1 fw-bold" style={{ color: "#102b72" }}>
+                  <User className="w-4 h-4 text-blue-600 d-inline align-middle" /> Name</p>
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+                  style={{ color: "#102b72" }}
                   value={name}
                   placeholder="Enter your name ..."
                   onChange={(e) => setName(e.target.value)}
@@ -350,9 +399,10 @@ function Profile() {
                 />
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Faculty</p>
+                <p className="mb-1 fw-bold" style={{ color: "#102b72" }}>
+                  <BookOpen className="w-4 h-4 text-blue-600 d-inline align-middle" /> Faculty</p>
                 <select
-                  className="form-select"
+                  className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
                   style={{ color: "#102b72" }}
                   value={faculty}
                   onChange={(e) => setFaculty(e.target.value)}
@@ -366,9 +416,10 @@ function Profile() {
                 </select>
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Major</p>
+                <p className="mb-1 fw-bold" style={{ color: "#102b72" }}>
+                  <GraduationCap className="w-4 h-4 text-blue-600 d-inline align-middle" /> Major</p>
                 <select
-                  className="form-select"
+                  className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleMajor ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                   style={{ color: "#102b72" }}
                   value={major}
                   onChange={(e) => setMajor(e.target.value)}
@@ -383,9 +434,10 @@ function Profile() {
                 </select>
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Track</p>
+                <p className="mb-1 fw-bold" style={{ color: "#102b72" }}>
+                  <Map className="w-4 h-4 text-blue-600 d-inline align-middle" /> Track</p>
                 <select
-                  className="form-select"
+                  className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleTrack ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                   style={{ color: "#102b72" }}
                   value={track}
                   onChange={(e) => setTrack(e.target.value)}
@@ -400,9 +452,10 @@ function Profile() {
                 </select>
               </div>
               <div className="col-lg-6 col-12 mb-2">
-                <p className="mb-1 font-bold" style={{ color: "#102b72" }}>Second Major</p>
+                <p className="mb-1 fw-bold" style={{ color: "#102b72" }}>
+                  <GraduationCap className="w-4 h-4 text-blue-600 d-inline align-middle" /> Second Major</p>
                 <select
-                  className="form-select"
+                  className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
                   style={{ color: "#102b72" }}
                   value={secondMajor}
                   onChange={(e) => setSecondMajor(e.target.value)}
@@ -428,15 +481,32 @@ function Profile() {
             </div>
           </div>
           <div className="container col-12 mx-auto">
-            <h2 className="text-center mb-4 text-4xl font-bold" style={{ color: "#102b72" }}>Your Saved Maps</h2>
+            <h2 className="text-center mb-4 text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">Your Saved Maps</h2>
             <div className="row justify-content-lg-center justify-content-md-start">
               {savedMaps.map((map) => (
                 <ExistingMap key={map.id} mapId={map.id} map={map} setSavedMaps={setSavedMaps} />
               ))}
             </div>
             {savedMaps.length === 0 && (
-              <div className="col-12 mb-2 text-center">
-                <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>No saved maps found. Start exploring!</p>
+              <div className="flex flex-col items-center justify-center mt-12 mb-12 w-full">
+                <div className="text-center border border-blue-200 border-dashed rounded-xl bg-white/90 backdrop-blur-sm p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+                  <div className="flex justify-center isolate">
+                    {/* First stacked icon card */}
+                    <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                      <SearchX className="w-5 h-5 text-slate-600" />
+                    </div>
+                    {/* Second stacked icon card (center) */}
+                    <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl z-10 shadow-lg group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                      <MapPin className="w-5 h-5 text-slate-600" />
+                    </div>
+                    {/* Third stacked icon card */}
+                    <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative right-2.5 top-1.5 rotate-6 shadow-lg group-hover:translate-x-5 group-hover:rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                      <FileX className="w-5 h-5 text-slate-600" />
+                    </div>
+                  </div>
+                  <h2 className="text-base text-slate-800 font-medium mt-6">No Saved Maps Found</h2>
+                  <p className="text-sm text-slate-600 mt-1">Start exploring and save your<br />module mappings!</p>
+                </div>
               </div>
             )}
           </div>

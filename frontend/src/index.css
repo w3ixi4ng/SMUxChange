@@ -158,6 +158,232 @@
   animation: spin-slow 60s linear infinite;
 }
 
+/* GIF float animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-gif-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* GIF tilt animation (for school.gif) */
+@keyframes tilt-gif {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.animate-gif-pulse {
+  animation: tilt-gif 3s ease-in-out infinite;
+}
+
+/* GIF pulse animation (for profile page) */
+@keyframes pulse-gif {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.animate-gif-pulse-profile {
+  animation: pulse-gif 2s ease-in-out infinite;
+}
+
+/* GIF jump animation (for mappable page) */
+@keyframes jump-gif {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.animate-gif-jump {
+  animation: jump-gif 2s ease-in-out infinite;
+}
+
+/* Jump animation for buttons */
+@keyframes jump {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-jump-hover:hover {
+  animation: jump 0.5s ease-in-out;
+}
+
+.animate-jump-hover {
+  animation: jump 0.5s ease-in-out;
+}
+
+/* Tongue animation */
+@keyframes tongue-stick-out {
+  0% {
+    transform: translateY(0) scaleY(0);
+    opacity: 0;
+  }
+  20% {
+    transform: translateY(20px) scaleY(1);
+    opacity: 1;
+  }
+  40% {
+    transform: translateY(25px) scaleY(1.1);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(20px) scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scaleY(0);
+    opacity: 0;
+  }
+}
+
+.animate-tongue {
+  animation: tongue-stick-out 0.5s ease-in-out;
+}
+
+/* Course button click animation */
+@keyframes course-click {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.course-button-animate {
+  animation: course-click 0.3s ease-in-out;
+}
+
+/* Flag wave animation */
+@keyframes flag-wave {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-3deg) scale(1.05);
+  }
+  50% {
+    transform: rotate(0deg) scale(1.1);
+  }
+  75% {
+    transform: rotate(3deg) scale(1.05);
+  }
+}
+
+.animate-flag-wave {
+  animation: flag-wave 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Scroll animation classes */
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade in animation for dropdown */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+
+/* Welcome text shadow animation */
+.welcome-text-shadows {
+  text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb,
+    9px 9px 0 #10b981, 12px 12px 0 #059669;
+  animation: welcome-shadows 1.2s ease-in infinite;
+  letter-spacing: 0.4rem;
+  color: #2563eb;
+  text-transform: uppercase;
+}
+
+@keyframes welcome-shadows {
+  0% {
+    text-shadow: none;
+  }
+  10% {
+    transform: translate(-3px, -3px);
+    text-shadow: 3px 3px 0 #3b82f6;
+  }
+  20% {
+    transform: translate(-6px, -6px);
+    text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb;
+  }
+  30% {
+    transform: translate(-9px, -9px);
+    text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb, 9px 9px 0 #10b981;
+  }
+  40% {
+    transform: translate(-12px, -12px);
+    text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb, 9px 9px 0 #10b981,
+      12px 12px 0 #059669;
+  }
+  50% {
+    transform: translate(-12px, -12px);
+    text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb, 9px 9px 0 #10b981,
+      12px 12px 0 #059669;
+  }
+  60% {
+    text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb, 9px 9px 0 #10b981,
+      12px 12px 0 #059669;
+  }
+  70% {
+    text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb, 9px 9px 0 #10b981;
+  }
+  80% {
+    text-shadow: 3px 3px 0 #3b82f6, 6px 6px 0 #2563eb;
+  }
+  90% {
+    text-shadow: 3px 3px 0 #3b82f6;
+  }
+  100% {
+    text-shadow: none;
+  }
+}
+
 /* Remove underlines from navbar links */
 nav a,
 nav button,

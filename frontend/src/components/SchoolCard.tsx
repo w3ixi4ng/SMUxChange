@@ -2,6 +2,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import StarRating from "@/components/StarRating";
+import { Info, MapPin } from "lucide-react";
 
 
 
@@ -41,8 +42,8 @@ function SchoolCard({ school }: ChildProps) {
 
     return (
         <>
-            <div className="col-lg-4 col-md-6 col-12 mb-2">
-                <div className="card shadow h-100 border-0">
+            <div className="col-lg-4 col-md-6 col-12 mb-4">
+                <div className="card shadow h-100 border-0 transition-all duration-300 hover:scale-105 hover:shadow-xl">
                     <img src={`/images/university_pictures/${school['host_university']}.jpg`}
                         className="card-img-top" alt={`${school['host_university']}`}
                         style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '.5rem' }} />
@@ -87,21 +88,20 @@ function SchoolCard({ school }: ChildProps) {
                             <div className="d-flex justify-content-between gap-2">
                                 <Link
                                     to={`/mappable/${school['host_university']}/${school['country']}`}
-                                    className="btn btn-outline-primary btn-sm w-100"
+                                    className="btn btn-primary btn-sm w-100 font-semibold transition-transform hover:scale-105 d-flex align-items-center justify-content-center"
                                 >
-                                    Try Map
+                                    <MapPin className="w-4 h-4 me-2" />
+                                    Map Now
                                 </Link>
-                                {/* ✅ CHANGE 1: Use <Link> instead of <a> so React Router handles navigation */}
                                 <Link
-                                    // ✅ CHANGE 2: Dynamic URL with encoded university name
                                     to={`/specifics/${encodeURIComponent(school['host_university'])}`}
 
-                                    // ✅ CHANGE 3: Pass the school object along via state so no re-fetch needed
                                     onClick={() => sessionStorage.setItem("school", JSON.stringify(school))}
 
-                                    className="btn btn-outline-success btn-sm w-100"
+                                    className="btn btn-success btn-sm w-100 font-semibold transition-transform hover:scale-105 d-flex align-items-center justify-content-center"
                                 >
-                                    Learn More
+                                    <Info className="w-4 h-4 me-2" />
+                                    More Info
                                 </Link>
                             </div>
                         </div>
