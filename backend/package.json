@@ -21,6 +21,7 @@
     "express": "^4.18.2",
     "firebase": "^12.4.0",
     "firebase-admin": "^13.5.0",
+    "nanoid": "^5.1.6",
     "openai": "^4.67.3",
     "qrcode": "^1.5.4",
     "require": "^0.4.4"

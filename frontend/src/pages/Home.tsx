@@ -92,7 +92,7 @@ function Home() {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link to="/Mappable">
-                    <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold px-10 py-7 text-lg rounded-lg shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 hover:scale-105">
+                    <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold px-10 py-7 text-lg rounded-lg shadow-2xl transition-all duration-300 hover:scale-105 min-w-[220px]">
                     <span className="relative z-10 flex items-center gap-2">
                         Start Planning
                         <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,14 +102,16 @@ function Home() {
                     <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                     </Button>
                 </Link>
-                <Link to="/information">
-                  <Button
-                    variant="outline"
-                    className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg border-2 hover:shadow-md"
-                    style={{ borderColor: "#102b72", color: "#102b72", backgroundColor: "transparent" }}
-                  >
-                    Browse Schools
-                  </Button>
+                 <Link to="/information">
+                     <Button className="group relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white font-semibold px-10 py-7 text-lg rounded-lg transition-all duration-300 hover:scale-105 min-w-[220px]">
+                    <span className="relative z-10 flex items-center gap-2">
+                        Browse Schools
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                    </Button>
                 </Link>
               </div>
             </div>
@@ -206,11 +208,14 @@ function Home() {
             Join thousands of SMU students who are already using SMUxChange to plan their exchange experience
           </p>
           <Link to="/Mappable">
-            <Button
-              className="font-medium hover:scale-105 transition-all duration-300 px-10 py-6 text-lg rounded-lg shadow-lg hover:shadow-xl"
-              style={{ backgroundColor: "#102b72", color: "#ffffff" }}
-            >
-              Get Started Now
+            <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold px-10 py-7 text-lg rounded-lg transition-all duration-300 hover:scale-105">
+              <span className="relative z-10 flex items-center gap-2">
+                Get Started Now
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
             </Button>
           </Link>
         </div>

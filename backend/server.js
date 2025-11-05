@@ -14,6 +14,7 @@ import qrCodeRoutes from './routes/api_functions/qrCode.js';
 import geocodingRoutes from './routes/api_functions/geocoding.js';
 
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -46,6 +47,7 @@ app.use('/api/apartments', apartmentRoutes);
 app.use('/database', databaseRoutes);
 app.use('/api/qrCode', qrCodeRoutes);
 app.use('/api/geocoding', geocodingRoutes);
+
 
 
 

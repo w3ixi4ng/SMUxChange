@@ -274,7 +274,7 @@ function MapResults({
         </h1>
         <Link to={`/specifics/${university}`}>
           <button
-            className="px-10 py-3 text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-transform"
+            className="px-8 py-2 text-lg font-semibold rounded-full shadow-md hover:scale-105 transition-transform"
             style={{
               backgroundColor: "#102b72",
               color: "#ffffff",
