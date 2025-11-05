@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import axios from "axios";  
 import { toast } from "sonner";
+import { Trash2 } from "lucide-react";
 
 export function DeleteMapAlert({ uid, mapId, setSavedMaps }: { uid: string, mapId: string, setSavedMaps: (maps: any) => void }) {
     const deleteMap = async (mapId: string) => {
@@ -35,7 +36,10 @@ export function DeleteMapAlert({ uid, mapId, setSavedMaps }: { uid: string, mapI
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105" style={{ backgroundColor: "#dc2626", color: "#ffffff", border: "none" }}>Delete Map</button>
+                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105 d-flex align-items-center justify-content-center whitespace-nowrap" style={{ backgroundColor: "#dc2626", color: "#ffffff", border: "none" }}>
+                    <Trash2 className="w-4 h-4 me-2 flex-shrink-0" />
+                    <span className="truncate">Delete Map</span>
+                </button>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-[#eeeeee] border-[#102b72]/20">
                 <AlertDialogHeader>

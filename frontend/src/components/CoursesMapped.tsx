@@ -92,19 +92,20 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
     
       {courses.length > 0 && selectedCourseArea === courseArea[1] && (
         // Outer container: light card with blue borders
-        <div className="col-lg-12 col-12 bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-4 rounded-3xl shadow-md mb-4">
+        <div className="col-lg-12 col-12 bg-white/80 backdrop-blur-md border border-blue-200 py-4 rounded-3xl shadow-md mb-4">
             {/* === Header Section (centered & highlighted) === */}
             <div className="relative flex flex-col items-center justify-center text-center mb-4">
             {/* Title centered */}
-            <h2 className="text-xl font-semibold mb-1 tracking-tight" style={{ color: "#102b72" }}>
+            <h2 className="text-xl font-semibold mb-1 tracking-tight text-blue-600">
                 {courseArea[1]}
             </h2>
 
             {/* Highlighted count below title */}
             <p
-                className="text-sm transition-colors duration-300 font-medium"
+                className={`text-sm transition-colors duration-300 font-medium ${
+                  selectedCount > 0 ? "text-blue-600" : "text-blue-500"
+                }`}
                 style={{ 
-                  color: selectedCount > 0 ? "#102b72" : "#102b72",
                   opacity: selectedCount > 0 ? 1 : 0.7
                 }}
             >
@@ -114,7 +115,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
             </p>
 
             {/* Chevron toggle positioned at top-right for aesthetic balance */}
-            <div className="absolute top-0 right-3 opacity-70 hover:opacity-100 transition" style={{ color: "#102b72" }}>
+            <div className="absolute top-0 right-3 opacity-70 hover:opacity-100 transition text-blue-600">
                 {isExpanded ? (
                 <ChevronUp
                     onClick={() => setIsExpanded(!isExpanded)}
@@ -144,13 +145,13 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
                 <button
                   key={title}
                   // New layout: pills now span most of container width, centered horizontally
-                  className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold col-md-12
+                  className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold col-md-12 course-button-click
                     ${
                       selected
-                        // Selected: dark blue background with white text
-                        ? "shadow-lg"
-                        // Default: white background with blue border, smooth hover tint
-                        : "bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
+                        // Selected: lighter blue background with white text
+                        ? "bg-blue-400 text-white shadow-lg"
+                        // Default: white background with lighter blue border, smooth hover tint
+                        : "bg-white border border-blue-200 hover:bg-blue-50 hover:border-blue-300 text-blue-500"
                     }
                     ${
                       isDisabled && !selected
@@ -158,12 +159,15 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
                         ? "opacity-40 cursor-not-allowed"
                         : "cursor-pointer"
                     }`}
-                  style={{
-                    backgroundColor: selected ? "#102b72" : undefined,
-                    color: selected ? "#ffffff" : "#102b72"
-                  }}
                   disabled={isDisabled && !selected}
-                  onClick={() => {
+                  onClick={(e) => {
+                    // Add click animation
+                    const button = e.currentTarget;
+                    button.classList.add('course-button-animate');
+                    setTimeout(() => {
+                      button.classList.remove('course-button-animate');
+                    }, 300);
+                    
                     // Toggle selection + count (unchanged logic)
                     setSelectedButtons((prev) => ({
                       ...prev,
@@ -184,7 +188,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
           {/* === Limit Message === */}
           {/* Shown only when user hits max course count */}
           {selectedCount >= maxCount && (
-            <div className="text-center mt-3 text-sm" style={{ color: "#dc2626" }}>
+            <div className="text-center mt-3 text-sm text-red-600">
               You have selected the maximum number of courses
             </div>
           )}

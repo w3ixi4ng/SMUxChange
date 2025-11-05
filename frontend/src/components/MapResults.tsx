@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CoursesMapped from "./CoursesMapped";
 import axios from "axios";
 import { toast } from "sonner";
-import { BookOpen } from "lucide-react";
+import { BookOpen, SearchX, FileX, GraduationCap, Info, Save } from "lucide-react";
 import { Link } from "react-router-dom";
 
 
@@ -231,12 +231,16 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
 
   return (
-      <div className="container mx-auto my-10" style={{ color: "#102b72" }}>
-      <div className="text-center mb-4">
-        <h1 className="text-3xl font-semibold mb-3 text-center" style={{ color: "#102b72" }}>{university}</h1>
-        <Link to={'/specifics/${university}'}>
-          <button className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg" style={{ backgroundColor: "#102b72", color: "#ffffff" }}>
-            More Info
+      <div className="container mx-auto my-10 px-6" style={{ color: "#102b72" }}>
+      <div className="text-center mb-8">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-center bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent">{university}</h1>
+        <Link to={`/specifics/${university}`}>
+          <button className="group relative overflow-hidden bg-blue-600 text-white font-bold px-8 py-2 text-lg rounded shadow-2xl transition-all duration-300 hover:shadow-blue-500/50 hover:bg-blue-700 animate-jump-hover">
+            <span className="relative z-10 flex items-center justify-center gap-2">
+              <Info className="w-5 h-5" />
+              More Info
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
           </button>
         </Link>
       </div>
@@ -244,8 +248,25 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
       {/* Error message (delayed) */}
       <div id="results-end" />
       {showEmpty && !availableCourses && (
-        <div className="text-center mt-8 bg-red-100 border border-red-300 text-red-700 py-3 rounded-lg font-semibold">
-          No courses mapped before. Find out more from the host university above.
+        <div className="flex flex-col items-center justify-center mt-12 mb-12">
+          <div className="text-center border border-blue-200 border-dashed rounded-xl bg-white/90 backdrop-blur-sm p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+            <div className="flex justify-center isolate">
+              {/* First stacked icon card */}
+              <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                <SearchX className="w-5 h-5 text-slate-600" />
+              </div>
+              {/* Second stacked icon card (center) */}
+              <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl z-10 shadow-lg group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                <GraduationCap className="w-5 h-5 text-slate-600" />
+              </div>
+              {/* Third stacked icon card */}
+              <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative right-2.5 top-1.5 rotate-6 shadow-lg group-hover:translate-x-5 group-hover:rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
+                <FileX className="w-5 h-5 text-slate-600" />
+              </div>
+            </div>
+            <h2 className="text-base text-slate-800 font-medium mt-6">No Courses Available</h2>
+            <p className="text-sm text-slate-600 mt-1">Find out more from the host university<br />above.</p>
+          </div>
         </div>
       )}
 
@@ -257,9 +278,9 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
         }`}
       >
         {/* LEFT PANEL — Your Map (30%) */}
-        <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg p-8">
+        <div className="bg-white/80 backdrop-blur-lg border border-indigo-100 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8">
           <div className="flex items-center gap-2 mb-6">
-            <BookOpen className="w-6 h-6" style={{ color: "#102b72" }} />
+            <BookOpen className="w-6 h-6 align-middle" style={{ color: "#102b72" }} />
             <h2 className="text-2xl font-semibold" style={{ color: "#102b72" }}>Your Map</h2>
           </div>
 
@@ -283,7 +304,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
             <div className="space-y-6">
               {Object.keys(selectedCourses).map((area) => (
                 selectedCourses[area].courses.length > 0 && (
-                  <div key={area} className="bg-white border border-[#102b72]/20 rounded-xl p-5">
+                  <div key={area} className="bg-white border border-indigo-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
                     <h3 className="font-semibold text-lg mb-4 pb-2 border-b border-[#102b72]/20" style={{ color: "#102b72" }}>
                       {area}
                     </h3>
@@ -291,8 +312,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                       {selectedCourses[area].courses.map((course: string) => (
                         <span
                           key={course}
-                          className="px-3 py-1.5 rounded-lg text-sm border border-[#102b72]/30 hover:bg-[#102b72]/10 transition-colors"
-                          style={{ color: "#102b72", backgroundColor: "white" }}
+                          className="px-3 py-1.5 rounded-lg text-sm border border-indigo-200 hover:bg-indigo-50 transition-colors text-slate-700"
                         >
                           {course}
                         </span>
@@ -313,20 +333,25 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                 });
               }}
                 disabled={saveMapDisabled}
-                className={`font-semibold hover:scale-105 px-8 py-2 text-lg rounded-full shadow-lg transition-transform ${saveMapDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-                style={{ backgroundColor: saveMapDisabled ? "#ccc" : "#102b72", color: "#ffffff" }}>
-                Save Map
+                className={`group relative overflow-hidden font-bold px-8 py-2 text-lg rounded shadow-2xl transition-all duration-300 ${saveMapDisabled ? "opacity-50 cursor-not-allowed bg-gray-400" : "bg-blue-600 text-white hover:shadow-blue-500/50 hover:bg-blue-700 animate-jump-hover"}`}>
+                <span className="relative z-10 flex items-center justify-center gap-2">
+                  <Save className="w-5 h-5" />
+                  Save Map
+                </span>
+                {!saveMapDisabled && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                )}
               </button>
             </div>
           )}
         </div>
 
         {/* RIGHT PANEL — Available Courses (70%) */}
-        <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-3xl p-5 shadow-lg">
+        <div className="bg-white/80 backdrop-blur-lg border border-indigo-100 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
           <h2 className="text-xl mb-4 font-semibold text-center" style={{ color: "#102b72" }}>Available Courses</h2>
           <div className="text-center mb-4">
             <select
-              className="w-50 mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
+              className="w-full mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
               style={{ color: "#102b72" }}
               onChange={(e) => setSelectedCourseArea(e.target.value)}
             >

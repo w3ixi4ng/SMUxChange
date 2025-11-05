@@ -69,7 +69,7 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
 
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className="bg-white text-black font-semibold hover:bg-gray-200 hover:scale-105 transition-transform px-8 py-2 text-lg rounded-full shadow-lg rounded">
+                <button className="bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-transform px-8 py-2 text-lg rounded shadow-lg animate-jump-hover">
                     Update Profile
                 </button>
             </AlertDialogTrigger>

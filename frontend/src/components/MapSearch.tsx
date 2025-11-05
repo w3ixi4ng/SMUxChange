@@ -2,7 +2,42 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import MapResults from "./MapResults";
 import { useParams } from "react-router-dom";
-import { Search, Globe, GraduationCap, BookOpen, Map } from "lucide-react";
+import { Search, Globe, GraduationCap, BookOpen, Map, School } from "lucide-react";
+
+function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    setDisplayedText("");
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex < text.length) {
+        setDisplayedText(text.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, speed);
+
+    return () => clearInterval(typingInterval);
+  }, [text, speed]);
+
+  // Cursor blinking effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 530);
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  return (
+    <span className="leading-none font-extrabold" style={{ fontFamily: 'inherit' }}>
+      {displayedText}
+      <span className={showCursor ? "opacity-100" : "opacity-0"}>|</span>
+    </span>
+  );
+}
 
 function MapSearch() {
   const { school: schoolParam, country: countryParam } = useParams();
@@ -242,17 +277,16 @@ function MapSearch() {
   return (
     <>
       <div className="text-center mb-10">
-        <span className="inline-block ml-2"><img src="/images/maps.gif" alt="Maps" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
-          <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
-            Module Mapping
-          </h1>
-            <p className="text-xl md:text-2xl text-slate-700 font-medium">
-            Discover exchange opportunities and map your modules
-            </p>
+        <span className="inline-block ml-2 animate-gif-jump"><img src="/images/maps.gif" alt="Maps" className="w-35 h-35 border-2 border-blue-500/30 rounded-lg shadow-lg" /></span>
+        <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-none bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent" style={{ fontFamily: 'inherit' }}>
+          <TypingAnimation text="Module Mapping" speed={100} />
+        </h1>
+        <p className="text-xl md:text-2xl text-slate-700 font-medium max-w-3xl mx-auto">
+          Discover exchange opportunities and map your modules
+        </p>
       </div>
 
-
-      <div className="w-full max-w-screen-xl mx-auto px-8 lg:px-10 bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-6 rounded-3xl shadow-lg font-medium">
+      <div className="w-full max-w-screen-xl mx-auto px-8 lg:px-10 bg-white/80 backdrop-blur-md border border-blue-200 shadow-lg py-8 rounded-3xl font-medium">
         <div className="row justify-content-center">
 
 
@@ -261,7 +295,7 @@ function MapSearch() {
 
 
             <p className="mb-1" style={{ color: "#102b72" }}>
-                <Globe className="w-4 h-4 text-indigo-600 d-inline" /> Select Country</p>
+                <Globe className="w-4 h-4 text-blue-600 d-inline align-middle" /> Select Country</p>
             <select
               className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
               style={{ color: "#102b72" }}
@@ -283,7 +317,7 @@ function MapSearch() {
           {/* === SELECT UNIVERSITY === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>
-                <GraduationCap className="w-4 h-4 text-indigo-600 d-inline" /> Select University</p>
+                <School className="w-4 h-4 text-blue-600 d-inline align-middle" /> Select University</p>
             <select
               className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleUniversity ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
@@ -305,7 +339,7 @@ function MapSearch() {
           {/* === SELECT FACULTY === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>
-                <BookOpen className="w-4 h-4 text-indigo-600 d-inline" /> Select Faculty</p>
+                <BookOpen className="w-4 h-4 text-blue-600 d-inline align-middle" /> Select Faculty</p>
             <select
               className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
               style={{ color: "#102b72" }}
@@ -325,7 +359,7 @@ function MapSearch() {
           {/* === SELECT MAJOR === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>
-                <GraduationCap className="w-4 h-4 text-indigo-600 d-inline" /> Select Major</p>
+                <GraduationCap className="w-4 h-4 text-blue-600 d-inline align-middle" /> Select Major</p>
             <select
               className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleMajor ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
@@ -350,7 +384,7 @@ function MapSearch() {
           {/* === SELECT TRACK === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}> 
-                <Map className="w-4 h-4 text-indigo-600 d-inline" /> Select Track</p>
+                <Map className="w-4 h-4 text-blue-600 d-inline align-middle" /> Select Track</p>
             <select
               className={`form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition ${toggleTrack ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                 }`}
@@ -372,7 +406,7 @@ function MapSearch() {
           {/* === SECOND MAJOR (optional) === */}
           {secondMajor && (
             <div className="col-lg-6 col-12 mb-3">
-              <p className="mb-1" style={{ color: "#102b72" }}><GraduationCap className="w-4 h-4 text-indigo-600 d-inline" /> Select Second Major</p>
+              <p className="mb-1" style={{ color: "#102b72" }}><GraduationCap className="w-4 h-4 text-blue-600 d-inline align-middle" /> Select Second Major</p>
               <select
                 className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
                 style={{ color: "#102b72" }}
@@ -406,14 +440,17 @@ function MapSearch() {
 
 
           {/* === SEARCH BUTTON === */}
-          <div className="col-3 text-center mt-2">
+          <div className="col-12 text-center mt-4">
             <button
-              className="rounded w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold px-8 py-4 shadow-lg hover:shadow-indigo-500/50 transition-all duration-300 hover:scale-105"
-              style={{ backgroundColor: "#102b72", color: "#ffffff" }}
+              className="group relative overflow-hidden bg-blue-600 text-white font-bold px-8 py-2 text-lg rounded shadow-2xl transition-all duration-300 hover:shadow-blue-500/50 hover:bg-blue-700 animate-jump-hover disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-blue-600"
               onClick={() => setMapResults(true)}
               disabled={paramsAreValid}
             >
-                <Search className="w-6 h-6 d-inline" /> Search
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                <Search className="w-5 h-5" />
+                Search
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
             </button>
           </div>
         </div>

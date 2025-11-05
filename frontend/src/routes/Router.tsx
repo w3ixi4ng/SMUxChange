@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   NavLink,
+  useLocation,
 } from "react-router-dom";
 import {
   House,
@@ -33,14 +34,22 @@ import Admin from "@/pages/Admin.tsx";
 
 
 function RouterView() {
+  return (
+    <Router>
+      <NavbarContent />
+    </Router>
+  );
+}
+
+function NavbarContent() {
+  const location = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
-
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [name, setName] = useState<string>(sessionStorage.getItem("name") || "");
-
+  const [isJumping, setIsJumping] = useState(false);
 
   const checkAdmin = async () => {
     try {
@@ -82,6 +91,15 @@ function RouterView() {
     };
   }, []);
 
+  // Trigger jump animation on route change
+  useEffect(() => {
+    setIsJumping(true);
+    const timer = setTimeout(() => {
+      setIsJumping(false);
+    }, 500); // Match the jump animation duration
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -100,24 +118,34 @@ function RouterView() {
   }, [isExpanded]);
 
   return (
-    
-
-    <Router>
+    <>
       {/* ===== Navigation Bar ===== */}
       <nav
-        className="sticky z-50 w-full backdrop-blur-md shadow-sm border-b border-[#102b72]/30"
+        className={`sticky z-50 w-full backdrop-blur-md shadow-sm border-b border-[#102b72]/30 transition-all duration-300 ${isJumping ? 'animate-jump-hover' : ''} relative`}
         style={{
-          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+          fontFamily: 'inherit',
           backgroundColor: "#102b72",
         }}
       >
+        {/* Cartoon Tongue */}
+        {isJumping && (
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 animate-tongue pointer-events-none">
+            <svg width="60" height="40" viewBox="0 0 60 40" className="relative">
+              <ellipse cx="30" cy="20" rx="25" ry="15" fill="#ff6b9d" />
+              <ellipse cx="30" cy="18" rx="20" ry="10" fill="#ff8fab" />
+              {/* Tongue texture lines */}
+              <line x1="20" y1="20" x2="40" y2="20" stroke="#ff4d7a" strokeWidth="1" opacity="0.5" />
+              <line x1="15" y1="22" x2="45" y2="22" stroke="#ff4d7a" strokeWidth="1" opacity="0.5" />
+            </svg>
+          </div>
+        )}
         <div className="flex items-center justify-between w-full max-w-7xl mx-auto px-6 py-4">
           {/* Left side: Hamburger + Logo */}
           <div className="flex items-center gap-3">
             {/* Hamburger Menu Button - Visible below lg */}
             <button
               onClick={() => setShowOffcanvas(true)}
-              className="lg:hidden text-white hover:bg-[#0d2259]/80 p-2 rounded-lg transition-colors"
+              className="lg:hidden text-white hover:bg-[#0d2259]/80 p-2 rounded-lg transition-all duration-300 hover:scale-105"
               aria-label="Toggle menu"
             >
               <Menu size={24} strokeWidth={2} />
@@ -131,7 +159,7 @@ function RouterView() {
               onClick={() => setShowOffcanvas(false)}
             >
               <img src="/images/earth.png" alt="Logo" className="w-10 h-10 mr-2" />
-              <span style={{ textDecoration: 'none', fontSize: '24px', fontWeight: 'bold' }}>SMUxChange</span>
+              <span className="leading-none font-extrabold" style={{ textDecoration: 'none', fontSize: '24px', fontFamily: 'inherit' }}>SMUxChange</span>
             </NavLink>
           </div>
 
@@ -142,11 +170,11 @@ function RouterView() {
                 <NavLink
                   to="/admin"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <ShieldCheck size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Admin</span>
@@ -154,11 +182,11 @@ function RouterView() {
                 <NavLink
                   to="/logout"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <LogOut size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Logout</span>
@@ -170,11 +198,11 @@ function RouterView() {
                   to="/"
                   end
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <House size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Home</span>
@@ -183,11 +211,11 @@ function RouterView() {
                 <NavLink
                   to="/mappable"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <MapIcon size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Map</span>
@@ -196,11 +224,11 @@ function RouterView() {
                 <NavLink
                   to="/information"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <GraduationCap size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Schools</span>
@@ -211,11 +239,11 @@ function RouterView() {
                     <NavLink
                       to="/login"
                       className={({ isActive }) =>
-                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none' }}
+                      style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                     >
                       <LogIn size={18} strokeWidth={2} />
                       <span style={{ textDecoration: 'none' }}>Login</span>
@@ -223,11 +251,11 @@ function RouterView() {
                     <NavLink
                       to="/signup"
                       className={({ isActive }) =>
-                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none' }}
+                      style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                     >
                       <UserPlus size={18} strokeWidth={2} />
                       <span style={{ textDecoration: 'none' }}>Sign Up</span>
@@ -237,13 +265,15 @@ function RouterView() {
                   <div className="relative profile-dropdown-container" ref={dropdownRef}>
                     <button
                       onClick={() => setIsExpanded(!isExpanded)}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isExpanded
+                      className={`px-4 py-2 rounded-2xl font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isExpanded
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{ textDecoration: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', borderRadius: '1rem' }}
                     >
-                      <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ borderRadius: '50%' }}>
+                        <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-full h-full object-cover" style={{ display: 'block' }} />
+                      </div>
                       <span style={{ textDecoration: 'none' }}>Profile</span>
                       {isExpanded ? (
                         <ChevronUp size={16} strokeWidth={2} />
@@ -253,25 +283,27 @@ function RouterView() {
                     </button>
 
                     {isExpanded && (
-                      <div className="absolute right-0 mt-2 w-48 bg-[#0d2259] rounded-lg shadow-lg border border-[#0a1a47] py-1 z-50">
+                      <div className="absolute right-0 mt-2 w-48 bg-[#0d2259] rounded-2xl shadow-lg border border-[#0a1a47] py-1 z-50 overflow-hidden">
                         <NavLink
                           to="/profile"
                           onClick={() => setIsExpanded(false)}
                           className={({ isActive }) =>
-                            `block px-4 py-2 text-sm text-white hover:bg-[#0a1a47] transition-colors ${isActive ? "bg-[#0a1a47]" : ""
+                            `block px-4 py-2 text-sm text-white hover:bg-[#0a1a47] ${isActive ? "bg-[#0a1a47]" : ""
                             }`}
-                          style={{ textDecoration: 'none' }}
+                          style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                         >
                           <div className="flex items-center gap-2">
-                          <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
+                          <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ borderRadius: '50%' }}>
+                            <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-full h-full object-cover" style={{ display: 'block' }} />
+                          </div>
                           <span style={{ textDecoration: 'none' }}>My Profile</span>
                           </div>
                         </NavLink>
                         <NavLink
                           to="/logout"
                           onClick={() => setIsExpanded(false)}
-                          className="block px-4 py-2 text-sm text-white hover:bg-[#0a1a47] transition-colors"
-                          style={{ textDecoration: 'none' }}
+                          className="block px-4 py-2 text-sm text-white hover:bg-[#0a1a47]"
+                          style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                         >
                           <div className="flex items-center gap-2">
                             <LogOut size={16} strokeWidth={2} />
@@ -298,7 +330,7 @@ function RouterView() {
         <Offcanvas.Header className="border-b border-[#0d2259]/50 flex justify-end">
           <button
             onClick={() => setShowOffcanvas(false)}
-            className="text-white hover:bg-[#0d2259]/80 p-2 rounded transition-colors"
+            className="text-white hover:bg-[#0d2259]/80 p-2 rounded transition-all duration-300 hover:scale-105"
             aria-label="Close menu"
           >
             <X size={24} strokeWidth={2} />
@@ -312,11 +344,11 @@ function RouterView() {
                   to="/admin"
                   onClick={() => setShowOffcanvas(false)}
                   className={({ isActive }) =>
-                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <ShieldCheck size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Admin</span>
@@ -325,11 +357,11 @@ function RouterView() {
                   to="/logout"
                   onClick={() => setShowOffcanvas(false)}
                   className={({ isActive }) =>
-                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <LogOut size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Logout</span>
@@ -342,11 +374,11 @@ function RouterView() {
                   end
                   onClick={() => setShowOffcanvas(false)}
                   className={({ isActive }) =>
-                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <House size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Home</span>
@@ -356,11 +388,11 @@ function RouterView() {
                   to="/mappable"
                   onClick={() => setShowOffcanvas(false)}
                   className={({ isActive }) =>
-                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <MapIcon size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Map</span>
@@ -370,11 +402,11 @@ function RouterView() {
                   to="/information"
                   onClick={() => setShowOffcanvas(false)}
                   className={({ isActive }) =>
-                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
-                  style={{ textDecoration: 'none' }}
+                  style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                 >
                   <GraduationCap size={18} strokeWidth={2} />
                   <span style={{ textDecoration: 'none' }}>Schools</span>
@@ -386,11 +418,11 @@ function RouterView() {
                       to="/login"
                       onClick={() => setShowOffcanvas(false)}
                       className={({ isActive }) =>
-                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none' }}
+                      style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                     >
                       <LogIn size={18} strokeWidth={2} />
                       <span style={{ textDecoration: 'none' }}>Login</span>
@@ -399,11 +431,11 @@ function RouterView() {
                       to="/signup"
                       onClick={() => setShowOffcanvas(false)}
                       className={({ isActive }) =>
-                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none' }}
+                      style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                     >
                       <UserPlus size={18} strokeWidth={2} />
                       <span style={{ textDecoration: 'none' }}>Sign Up</span>
@@ -418,13 +450,15 @@ function RouterView() {
                         setIsExpanded(false);
                       }}
                       className={({ isActive }) =>
-                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none' }}
+                      style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                     >
-                      <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ borderRadius: '50%' }}>
+                        <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-full h-full object-cover" style={{ display: 'block' }} />
+                      </div>
                       <span style={{ textDecoration: 'none' }}>My Profile</span>
                     </NavLink>
                     <NavLink
@@ -434,11 +468,11 @@ function RouterView() {
                         setIsExpanded(false);
                       }}
                       className={({ isActive }) =>
-                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                        `px-4 py-3 rounded font-medium text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105 ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none' }}
+                      style={{ textDecoration: 'none', fontFamily: 'inherit' }}
                     >
                       <LogOut size={18} strokeWidth={2} />
                       <span style={{ textDecoration: 'none' }}>Logout</span>
@@ -456,17 +490,17 @@ function RouterView() {
         <Routes>
           {!isAdmin && (
             <>
-          <Route path="/" element={<Home />} />
-          <Route path="/information" element={<Information />} />
-          <Route path="/mappable" element={<Mappable />} />
-          <Route path="/mappable/:school/:country" element={<Mappable />} />
-          <Route path="/specifics/:universityName" element={<Specifics />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/shareMap" element={<ShareMap />} />
-          </>
+              <Route path="/" element={<Home />} />
+              <Route path="/information" element={<Information />} />
+              <Route path="/mappable" element={<Mappable />} />
+              <Route path="/mappable/:school/:country" element={<Mappable />} />
+              <Route path="/specifics/:universityName" element={<Specifics />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/shareMap" element={<ShareMap />} />
+            </>
           )}
           {isAdmin && (
             <>
@@ -476,8 +510,8 @@ function RouterView() {
           )}
         </Routes>
       </main>
-    </Router>
-    )
+    </>
+  );
 }
 
 export default RouterView;
