@@ -241,8 +241,12 @@ function MapSearch() {
     <>
       <div className="text-center mb-10">
         <span className="inline-block ml-2"><img src="/images/maps.gif" alt="Maps" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
-        <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search</h1>
-        <p className="text-sm" style={{ color: "#102b72" }}>Find exchange mappings with ease.</p>
+          <h1 className="text-5xl md:text-6xl font-extrabold mb-4 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent">
+            Module Mapping
+          </h1>
+            <p className="text-xl md:text-2xl text-slate-700 font-medium">
+            Discover exchange opportunities and map your modules
+            </p>
       </div>
 
 
@@ -395,7 +399,7 @@ function MapSearch() {
           {/* === SEARCH BUTTON === */}
           <div className="col-12 text-center mt-2">
             <button
-              className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg"
+              className="rounded w-full bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white font-bold px-8 py-4 rounded-2xl shadow-lg hover:shadow-indigo-500/50 transition-all duration-300 hover:scale-105"
               style={{ backgroundColor: "#102b72", color: "#ffffff" }}
               onClick={() => setMapResults(true)}
               disabled={paramsAreValid}
