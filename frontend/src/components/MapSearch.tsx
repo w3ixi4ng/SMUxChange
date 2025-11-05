@@ -7,6 +7,7 @@ function MapSearch() {
   const { school: schoolParam, country: countryParam } = useParams();
   const uid = sessionStorage.getItem("uid");
 
+
   const [countries, setCountries] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [university, setUniversity] = useState<string[]>([]);
@@ -18,17 +19,22 @@ function MapSearch() {
   const [track, setTrack] = useState<string[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<string>("");
 
+
   const [toggleUniversity, setToggleUniversity] = useState(true);
   const [toggleMajor, setToggleMajor] = useState(true);
   const [toggleTrack, setToggleTrack] = useState(true);
+
 
   const [secondMajor, setSecondMajor] = useState(false);
   const [allSecondMajors, setAllSecondMajors] = useState<string[]>([]);
   const [selectedSecondMajor, setSelectedSecondMajor] = useState<string>("");
 
+
   const [mapResults, setMapResults] = useState(false);
 
+
   const [paramsAreValid, setParamsAreValid] = useState(true);
+
 
   useEffect(() => {
     if (countryParam && countries.includes(countryParam)) {
@@ -36,17 +42,20 @@ function MapSearch() {
     }
   }, [countryParam, countries]);
 
+
   useEffect(() => {
     if (schoolParam && university.includes(schoolParam)) {
       setSelectedUniversity(schoolParam);
     }
   }, [university, schoolParam]);
 
+
   const fetchCountries = async () => {
     try {
       const response = await axios.get(
         "https://smuxchange-backend.vercel.app/database/getAllExchangeSchools"
       );
+
 
       // Gets all exchange schools from backend, extracts unique country names for dropdown
       const schools = response.data;
@@ -58,6 +67,7 @@ function MapSearch() {
       console.log("API error:", error);
     }
   };
+
 
   const fetchUniversities = async (country: string) => {
     try {
@@ -76,6 +86,7 @@ function MapSearch() {
     }
   };
 
+
   const fetchFaculties = async () => {
     try {
       const response = await axios.get(
@@ -91,6 +102,7 @@ function MapSearch() {
     }
   };
 
+
   const fetchMajors = async (faculty: string) => {
     try {
       const response = await axios.get(
@@ -105,6 +117,7 @@ function MapSearch() {
       console.log("API error:", error);
     }
   };
+
 
   const fetchTracks = async (faculty: string, major: string) => {
     try {
@@ -122,6 +135,7 @@ function MapSearch() {
     }
   };
 
+
   const fetchSecondMajors = async () => {
     try {
       const response = await axios.get(
@@ -138,16 +152,19 @@ function MapSearch() {
         }
       }
 
+
       setAllSecondMajors(records.sort());
     } catch (error) {
       console.log("API error:", error);
     }
   };
 
+
   useEffect(() => {
     fetchCountries();
     fetchFaculties();
   }, []);
+
 
   useEffect(() => {
     if (selectedCountry !== "") {
@@ -158,6 +175,7 @@ function MapSearch() {
       setToggleUniversity(true);
     }
   }, [selectedCountry]);
+
 
   useEffect(() => {
     if (selectedFaculty !== "") {
@@ -171,6 +189,7 @@ function MapSearch() {
     }
   }, [selectedFaculty]);
 
+
   useEffect(() => {
     if (selectedMajor !== "") {
       fetchTracks(selectedFaculty, selectedMajor);
@@ -181,11 +200,13 @@ function MapSearch() {
     }
   }, [selectedMajor]);
 
+
   useEffect(() => {
     if (secondMajor) {
       fetchSecondMajors();
     }
   }, [secondMajor]);
+
 
   useEffect(() => {
     if (selectedCountry && selectedUniversity && selectedFaculty && selectedMajor) {
@@ -202,6 +223,7 @@ function MapSearch() {
     selectedSecondMajor,
   ]);
 
+
   useEffect(() => {
     if (uid) {
       setSelectedFaculty(sessionStorage.getItem("faculty") || "");
@@ -214,19 +236,26 @@ function MapSearch() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!mapResults) return;
+    const raf = requestAnimationFrame(() => {
+      document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [mapResults, selectedCountry, selectedFaculty, selectedMajor, selectedSecondMajor, selectedUniversity, selectedTrack]);
+
   return (
     <>
       <div className="text-center mb-10">
         <span className="inline-block ml-2"><img src="/images/maps.gif" alt="Maps" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
-        <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search
-
-        </h1>
-
+        <h1 className="text-4xl font-bold" style={{ color: "#102b72" }}>Mappable Search</h1>
         <p className="text-sm" style={{ color: "#102b72" }}>Find exchange mappings with ease.</p>
       </div>
 
-      <div className="container col-12 mx-auto bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-4 rounded-3xl shadow-lg font-medium">
+
+      <div className="w-full max-w-screen-xl mx-auto px-8 lg:px-10 bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-6 rounded-3xl shadow-lg font-medium">
         <div className="row justify-content-center">
+
 
           {/* === SELECT COUNTRY === */}
           <div className="col-lg-6 col-12 mb-3">
@@ -242,10 +271,12 @@ function MapSearch() {
                 <option key={country} value={country}>
                   {country}
 
+
                 </option>
               ))}
             </select>
           </div>
+
 
           {/* === SELECT UNIVERSITY === */}
           <div className="col-lg-6 col-12 mb-3">
@@ -267,6 +298,7 @@ function MapSearch() {
             </select>
           </div>
 
+
           {/* === SELECT FACULTY === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>Select Faculty</p>
@@ -284,6 +316,7 @@ function MapSearch() {
               ))}
             </select>
           </div>
+
 
           {/* === SELECT MAJOR === */}
           <div className="col-lg-6 col-12 mb-3">
@@ -308,6 +341,7 @@ function MapSearch() {
             </select>
           </div>
 
+
           {/* === SELECT TRACK === */}
           <div className="col-lg-6 col-12 mb-3">
             <p className="mb-1" style={{ color: "#102b72" }}>Select Track</p>
@@ -327,6 +361,7 @@ function MapSearch() {
               ))}
             </select>
           </div>
+
 
           {/* === SECOND MAJOR (optional) === */}
           {secondMajor && (
@@ -348,6 +383,7 @@ function MapSearch() {
             </div>
           )}
 
+
           {/* === CHECKBOX === */}
           <div className="col-12 mb-3 text-start">
             <input
@@ -361,6 +397,7 @@ function MapSearch() {
               I have a second major
             </label>
           </div>
+
 
           {/* === SEARCH BUTTON === */}
           <div className="col-12 text-center mt-2">
@@ -376,16 +413,22 @@ function MapSearch() {
         </div>
       </div>
 
+
       {/* === MAP RESULTS === */}
+
       {mapResults && (
-        <MapResults
-          university={selectedUniversity}
-          country={selectedCountry}
-          faculty={selectedFaculty}
-          major={selectedMajor}
-          track={selectedTrack}
-          secondMajor={selectedSecondMajor}
-        />
+        <>
+          <div id="results" />
+          <MapResults
+            university={selectedUniversity}
+            country={selectedCountry}
+            faculty={selectedFaculty}
+            major={selectedMajor}
+            track={selectedTrack}
+            secondMajor={selectedSecondMajor}
+          />
+
+        </>
       )}
     </>
   );

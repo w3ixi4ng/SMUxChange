@@ -95,12 +95,12 @@ function getCountryCode(countryName?: string) {
   return map[key] || "xx";
 }
 
-function scrollToTop() {
-  const topElement = document.getElementById("top");
-  if (topElement) {
-    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
-  }
-}
+//function scrollToTop() {
+//  const topElement = document.getElementById("top");
+//  if (topElement) {
+//    topElement.scrollIntoView(); // instant scroll
+//  }
+//}
 
 /* ===========================
    Time-ago helper (unchanged)
@@ -163,6 +163,8 @@ export default function Specifics() {
 
   const [updateRequired, setUpdateRequired] = useState(false);
 
+  const [new_obj, set_new_obj] = useState<Record<string, any>>({});
+
   async function get_cooridnates(address: string) {
     try {
       const response = await axios.get(
@@ -175,21 +177,41 @@ export default function Specifics() {
   }
 
   function handleShowMap(address: string) {
-    return async () => {
+    return async (e: React.MouseEvent) => {
+      e.preventDefault();
       const coords = await get_cooridnates(address);
-      console.log(coords);
       if (coords) {
         setMapCoords(coords);
         setShowMap(true);
         setUpdateRequired(true);
 
-        const mapElement = document.getElementById("map-section");
-        if (mapElement) {
-          mapElement.scrollIntoView({ behavior: "smooth" });
-        }
+        setTimeout(() => {
+            const mapElement = document.getElementById("map-section");
+            if (mapElement) {
+                mapElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"    
+                });
+            }
+            setUpdateRequired(false);
+        },100)
+
       }
     };
   }
+
+  function on_event_click(item_selected: Record<string, any>) {
+    return (e: React.MouseEvent) => {
+        set_new_obj(item_selected);
+        if (item_selected.type == "accomodation") {
+            return handleShowMap(item_selected.formatted_address)(e);
+        } else {
+            return handleShowMap(item_selected.address[0])(e)
+        }
+    }
+  }
+
 
   useEffect(() => {
     // IMPORTANT: this is the ONLY source of truth for UI login state right now
@@ -361,19 +383,17 @@ export default function Specifics() {
   async function get_distance() {
     const updatedAccomodations: any[] = [];
     const updatedEvents: any[] = [];
-    console.log(accommodations);
-    console.log(events);
     for (let i = 0; i < accommodations.length; i++) {
       const distanceData = await helper_distance(
         data["host_university"],
         accommodations[i]["formatted_address"]
       );
 
-      console.log(distanceData);
 
       updatedAccomodations.push({
         ...accommodations[i],
         ...distanceData,
+        "type": "accomodation"
       });
     }
     for (let j = 0; j < events.length; j++) {
@@ -384,6 +404,7 @@ export default function Specifics() {
       updatedEvents.push({
         ...events[j],
         ...distance_event_data,
+        "type": "event"
       });
     }
     updatedAccomodations.sort((a, b) => a.distance - b.distance);
@@ -409,7 +430,7 @@ export default function Specifics() {
 
   useEffect(() => {
     async function calculateDistanceOnce() {
-      if (accommodations.length > 0 && !distanceCalculated) {
+      if ((accommodations.length > 0  || events.length>0 )&& !distanceCalculated) {
         await get_distance();
         setDistanceCalculated(true);
       }
@@ -462,7 +483,7 @@ export default function Specifics() {
               <img
                 src={`https://flagcdn.com/${getCountryCode(data?.country)}.svg`}
                 alt={data && data.country}
-                className="w-8 h-5 rounded-md"
+                className="w-6 h-5 rounded-md"
               />
               <span style={{ color: "#102b72" }}>{data && data.country}</span>
             </div>
@@ -787,6 +808,27 @@ export default function Specifics() {
                 same interactive map.
               </CardDescription>
             </CardHeader>
+
+            {new_obj && new_obj.type == "accomodation" &&(
+                <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                    <strong>Currently Selected {new_obj.type}:</strong> {new_obj.name}<br/>
+                    <strong> Currently Selected Address: </strong> {new_obj.formatted_address}
+                    </div>
+            )}
+
+            {new_obj && new_obj.type == "event" &&(
+                 <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                    <strong>Currently Selected {new_obj.type}</strong>: {new_obj.title}<br/>
+                    <strong>Currently Selected Address: </strong>{new_obj.address[0]}
+                    </div>
+            )}
+
+            {Object.keys(new_obj).length === 0 && (
+                <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
+                    nothing selected
+                </div>
+            )}
+
           </div>
 
           <CardContent className="space-y-6">
@@ -817,9 +859,14 @@ export default function Specifics() {
                     position: "relative",
                   }}
                   center={updateRequired ? mapCoords : undefined}
-                  zoom={16}
+                  zoom={updateRequired?16:undefined}
+
+                  defaultCenter={!updateRequired?mapCoords:undefined}
+                  defaultZoom={!updateRequired?16:undefined}
+
                   mapId="DEMO_MAP_ID"
                   disableDefaultUI={false}
+                  gestureHandling="greedy"
                 >
                   <AdvancedMarker
                     position={mapCoords}
@@ -880,7 +927,8 @@ export default function Specifics() {
                       .map((a, i) => (
                         <div
                           key={i}
-                          className="shrink-0 w-72 snap-center bg-white border border-[#102b72]/20 rounded-xl flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                         className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
+                            ${new_obj === a ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-[#102b72]/20 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <img
                             src={a.icon}
@@ -973,7 +1021,7 @@ export default function Specifics() {
                             </div>
                             <div className="mt-4 pt-2">
                               <Button
-                                onClick={handleShowMap(a.formatted_address)}
+                                onClick={on_event_click(a)}
                                 asChild
                                 className="w-full text-sm font-semibold no-underline rounded-lg"
                                 style={{
@@ -1033,7 +1081,8 @@ export default function Specifics() {
                       .map((ev, i) => (
                         <div
                           key={i}
-                          className="shrink-0 w-72 snap-center bg-white border border-[#102b72]/20 rounded-xl flex flex-col hover:shadow-md hover:-translate-y-1 transition-all duration-200"
+                          className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
+                            ${new_obj === ev ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-[#102b72]/20 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <img
                             src={`/images/event_${i + 1}.jpg`}
@@ -1126,7 +1175,7 @@ export default function Specifics() {
                             </div>
                             <div className="mt-4 pt-2">
                               <Button
-                                onClick={handleShowMap(ev.address[0])}
+                                onClick={on_event_click(ev)}
                                 asChild
                                 className="w-full text-sm font-semibold no-underline rounded-lg"
                                 style={{
@@ -1169,7 +1218,7 @@ export default function Specifics() {
         {/* Scroll to top */}
         {showScrollButton && (
           <button
-            onClick={scrollToTop}
+            onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
             className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label="Scroll to top"
             style={{ backgroundColor: "#102b72", color: "#ffffff" }}

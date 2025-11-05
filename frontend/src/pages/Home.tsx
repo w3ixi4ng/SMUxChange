@@ -4,12 +4,12 @@ import ThreeDLogo from "@/components/ThreeDLogo";
 import { useEffect, useState } from "react";
 import { ArrowUpIcon } from "lucide-react";
 
-function scrollToTop() {
-  const topElement = document.getElementById("top");
-  if (topElement) {
-    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
-  }
-}
+//function scrollToTop() {
+//  const topElement = document.getElementById("top");
+//  if (topElement) {
+//    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
+//  }
+//}
 
 function Home() {
   // Scroll constant
@@ -53,28 +53,33 @@ function Home() {
 
   return (
     <div id="top">
-    <div
-      className="relative w-full min-h-screen"
-      style={{
-        backgroundColor: "#eeeeee",
-        color: "#102b72",
-      }}
-    >
-      {/* === Subtle gradient + grid overlay === */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+        <div
+        className="relative w-full min-h-screen"
+        style={{
+            backgroundColor: "#eeeeee",
+            color: "#102b72",
+        }}
+        >
+            <div className="fixed inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
+            <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700" />
+            <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-indigo-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
+        </div>
 
+
+        
       {/* === Hero Section === */}
       <section className="relative flex flex-col items-center justify-center px-6 mb-5">
         <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-5xl mx-auto">
           {/* Logo */}
-          <div className="mb-12">
+          <div className="mb-12 relative">
+            <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-3xl scale-150" />
             <ThreeDLogo onLoaded={() => setLogoLoaded(true)} />
           </div>
 
           {/* Main Title */}
           {logoLoaded && (
-            <>
+            <div className="animate-fade-in-up">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6" style={{ color: "#102b72" }}>
                 SMUxChange
               </h1>
@@ -87,24 +92,29 @@ function Home() {
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link to="/Mappable">
-                  <Button
-                    className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg shadow-md hover:shadow-lg"
-                    style={{ backgroundColor: "#102b72", color: "#ffffff" }}
-                  >
-                    Start Planning
-                  </Button>
+                    <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold px-10 py-7 text-lg rounded-lg shadow-2xl transition-all duration-300 hover:scale-105">
+                    <span className="relative z-10 flex items-center gap-2">
+                        Start Planning
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                    </Button>
                 </Link>
-                <Link to="/information">
-                  <Button
-                    variant="outline"
-                    className="font-medium hover:scale-105 transition-all duration-300 px-8 py-6 text-lg rounded-lg border-2 hover:shadow-md"
-                    style={{ borderColor: "#102b72", color: "#102b72", backgroundColor: "transparent" }}
-                  >
-                    Browse Schools
-                  </Button>
+                 <Link to="/information">
+                     <Button className="group relative overflow-hidden bg-gradient-to-r from-emerald-600 to-green-700 hover:from-emerald-700 hover:to-green-800 text-white font-semibold px-10 py-7 text-lg rounded-lg transition-all duration-300 hover:scale-105">
+                    <span className="relative z-10 flex items-center gap-2">
+                        Browse Schools
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                    </Button>
                 </Link>
               </div>
-            </>
+            </div>
           )}
         </div>
       </section>
@@ -135,10 +145,10 @@ function Home() {
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#102b72" }}>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#eeee" }}>
               Key Features
             </h2>
-            <p className="text-lg md:text-xl font-normal max-w-3xl mx-auto" style={{ color: "#102b72", opacity: 0.7 }}>
+            <p className="text-lg md:text-xl font-normal max-w-3xl mx-auto" style={{ color: "#eeee", opacity: 0.7 }}>
               Everything you need to plan your SMU exchange journey efficiently
             </p>
           </div>
@@ -198,11 +208,14 @@ function Home() {
             Join thousands of SMU students who are already using SMUxChange to plan their exchange experience
           </p>
           <Link to="/Mappable">
-            <Button
-              className="font-medium hover:scale-105 transition-all duration-300 px-10 py-6 text-lg rounded-lg shadow-lg hover:shadow-xl"
-              style={{ backgroundColor: "#102b72", color: "#ffffff" }}
-            >
-              Get Started Now
+            <Button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-semibold px-10 py-7 text-lg rounded-lg transition-all duration-300 hover:scale-105">
+              <span className="relative z-10 flex items-center gap-2">
+                Get Started Now
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
             </Button>
           </Link>
         </div>
@@ -212,7 +225,7 @@ function Home() {
       {/* Scroll to top */}
       {showScrollButton && (
         <button
-          onClick={scrollToTop}
+          onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
           className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
           aria-label="Scroll to top"
           style={{ backgroundColor: "#102b72", color: "#ffffff" }}

@@ -102,7 +102,8 @@ export function ShareMap() {
             <div className="relative z-10 container mx-auto px-4 py-10">
                 {/* Page Header */}
                 <div className="text-center mb-10">
-                    <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Shared Course Map</h1>
+                <span className="inline-block ml-2"><img src="/images/share.gif" alt="Share" className="w-35 h-35 border-2 border-[#102b72]/30 rounded-lg" /></span>
+                <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Shared Course Map</h1>
                     <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
                         Review and save this course mapping to your profile
                     </p>

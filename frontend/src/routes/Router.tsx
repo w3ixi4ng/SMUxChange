@@ -5,7 +5,6 @@ import {
   NavLink,
 } from "react-router-dom";
 import {
-  Plane,
   House,
   MapIcon,
   GraduationCap,
@@ -16,7 +15,10 @@ import {
   LogOut,
   UserPlus,
   ShieldCheck,
+  Menu,
+  X,
 } from "lucide-react";
+import Offcanvas from "react-bootstrap/Offcanvas";
 import Home from "../pages/Home.tsx";
 import Information from "../pages/Information.tsx";
 import Mappable from "../pages/Mappable.tsx";
@@ -35,6 +37,7 @@ function RouterView() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [name, setName] = useState<string>(sessionStorage.getItem("name") || "");
@@ -109,25 +112,38 @@ function RouterView() {
           backgroundColor: "#102b72",
         }}
       >
-        <div className="flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-6 py-4">
-          {/* Logo */}
-          <NavLink
-            to="/"
-            className="flex items-center gap-2 text-xl font-semibold text-white hover:text-gray-200 transition-colors"
-            style={{ textDecoration: 'none' }}
-          >
-            <Plane size={24} className="text-white" strokeWidth={2} />
-            <span style={{ textDecoration: 'none' }}>SMUxChange</span>
-          </NavLink>
+        <div className="flex items-center justify-between w-full max-w-7xl mx-auto px-6 py-4">
+          {/* Left side: Hamburger + Logo */}
+          <div className="flex items-center gap-3">
+            {/* Hamburger Menu Button - Visible below lg */}
+            <button
+              onClick={() => setShowOffcanvas(true)}
+              className="lg:hidden text-white hover:bg-[#0d2259]/80 p-2 rounded-lg transition-colors"
+              aria-label="Toggle menu"
+            >
+              <Menu size={24} strokeWidth={2} />
+            </button>
+            
+            {/* Logo */}
+            <NavLink
+              to="/"
+              className="flex items-center gap-2 text-xl font-semibold text-white hover:text-gray-200 transition-colors"
+              style={{ textDecoration: 'none' }}
+              onClick={() => setShowOffcanvas(false)}
+            >
+              <img src="/images/earth.png" alt="Logo" className="w-10 h-10 mr-2" />
+              <span style={{ textDecoration: 'none', fontSize: '24px', fontWeight: 'bold' }}>SMUxChange</span>
+            </NavLink>
+          </div>
 
-          {/* Nav links */}
-          <div className="flex flex-1 flex-col lg:flex-row items-center justify-end gap-1 lg:gap-2 mt-4 lg:mt-0">
+          {/* Desktop Nav links - Hidden below lg */}
+          <div className="hidden lg:flex items-center justify-end gap-2">
             {isAdmin ? (
               <>
                 <NavLink
                   to="/admin"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
@@ -139,7 +155,7 @@ function RouterView() {
                 <NavLink
                   to="/logout"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
@@ -155,7 +171,7 @@ function RouterView() {
                   to="/"
                   end
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
@@ -168,7 +184,7 @@ function RouterView() {
                 <NavLink
                   to="/mappable"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
@@ -181,7 +197,7 @@ function RouterView() {
                 <NavLink
                   to="/information"
                   className={({ isActive }) =>
-                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                    `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
                       ? "bg-[#0d2259] text-white"
                       : "text-white hover:bg-[#0d2259]/80"
                     }`}
@@ -196,7 +212,7 @@ function RouterView() {
                     <NavLink
                       to="/login"
                       className={({ isActive }) =>
-                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
@@ -208,7 +224,7 @@ function RouterView() {
                     <NavLink
                       to="/signup"
                       className={({ isActive }) =>
-                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isActive
+                        `px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
                           ? "bg-[#0d2259] text-white"
                           : "text-white hover:bg-[#0d2259]/80"
                         }`}
@@ -222,13 +238,12 @@ function RouterView() {
                   <div className="relative profile-dropdown-container" ref={dropdownRef}>
                     <button
                       onClick={() => setIsExpanded(!isExpanded)}
-                      className={`px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all w-full lg:w-auto ${isExpanded
-                          ? "bg-[#0d2259] text-white rounded-lg"
-                          : "text-white hover:bg-[#0d2259]/80 rounded-lg"
+                      className={`px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isExpanded
+                          ? "bg-[#0d2259] text-white"
+                          : "text-white hover:bg-[#0d2259]/80"
                         }`}
-                      style={{ textDecoration: 'none', border: 'none', cursor: 'pointer', borderRadius: '0.5rem' }}
+                      style={{ textDecoration: 'none', border: 'none', cursor: 'pointer' }}
                     >
-                      {/* <User size={18} strokeWidth={2} /> */}
                       <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
                       <span style={{ textDecoration: 'none' }}>Profile</span>
                       {isExpanded ? (
@@ -240,7 +255,6 @@ function RouterView() {
 
                     {isExpanded && (
                       <div className="absolute right-0 mt-2 w-48 bg-[#0d2259] rounded-lg shadow-lg border border-[#0a1a47] py-1 z-50">
-      
                         <NavLink
                           to="/profile"
                           onClick={() => setIsExpanded(false)}
@@ -250,8 +264,8 @@ function RouterView() {
                           style={{ textDecoration: 'none' }}
                         >
                           <div className="flex items-center gap-2">
-                            <User size={16} strokeWidth={2} />
-                            <span style={{ textDecoration: 'none' }}>My Profile</span>
+                          <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
+                          <span style={{ textDecoration: 'none' }}>My Profile</span>
                           </div>
                         </NavLink>
                         <NavLink
@@ -274,6 +288,169 @@ function RouterView() {
           </div>
         </div>
       </nav>
+
+      {/* Offcanvas Menu - Mobile Navigation */}
+      <Offcanvas
+        show={showOffcanvas}
+        onHide={() => setShowOffcanvas(false)}
+        placement="start"
+        style={{ backgroundColor: "#102b72", color: "white" }}
+      >
+        <Offcanvas.Header className="border-b border-[#0d2259]/50 flex justify-end">
+          <button
+            onClick={() => setShowOffcanvas(false)}
+            className="text-white hover:bg-[#0d2259]/80 p-2 rounded transition-colors"
+            aria-label="Close menu"
+          >
+            <X size={24} strokeWidth={2} />
+          </button>
+        </Offcanvas.Header>
+        <Offcanvas.Body className="p-0">
+          <div className="flex flex-col gap-1 p-4">
+            {isAdmin ? (
+              <>
+                <NavLink
+                  to="/admin"
+                  onClick={() => setShowOffcanvas(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                      ? "bg-[#0d2259] text-white"
+                      : "text-white hover:bg-[#0d2259]/80"
+                    }`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <ShieldCheck size={18} strokeWidth={2} />
+                  <span style={{ textDecoration: 'none' }}>Admin</span>
+                </NavLink>
+                <NavLink
+                  to="/logout"
+                  onClick={() => setShowOffcanvas(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                      ? "bg-[#0d2259] text-white"
+                      : "text-white hover:bg-[#0d2259]/80"
+                    }`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <LogOut size={18} strokeWidth={2} />
+                  <span style={{ textDecoration: 'none' }}>Logout</span>
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to="/"
+                  end
+                  onClick={() => setShowOffcanvas(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                      ? "bg-[#0d2259] text-white"
+                      : "text-white hover:bg-[#0d2259]/80"
+                    }`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <House size={18} strokeWidth={2} />
+                  <span style={{ textDecoration: 'none' }}>Home</span>
+                </NavLink>
+
+                <NavLink
+                  to="/mappable"
+                  onClick={() => setShowOffcanvas(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                      ? "bg-[#0d2259] text-white"
+                      : "text-white hover:bg-[#0d2259]/80"
+                    }`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <MapIcon size={18} strokeWidth={2} />
+                  <span style={{ textDecoration: 'none' }}>Map</span>
+                </NavLink>
+
+                <NavLink
+                  to="/information"
+                  onClick={() => setShowOffcanvas(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                      ? "bg-[#0d2259] text-white"
+                      : "text-white hover:bg-[#0d2259]/80"
+                    }`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <GraduationCap size={18} strokeWidth={2} />
+                  <span style={{ textDecoration: 'none' }}>Schools</span>
+                </NavLink>
+
+                {!isLoggedIn ? (
+                  <>
+                    <NavLink
+                      to="/login"
+                      onClick={() => setShowOffcanvas(false)}
+                      className={({ isActive }) =>
+                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                          ? "bg-[#0d2259] text-white"
+                          : "text-white hover:bg-[#0d2259]/80"
+                        }`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <LogIn size={18} strokeWidth={2} />
+                      <span style={{ textDecoration: 'none' }}>Login</span>
+                    </NavLink>
+                    <NavLink
+                      to="/signup"
+                      onClick={() => setShowOffcanvas(false)}
+                      className={({ isActive }) =>
+                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                          ? "bg-[#0d2259] text-white"
+                          : "text-white hover:bg-[#0d2259]/80"
+                        }`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <UserPlus size={18} strokeWidth={2} />
+                      <span style={{ textDecoration: 'none' }}>Sign Up</span>
+                    </NavLink>
+                  </>
+                ) : (
+                  <>
+                    <NavLink
+                      to="/profile"
+                      onClick={() => {
+                        setShowOffcanvas(false);
+                        setIsExpanded(false);
+                      }}
+                      className={({ isActive }) =>
+                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                          ? "bg-[#0d2259] text-white"
+                          : "text-white hover:bg-[#0d2259]/80"
+                        }`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <img src={`https://avatar.iran.liara.run/username?username=${name}`} decoding="async" alt="Profile" className="w-6 h-6 rounded-full" />
+                      <span style={{ textDecoration: 'none' }}>My Profile</span>
+                    </NavLink>
+                    <NavLink
+                      to="/logout"
+                      onClick={() => {
+                        setShowOffcanvas(false);
+                        setIsExpanded(false);
+                      }}
+                      className={({ isActive }) =>
+                        `px-4 py-3 rounded-lg font-medium text-sm flex items-center gap-2 transition-all ${isActive
+                          ? "bg-[#0d2259] text-white"
+                          : "text-white hover:bg-[#0d2259]/80"
+                        }`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <LogOut size={18} strokeWidth={2} />
+                      <span style={{ textDecoration: 'none' }}>Logout</span>
+                    </NavLink>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        </Offcanvas.Body>
+      </Offcanvas>
 
       {/* ===== Page Content ===== */}
       <main>

@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/pagination"
 import CardSkeleton from "@/components/SchoolCardSkeleton";
 import { useNavigate } from "react-router-dom";
-import { ArrowUpIcon } from "lucide-react";
+import { ArrowUpIcon, Search } from "lucide-react";
 
 function scrollToTop() {
   const topElement = document.getElementById("top");
@@ -33,7 +33,7 @@ function Information() {
   const [courseArea, setCourseArea] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
@@ -150,10 +150,12 @@ function Information() {
   }, []);
 
   // Pagination calculations
-  const totalPages = Math.ceil(schools.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
+  let startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentSchools = schools.slice(startIndex, endIndex);
+  const [currentSchools, setCurrentSchools] = useState<any[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
+
+  
 
   useEffect(() => {
     if (
@@ -163,6 +165,34 @@ function Information() {
       navigate("/profile");
     }
   }, []);
+  
+  const [search, setSearch] = useState<string>("");
+  const [filteredSchools, setFilteredSchools] = useState<any[]>([]);
+  useEffect(() => {
+    if (filteredSchools.length > 0) {
+      setCurrentSchools(filteredSchools.slice(startIndex, endIndex));
+    } else {
+      setCurrentSchools(schools.slice(startIndex, endIndex));
+    }
+  }, [schools, filteredSchools, startIndex, endIndex]);
+  
+  useEffect(() => {
+    if (search !== "") {
+      setFilteredSchools(schools.filter((school: any) => school.host_university.toLowerCase().includes(search.toLowerCase())));
+      setCurrentPage(1);
+    } else {
+      setFilteredSchools([]);
+      setCurrentPage(1);
+    }
+  }, [search]);
+
+  useEffect(() => {
+    if (filteredSchools.length > 0) {
+      setTotalPages(Math.ceil(filteredSchools.length / itemsPerPage));
+    } else {
+      setTotalPages(Math.ceil(schools.length / itemsPerPage));
+    }
+  }, [schools, filteredSchools]);
 
   return (
     <div id="top">
@@ -173,13 +203,10 @@ function Information() {
           color: "#102b72",
         }}
       >
-        {/* === Subtle gradient + grid overlay === */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
-        <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
         <div className="relative z-10 container mx-auto px-4 py-10">
           <div className="text-center mb-10">
-            <span className="inline-block ml-2"><img src="/images/school.gif" alt="Schools" className="w-30 h-30 border-2 border-[#102b72]/30 rounded-lg" /></span>
+            <span className="inline-block ml-2"><img src="/images/school.gif" alt="Schools" className="w-35 h-35 border-2 border-[#102b72]/30 rounded-lg" /></span>
             <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Schools</h1>
             <p className="text-sm" style={{ color: "#102b72" }}>
               Explore different universities and exchange destinations with ease.
@@ -195,7 +222,7 @@ function Information() {
                   Select Country
                 </label>
                 <select
-                  className="w-full rounded-md border border-[#102b72]/30 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#102b72] transition"
+                  className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
                   style={{ color: "#102b72" }}
                   onChange={(e) => setCountry(e.target.value)}
                 >
@@ -216,7 +243,7 @@ function Information() {
                   Select Course Area
                 </label>
                 <select
-                  className="w-full rounded-md border border-[#102b72]/30 bg-white px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#102b72] transition"
+                  className="form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"
                   style={{ color: "#102b72" }}
                   onChange={(e) => setCourseArea(e.target.value)}
                 >
@@ -230,13 +257,25 @@ function Information() {
                   ))}
                 </select>
               </div>
+            <div className="mt-2 w-full max-w-xl relative md:col-span-2 mx-auto">
+              <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "#102b72" }} />
+              <input
+                type="search"
+                name="search"
+                id="search"
+                placeholder="Search by university name"
+                className="w-full rounded-md border border-[#102b72]/30 bg-white pl-10 pr-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#102b72] transition"
+                style={{ color: "#102b72" }}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
             </div>
           </div>
 
           {/* School Results */}
           <div className="container mx-auto mt-5 text-center">
             <div className="row justify-content-center">
-              { isLoading ? (
+              {isLoading ? (
                 Array.from({ length: 6 }).map((_, index) => (
                   <CardSkeleton key={index} />
                 ))
@@ -249,22 +288,22 @@ function Information() {
           </div>
 
           {/* No Results */}
-          {schools.length === 0 && !isLoading ? (
+          {currentSchools.length === 0 && !isLoading ? (
             <div className="container mx-auto mt-5 mb-1 text-center">
               <div className="bg-red-100 text-red-700 border border-red-300 px-6 py-4 rounded-lg inline-block">
-                Module Unavailable. Try a different Course Area or Country.
+                No Schools Found.
               </div>
             </div>
           ) : null}
-          
+
           {/* Pagination */}
-          {schools.length > 0 && totalPages > 1 && (
+          {currentSchools.length > 0 && totalPages > 1 && (
             <div className="mt-10">
               <Pagination>
                 <PaginationContent>
                   <PaginationItem>
-                    <PaginationPrevious 
-                      href="#" 
+                    <PaginationPrevious
+                      href="#"
                       onClick={(e) => {
                         e.preventDefault();
                         if (currentPage > 1) {
@@ -273,17 +312,17 @@ function Information() {
                         }
                       }}
                       className="hover:bg-[#102b72]/10"
-                      style={{ 
-                        pointerEvents: currentPage === 1 ? 'none' : 'auto', 
-                        opacity: currentPage === 1 ? 0.5 : 1 ,
+                      style={{
+                        pointerEvents: currentPage === 1 ? 'none' : 'auto',
+                        opacity: currentPage === 1 ? 0.5 : 1,
                         color: '#102b72',
                         textDecoration: 'none',
                       }}
                     />
                   </PaginationItem>
-                  
+
                   {[...Array(Math.min(5, totalPages))].map((_, i) => {
-                    let pageNum : number;
+                    let pageNum: number;
                     if (totalPages <= 5) {
                       pageNum = i + 1;
                     } else if (currentPage <= 3) {
@@ -295,17 +334,17 @@ function Information() {
                     }
                     return (
                       <PaginationItem key={pageNum}>
-                        <PaginationLink 
-                          href="#" 
+                        <PaginationLink
+                          href="#"
                           isActive={pageNum === currentPage}
                           onClick={(e) => {
                             e.preventDefault();
                             setCurrentPage(pageNum);
                             scrollToTop();
-                            
+
                           }}
                           className={`hover:bg-[#102b72]/10 ${pageNum === currentPage ? 'bg-[#102b72] text-white' : ''}`}
-                          style={{ 
+                          style={{
                             color: pageNum === currentPage ? 'white' : '#102b72',
                             textDecoration: 'none',
                           }}
@@ -315,16 +354,16 @@ function Information() {
                       </PaginationItem>
                     );
                   })}
-                  
+
                   {totalPages > 5 && currentPage < totalPages - 2 && (
                     <PaginationItem>
                       <PaginationEllipsis />
                     </PaginationItem>
                   )}
-                  
+
                   <PaginationItem>
-                    <PaginationNext 
-                      href="#" 
+                    <PaginationNext
+                      href="#"
                       onClick={(e) => {
                         e.preventDefault();
                         if (currentPage < totalPages) {
@@ -333,9 +372,9 @@ function Information() {
                         }
                       }}
                       className="hover:bg-[#102b72]/10"
-                      style={{ 
-                        pointerEvents: currentPage === totalPages ? 'none' : 'auto', 
-                        opacity: currentPage === totalPages ? 0.5 : 1 ,
+                      style={{
+                        pointerEvents: currentPage === totalPages ? 'none' : 'auto',
+                        opacity: currentPage === totalPages ? 0.5 : 1,
                         color: '#102b72',
                         textDecoration: 'none',
                       }}
@@ -349,7 +388,7 @@ function Information() {
         {/* Scroll to top */}
         {showScrollButton && (
           <button
-            onClick={scrollToTop}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label="Scroll to top"
             style={{ backgroundColor: "#102b72", color: "#ffffff" }}
