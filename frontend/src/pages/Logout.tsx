@@ -14,7 +14,7 @@ function Logout() {
     
     return(
         <div 
-            className="min-h-screen flex flex-col items-center justify-center"
+            className="flex flex-col items-center justify-center relative w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50"
             style={{
                 backgroundColor: "#eeeeee",
                 color: "#102b72",

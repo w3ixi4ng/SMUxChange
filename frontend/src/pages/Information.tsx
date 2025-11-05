@@ -201,12 +201,7 @@ function Information() {
   return (
     <div id="top">
       <div
-        className="relative min-h-screen w-full"
-        style={{
-          backgroundColor: "#eeeeee",
-          color: "#102b72",
-        }}
-      >
+        className="relative w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
 
         <div className="relative z-10 container mx-auto px-4 py-10">
           <div className="text-center mb-10">
@@ -393,9 +388,8 @@ function Information() {
         {showScrollButton && (
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
+            className="rounded fixed bottom-8 right-8 z-50 h-14 w-14 flex items-center justify-center rounded-2xl shadow-2xl bg-gradient-to-br from-green-200 to-blue-600 text-white transition-all duration-300 hover:scale-110 hover:shadow-indigo-500/50 focus:outline-none focus:ring-4 focus:ring-indigo-300"
             aria-label="Scroll to top"
-            style={{ backgroundColor: "#102b72", color: "#ffffff" }}
           >
             <ArrowUpIcon className="w-5 h-5" style={{ color: "#ffffff" }} />
           </button>
