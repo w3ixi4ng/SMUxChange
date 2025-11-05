@@ -195,6 +195,12 @@ function Profile() {
 
     try {
       await axios.post('https://smuxchange-backend.vercel.app/database/saveProfile', { uid, name, faculty, major, track, secondMajor });
+      // Update sessionStorage after successful save
+      sessionStorage.setItem("name", name);
+      sessionStorage.setItem("faculty", faculty);
+      sessionStorage.setItem("major", major);
+      sessionStorage.setItem("track", track);
+      sessionStorage.setItem("secondMajor", secondMajor);
       setUserExists(true);
       setErrorMessage([]);
     } catch (error) {
