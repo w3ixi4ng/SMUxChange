@@ -95,12 +95,12 @@ function getCountryCode(countryName?: string) {
   return map[key] || "xx";
 }
 
-function scrollToTop() {
-  const topElement = document.getElementById("top");
-  if (topElement) {
-    topElement.scrollIntoView({ behavior: "auto" }); // instant scroll
-  }
-}
+//function scrollToTop() {
+//  const topElement = document.getElementById("top");
+//  if (topElement) {
+//    topElement.scrollIntoView(); // instant scroll
+//  }
+//}
 
 /* ===========================
    Time-ago helper (unchanged)
@@ -175,7 +175,8 @@ export default function Specifics() {
   }
 
   function handleShowMap(address: string) {
-    return async () => {
+    return async (e: React.MouseEvent) => {
+      e.preventDefault();
       const coords = await get_cooridnates(address);
       console.log(coords);
       if (coords) {
@@ -183,13 +184,22 @@ export default function Specifics() {
         setShowMap(true);
         setUpdateRequired(true);
 
-        const mapElement = document.getElementById("map-section");
-        if (mapElement) {
-          mapElement.scrollIntoView({ behavior: "smooth" });
-        }
+        setTimeout(() => {
+            const mapElement = document.getElementById("map-section");
+            if (mapElement) {
+                mapElement.scrollIntoView({
+                    behavior: "smooth",
+                    block: "nearest",
+                    inline: "nearest"    
+                });
+            }
+            setUpdateRequired(false);
+        },100)
+
       }
     };
   }
+
 
   useEffect(() => {
     // IMPORTANT: this is the ONLY source of truth for UI login state right now
@@ -443,7 +453,10 @@ export default function Specifics() {
       className="min-h-screen"
       style={{ backgroundColor: "#eeeeee", color: "#102b72" }}
     >
-      
+      {/* === Subtle gradient + grid overlay === */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+
       <div className="container mx-auto px-6 py-12 space-y-10 relative z-10">
         <div id="top" />
         {/* === HEADER === */}
@@ -796,6 +809,10 @@ export default function Specifics() {
                   className="w-full h-full object-cover opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent flex items-end justify-center p-4">
+                  <p className="text-sm italic" style={{ color: "#102b72" }}>
+                    🗺️ Map placeholder — backend to replace with Map API (Google
+                    Maps / Mapbox)
+                  </p>
                 </div>
               </div>
             )}
@@ -810,9 +827,14 @@ export default function Specifics() {
                     position: "relative",
                   }}
                   center={updateRequired ? mapCoords : undefined}
-                  zoom={16}
+                  zoom={updateRequired?16:undefined}
+
+                  defaultCenter={!updateRequired?mapCoords:undefined}
+                  defaultZoom={!updateRequired?16:undefined}
+
                   mapId="DEMO_MAP_ID"
                   disableDefaultUI={false}
+                  gestureHandling="greedy"
                 >
                   <AdvancedMarker
                     position={mapCoords}
@@ -896,7 +918,7 @@ export default function Specifics() {
                                 className="text-sm mb-3"
                                 style={{ color: "#102b72", opacity: 0.7 }}
                               >
-                                {a.distance}km from campus``
+                                {a.distance}km from campus
                               </p>
                               <p
                                 className="text-sm mb-2"
@@ -1159,10 +1181,10 @@ export default function Specifics() {
           </CardContent>
         </Card>
 
-        {/* Scroll to top */}
+        Scroll to top
         {showScrollButton && (
           <button
-            onClick={scrollToTop}
+            onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
             className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label="Scroll to top"
             style={{ backgroundColor: "#102b72", color: "#ffffff" }}
