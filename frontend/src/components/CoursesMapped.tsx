@@ -146,59 +146,55 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
            </div>
            </div>
 
+        {/* === Course Grid (auto adjusts between 1 or 2 columns) === */}
+        <div className="w-full max-w-3xl mx-auto">
+          <div
+            className={`grid ${
+              courses.length > 1 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"
+            } gap-3 px-3 justify-center ${
+              isExpanded ? "visible" : "hidden"
+            }`}
+          >
+            {courses.map((course: any) => {
+              const title = course["Course Title"];
+              const selected = selectedButtons[title];
 
-       {/* === Pill Container (flex-based for natural wrapping) === */}
-       {/* Switched from grid → flex-wrap to make pill sizes auto-fit instead of rigid squares */}
-       <div
-          className={`flex flex-wrap gap-3 px-3 ${
-            courses.length === 1 ? "justify-center" : "justify-start"
-          } ${isExpanded ? "visible" : "hidden"}`}
-        >
-       {courses.map((course: any) => {
-           const title = course["Course Title"];
-           const selected = selectedButtons[title];
+              return (
+                <button
+                  key={title}
+                  className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold col-md-12
+                    ${
+                      selected
+                        ? "shadow-lg"
+                        : "bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
+                    }
+                    ${
+                      isDisabled && !selected
+                        ? "opacity-40 cursor-not-allowed"
+                        : "cursor-pointer"
+                    }`}
+                  style={{
+                    backgroundColor: selected ? "#102b72" : undefined,
+                    color: selected ? "#ffffff" : "#102b72",
+                  }}
+                  disabled={isDisabled && !selected}
+                  onClick={() => {
+                    setSelectedButtons((prev) => ({
+                      ...prev,
+                      [title]: !prev[title],
+                    }));
+                    setSelectedCount((prev) => (selected ? prev - 1 : prev + 1));
+                  }}
+                >
+                  <span className="block leading-snug whitespace-normal break-words">
+                    {title}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-
-           return (
-               <button
-                 key={title}
-                 // New layout: pills now span most of container width, centered horizontally
-                 className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold col-md-12
-                   ${
-                     selected
-                       // Selected: dark blue background with white text
-                       ? "shadow-lg"
-                       // Default: white background with blue border, smooth hover tint
-                       : "bg-white border border-[#102b72]/30 hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
-                   }
-                   ${
-                     isDisabled && !selected
-                       // Disabled: faded and non-interactive
-                       ? "opacity-40 cursor-not-allowed"
-                       : "cursor-pointer"
-                   }`}
-                 style={{
-                   backgroundColor: selected ? "#102b72" : undefined,
-                   color: selected ? "#ffffff" : "#102b72"
-                 }}
-                 disabled={isDisabled && !selected}
-                 onClick={() => {
-                   // Toggle selection + count (unchanged logic)
-                   setSelectedButtons((prev) => ({
-                     ...prev,
-                     [title]: !prev[title],
-                   }));
-                   setSelectedCount((prev) => (selected ? prev - 1 : prev + 1));
-                 }}
-               >
-                 {/* Text auto-wraps gracefully and stays centered */}
-                 <span className="block leading-snug whitespace-normal break-words">
-                   {title}
-                 </span>
-               </button>
-             );
-           })}
-         </div>
 
 
          {/* === Limit Message === */}

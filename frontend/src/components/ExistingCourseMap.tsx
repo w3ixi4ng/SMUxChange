@@ -148,45 +148,47 @@ function ExistingCourseMap({
 
 
          {/* ✅ FIXED GRID (2 per row) */}
-         <div
-           className={`grid grid-cols-1 sm:grid-cols-2 gap-3 px-3 ${
-             isExpanded ? "visible" : "hidden"
-           }`}
-         >
-           {courses.map((course: any) => {
-             const title = course["Course Title"];
-             const selected = selectedButtons[title];
+         <div className="w-full max-w-3xl mx-auto">
+            <div
+              className={`grid ${
+                courses.length > 1 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"
+              } gap-3 px-3 justify-center ${
+                isExpanded ? "visible" : "hidden"
+              }`}
+            >
+              {courses.map((course: any) => {
+                const title = course["Course Title"];
+                const selected = selectedButtons[title];
 
-
-             return (
-               <button
-                 key={title}
-                 className={`rounded-full px-5 py-3 text-sm font-semibold text-center transition-all duration-200 break-words leading-snug
-                   ${
-                     selected
-                       ? "bg-[#102b72] text-white shadow-md"
-                       : "bg-white border border-[#102b72]/30 text-[#102b72] hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
-                   }
-                   ${
-                     isDisabled && !selected
-                       ? "opacity-40 cursor-not-allowed"
-                       : "cursor-pointer"
-                   }`}
-                 disabled={isDisabled && !selected}
-                 onClick={() => {
-                   setSelectedButtons((prev) => ({
-                     ...prev,
-                     [title]: !prev[title],
-                   }));
-                   setSelectedCount((prev) => (selected ? prev - 1 : prev + 1));
-                 }}
-               >
-                 {title}
-               </button>
-             );
-           })}
-         </div>
-
+                return (
+                  <button
+                    key={title}
+                    className={`rounded-full px-5 py-3 text-sm font-semibold text-center transition-all duration-200 break-words leading-snug
+                      ${
+                        selected
+                          ? "bg-[#102b72] text-white shadow-md"
+                          : "bg-white border border-[#102b72]/30 text-[#102b72] hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
+                      }
+                      ${
+                        isDisabled && !selected
+                          ? "opacity-40 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`}
+                    disabled={isDisabled && !selected}
+                    onClick={() => {
+                      setSelectedButtons((prev) => ({
+                        ...prev,
+                        [title]: !prev[title],
+                      }));
+                      setSelectedCount((prev) => (selected ? prev - 1 : prev + 1));
+                    }}
+                  >
+                    {title}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
          {/* Warning Message */}
          {selectedCount >= maxCount && (
