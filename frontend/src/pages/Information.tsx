@@ -346,7 +346,7 @@ function Information() {
         {/* Scroll to top */}
         {showScrollButton && (
           <button
-            onClick={scrollToTop}
+            onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
             className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
             aria-label="Scroll to top"
             style={{ backgroundColor: "#102b72", color: "#ffffff" }}
