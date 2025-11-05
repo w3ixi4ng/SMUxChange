@@ -155,7 +155,7 @@ function Information() {
   const [currentSchools, setCurrentSchools] = useState<any[]>([]);
   const [totalPages, setTotalPages] = useState<number>(0);
 
-  
+
 
   useEffect(() => {
     if (
@@ -165,17 +165,21 @@ function Information() {
       navigate("/profile");
     }
   }, []);
-  
+
   const [search, setSearch] = useState<string>("");
   const [filteredSchools, setFilteredSchools] = useState<any[]>([]);
   useEffect(() => {
     if (filteredSchools.length > 0) {
       setCurrentSchools(filteredSchools.slice(startIndex, endIndex));
     } else {
-      setCurrentSchools(schools.slice(startIndex, endIndex));
+      if (search !== "") {
+        setCurrentSchools([]);
+      } else {
+        setCurrentSchools(schools.slice(startIndex, endIndex));
+      }
     }
   }, [schools, filteredSchools, startIndex, endIndex]);
-  
+
   useEffect(() => {
     if (search !== "") {
       setFilteredSchools(schools.filter((school: any) => school.host_university.toLowerCase().includes(search.toLowerCase())));
@@ -257,18 +261,18 @@ function Information() {
                   ))}
                 </select>
               </div>
-            <div className="mt-2 w-full max-w-xl relative md:col-span-2 mx-auto">
-              <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "#102b72" }} />
-              <input
-                type="search"
-                name="search"
-                id="search"
-                placeholder="Search by university name"
-                className="w-full rounded-md border border-[#102b72]/30 bg-white pl-10 pr-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#102b72] transition"
-                style={{ color: "#102b72" }}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+              <div className="mt-2 w-full max-w-xl relative md:col-span-2 mx-auto">
+                <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: "#102b72" }} />
+                <input
+                  type="search"
+                  name="search"
+                  id="search"
+                  placeholder="Search by university name"
+                  className="w-full rounded-md border border-[#102b72]/30 bg-white pl-10 pr-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#102b72] transition"
+                  style={{ color: "#102b72" }}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
             </div>
           </div>
 
