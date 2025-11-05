@@ -60,11 +60,7 @@ function Home() {
             color: "#102b72",
         }}
         >
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" />
-            <div className="absolute top-40 right-10 w-96 h-96 bg-purple-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-700" />
-            <div className="absolute -bottom-20 left-1/3 w-80 h-80 bg-indigo-200/30 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000" />
-        </div>
+    
 
 
         

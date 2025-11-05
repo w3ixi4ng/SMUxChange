@@ -601,7 +601,7 @@ export default function Specifics() {
                   data.mappable_basket?.map((basket: string, i: number) => (
                     <div key={i} className="flex">
                       <span
-                        className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg-[] hover:bg-[#102b72]/10 transition-colors w-full text-center"
+                        className="px-4 py-2 rounded-lg text-sm font-medium border border-[#102b72]/30 bg- hover:bg-[#102b72]/10 transition-colors w-full text-center"
                         style={{ color: "#102b72" }}
                       >
                         {basket}
@@ -823,11 +823,6 @@ export default function Specifics() {
                     </div>
             )}
 
-            {Object.keys(new_obj).length === 0 && (
-                <div className="mt-4 p-3 bg-[#102b72]/10 rounded-md text-[#102b72]">
-                    nothing selected
-                </div>
-            )}
 
           </div>
 
@@ -841,10 +836,6 @@ export default function Specifics() {
                   className="w-full h-full object-cover opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent flex items-end justify-center p-4">
-                  <p className="text-sm italic" style={{ color: "#102b72" }}>
-                    🗺️ Map placeholder — backend to replace with Map API (Google
-                    Maps / Mapbox)
-                  </p>
                 </div>
               </div>
             )}
@@ -1081,17 +1072,13 @@ export default function Specifics() {
                       .map((ev, i) => (
                         <div
                           key={i}
-                          className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
+                          className={`rounded-xl card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
                             ${new_obj === ev ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-[#102b72]/20 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <img
-                            src={`/images/event_${i + 1}.jpg`}
-                            onError={(e) =>
-                              ((e.currentTarget as HTMLImageElement).src =
-                                ev.thumbnail)
-                            }
+                            src={ev.thumbnail}
                             alt={ev.title}
-                            className="w-full h-40 object-cover rounded-t-xl"
+                            className="h-40 object-cover rounded-t-xl"
                           />
                           <div className="flex flex-col justify-between flex-grow p-4">
                             <div>
