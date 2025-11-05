@@ -460,10 +460,7 @@ export default function Specifics() {
     RENDER
      =========================== */
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: "#eeeeee", color: "#102b72" }}
-    >
+    <div className="relative w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* === Subtle gradient + grid overlay === */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
       <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
@@ -1206,11 +1203,10 @@ export default function Specifics() {
         {showScrollButton && (
           <button
             onClick={() => window.scrollTo({top:0, behavior:'smooth'})}
-            className="fixed bottom-6 right-6 z-50 h-11 w-11 flex items-center justify-center rounded-full shadow-lg border border-white/20 backdrop-blur-md transition transform hover:scale-110 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-white/40"
+            className="rounded fixed bottom-8 right-8 z-50 h-14 w-14 flex items-center justify-center rounded-2xl shadow-2xl bg-gradient-to-br from-green-200 to-blue-600 text-white transition-all duration-300 hover:scale-110 hover:shadow-indigo-500/50 focus:outline-none focus:ring-4 focus:ring-indigo-300"
             aria-label="Scroll to top"
-            style={{ backgroundColor: "#102b72", color: "#ffffff" }}
           >
-            <ArrowUpIcon className="w-5 h-5" style={{ color: "#ffffff" }} />
+            <ArrowUpIcon className="w-5 h-5" style={{ color: "#ffffff"}} />
           </button>
         )}
       </div>

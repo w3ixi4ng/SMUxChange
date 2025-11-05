@@ -321,12 +321,13 @@ function Profile() {
           </Modal.Footer>
         </Modal>
       )}
-      <div className={`${userExists ? "relative min-h-screen w-full"
+      {/*<div className={`${userExists ? "relative min-h-screen w-full"
         : ""}`}
         style={{
           backgroundColor: userExists ? "#eeeeee" : undefined,
           color: userExists ? "#102b72" : undefined,
-        }}>
+        }}>*/}
+        <div className="relative w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
 
         <div className="relative z-10 container mx-auto px-4 py-10" style={{ opacity: userExists ? 1 : 0 }}>
           <div className="text-center mb-10">
