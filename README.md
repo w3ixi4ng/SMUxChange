@@ -132,7 +132,7 @@ SMU students face several challenges when planning their international exchanges
 - Cham Shin Ron  
 - Nilremik Foo  
 - Lau Wei Xiang  
-- Matthew Chan Mung Kong  
+- Matthew Chan Mun Kong  
 - Dylan Huang Kai Jun  
 
 ---
