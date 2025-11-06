@@ -36,9 +36,9 @@ export function DeleteMapAlert({ uid, mapId, setSavedMaps }: { uid: string, mapI
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105 d-flex align-items-center justify-content-center whitespace-nowrap" style={{ backgroundColor: "#dc2626", color: "#ffffff", border: "none" }}>
+                <button className="btn btn-sm w-100 font-semibold transition-transform hover:scale-105 d-flex align-items-center justify-content-center text-nowrap" style={{ backgroundColor: "#dc2626", color: "#ffffff", border: "none" }}>
                     <Trash2 className="w-4 h-4 me-2 flex-shrink-0" />
-                    <span className="truncate">Delete Map</span>
+                    <span>Delete Map</span>
                 </button>
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-[#eeeeee] border-[#102b72]/20">

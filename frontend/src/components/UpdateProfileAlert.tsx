@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import axios from "axios";
 import { toast } from "sonner";
+import { UserCog } from "lucide-react";
 
 type propsTypes = {
     uid: string,
@@ -69,8 +70,9 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
 
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className="bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-transform px-8 py-2 text-lg rounded shadow-lg animate-jump-hover">
-                    Update Profile
+                <button className="bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-transform px-8 py-2 text-lg rounded shadow-lg animate-jump-hover d-inline-flex align-items-center gap-2">
+                    <UserCog className="w-5 h-5" />
+                    <span>Update Profile</span>
                 </button>
             </AlertDialogTrigger>
             <AlertDialogContent>

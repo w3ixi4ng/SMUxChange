@@ -133,9 +133,11 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
         {/* === Pill Container (flex-based for natural wrapping) === */}
         {/* Switched from grid → flex-wrap to make pill sizes auto-fit instead of rigid squares */}
         <div
-        className={`grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 justify-center items-center mx-2 ${
-            isExpanded ? "visible" : "hidden"
-        }`}
+          className={`${
+            courses.length > 1
+              ? "grid grid-cols-1 sm:grid-cols-2 gap-3"
+              : "flex justify-center"
+          } px-3 ${isExpanded ? "visible" : "hidden"}`}
         >
         {courses.map((course: any) => {
             const title = course["Course Title"];

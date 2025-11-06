@@ -154,13 +154,13 @@ function Home() {
     }, [showWelcome]);
 
     return (
-        <div id="top">
+        <div id="top" className="overflow-x-hidden">
             {showWelcome && (
                 <WelcomeAnimation onClose={() => setShowWelcome(false)} />
             )}
-            <div className="relative w-full min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50">
+            <div className="relative w-full min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 overflow-x-hidden">
       {/* === Hero Section === */}
-      <section className="relative flex flex-col items-center justify-center px-6 mb-5">
+      <section className="relative flex flex-col items-center justify-center px-4 sm:px-6 mb-5 w-full">
         <div className="relative z-10 flex flex-col items-center justify-center text-center max-w-5xl mx-auto">
           {/* Logo */}
           <div className="mb-12 relative">
@@ -210,7 +210,7 @@ function Home() {
 
       {/* === Quick Stats === */}
       {logoLoaded && (
-                    <section className="relative px-6 md:px-12 lg:px-24 pb-16">
+                    <section className="relative px-4 sm:px-6 md:px-12 lg:px-24 pb-16 w-full overflow-x-hidden">
                         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
                             {[
                                 { num: "300+", label: "Partner Schools", color: "from-blue-500 to-blue-600" },
@@ -230,7 +230,7 @@ function Home() {
 
       {/* === Key Features Section === */}
       {logoLoaded && (
-                    <section className="relative py-20 px-6 md:px-12 lg:px-24 bg-gradient-to-br from-blue-100/30 via-emerald-100/30 to-cyan-100/30">
+                    <section className="relative py-20 px-4 sm:px-6 md:px-12 lg:px-24 bg-gradient-to-br from-blue-100/30 via-emerald-100/30 to-cyan-100/30 w-full overflow-x-hidden">
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
@@ -288,8 +288,8 @@ function Home() {
 
       {/* === Call to Action Section === */}
       {logoLoaded && (
-                    <section className="relative py-24 px-6 md:px-12 lg:px-24">
-                        <div className="max-w-4xl mx-auto text-center bg-white/80 backdrop-blur-sm border border-blue-200 rounded-3xl shadow-lg p-12 md:p-16">
+                    <section className="relative py-24 px-4 sm:px-6 md:px-12 lg:px-24 w-full overflow-x-hidden">
+                        <div className="max-w-4xl mx-auto text-center bg-white/80 backdrop-blur-sm border border-blue-200 rounded-3xl shadow-lg p-8 sm:p-12 md:p-16">
 
                             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-blue-500/20 rounded-full blur-3xl" />
                             <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-emerald-400/20 to-emerald-500/20 rounded-full blur-3xl" />
@@ -324,10 +324,10 @@ function Home() {
       {showScrollButton && (
         <button
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        className="rounded fixed bottom-8 right-8 z-50 h-14 w-14 flex items-center justify-center rounded-2xl shadow-2xl bg-gradient-to-br from-blue-600 to-emerald-600 text-white transition-all duration-300 hover:scale-110 hover:shadow-blue-500/50 focus:outline-none focus:ring-4 focus:ring-blue-400/50"
+                        className="rounded fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-2xl shadow-2xl bg-gradient-to-br from-blue-600 to-emerald-600 text-white transition-all duration-300 hover:scale-110 hover:shadow-blue-500/50 focus:outline-none focus:ring-4 focus:ring-blue-400/50"
           aria-label="Scroll to top"
         >
-                        <ArrowUp className="w-6 h-6" />
+                        <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       )}
 

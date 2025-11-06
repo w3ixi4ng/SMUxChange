@@ -3,7 +3,7 @@ import CoursesMapped from "./CoursesMapped";
 import axios from "axios";
 import { toast } from "sonner";
 import { BookOpen, SearchX, FileX, GraduationCap, Info, Save } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 
 type ChildProps = {
@@ -17,8 +17,7 @@ type ChildProps = {
 
 
 function MapResults({ university, country, faculty, major, track, secondMajor }: ChildProps) {
-
-
+  const navigate = useNavigate();
   const [uid, setUid] = useState<string>("");
   const [selectedCourseArea, setSelectedCourseArea] = useState<string>("");
   useEffect(() => {
@@ -216,7 +215,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
 
   useEffect(() => {
     if (selectedCount >= maxCount) {
-      toast("You have reached the maximum number of courses selected (5).");
+      toast.info("You have reached the maximum number of courses selected (5).");
     }
   }, [selectedCount]);
 
@@ -234,15 +233,34 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
       <div className="container mx-auto my-10 px-6" style={{ color: "#102b72" }}>
       <div className="text-center mb-8">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-center bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 bg-clip-text text-transparent">{university}</h1>
-        <Link to={`/specifics/${university}`}>
-          <button className="group relative overflow-hidden bg-blue-600 text-white font-bold px-8 py-2 text-lg rounded shadow-2xl transition-all duration-300 hover:shadow-blue-500/50 hover:bg-blue-700 animate-jump-hover">
-            <span className="relative z-10 flex items-center justify-center gap-2">
-              <Info className="w-5 h-5" />
-              More Info
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-          </button>
-        </Link>
+        <button 
+          onClick={async () => {
+            try {
+              // Fetch school data and store in sessionStorage
+              const response = await axios.get(
+                `https://smuxchange-backend.vercel.app/database/getAllExchangeSchools`
+              );
+              const schools = response.data;
+              const school = schools.find((s: any) => s.host_university === university);
+              if (school) {
+                sessionStorage.setItem("school", JSON.stringify(school));
+                navigate(`/specifics/${encodeURIComponent(university)}`);
+              } else {
+                toast.error("School data not found");
+              }
+            } catch (error) {
+              console.error("Error fetching school data:", error);
+              toast.error("Failed to load school information");
+            }
+          }}
+          className="group relative overflow-hidden bg-blue-600 text-white font-bold px-8 py-2 text-lg rounded shadow-2xl transition-all duration-300 hover:shadow-blue-500/50 hover:bg-blue-700 animate-jump-hover"
+        >
+          <span className="relative z-10 flex items-center justify-center gap-2">
+            <Info className="w-5 h-5" />
+            More Info
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+        </button>
       </div>
 
       {/* Error message (delayed) */}
@@ -324,7 +342,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
             </div>
           )}
 
-          {uid != "" && (
+          {uid != "" ? (
             <div className="text-center mt-8">
               <button onClick={() => {
                 saveMap();
@@ -343,6 +361,16 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
                 )}
               </button>
             </div>
+          ) : (
+            <p className="italic text-center text-slate-600 mt-8">
+              <Link
+                to="/login"
+                className="underline font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Login
+              </Link>{" "}
+              to save map.
+            </p>
           )}
         </div>
 
