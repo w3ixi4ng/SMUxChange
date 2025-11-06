@@ -70,9 +70,12 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
 
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <button className="bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-transform px-8 py-2 text-lg rounded shadow-lg animate-jump-hover d-inline-flex align-items-center gap-2">
-                    <UserCog className="w-5 h-5" />
-                    <span>Update Profile</span>
+                <button className="group relative overflow-hidden bg-blue-600 text-white font-bold px-8 py-2 text-lg rounded shadow-2xl transition-all duration-300 hover:shadow-blue-500/50 hover:bg-blue-700 animate-jump-hover d-inline-flex align-items-center gap-2">
+                    <span className="relative z-10 d-inline-flex align-items-center gap-2">
+                        <UserCog className="w-5 h-5" />
+                        <span>Update Profile</span>
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                 </button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -83,8 +86,8 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className='d-flex justify-content-center'>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => {
+                    <AlertDialogCancel className="bg-white border border-blue-200 hover:bg-blue-50 text-blue-600 hover:text-blue-700 font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">Cancel</AlertDialogCancel>
+                    <AlertDialogAction className="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 hover:from-blue-700 hover:via-emerald-600 hover:to-blue-700 text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300" onClick={() => {
                         saveProfile(uid || "", name, faculty, major, track, secondMajor);
                     }}>
                         Update

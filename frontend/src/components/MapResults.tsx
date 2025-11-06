@@ -226,7 +226,7 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
       if (end) end.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     return () => cancelAnimationFrame(id);
-  }, [availableCourses, allElectives.length, availableCourseAreasList.length, faculty, country, track, major, university, secondMajor]);
+  }, [showEmpty, availableCourses, allElectives.length, availableCourseAreasList.length, faculty, country, track, major, university, secondMajor]);
 
 
   return (
