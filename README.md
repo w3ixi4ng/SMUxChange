@@ -72,32 +72,39 @@ SMU students face several challenges when planning their international exchanges
 
 ## 🛠️ Solution Architecture
 
+![Solution Achitecture](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/system_architecture.png)
 
 ---
 
 ## 🛠️ Tech Stack
 
 **Frontend**
+![Frontend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/frontend_tech.png)
 - ReactJS with TypeScript – Type-safe component-based UI
 - Bootstrap 5 – Responsive design framework
 - Tailwind CSS – Utility-first styling framework
 - shadcn/ui – Prebuilt accessible React components
 - Lucide – Open-source icon library
-- CSS – Custom styles for unique branding
+- CSS – Custom styles/animations for unique branding
 
 **Backend**
+![Backend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/backend_tech.png)
 - Node.js – Backend server runtime
-- AWS EC2 – Hosting infrastructure
+- Server.js - 
 
 **Database**
+![Backend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/datastore.png)
 - Firebase Firestore (NoSQL) – Manages course mapping info, user credentials, and student reviews
 
 **Deployment**
-- Vercel – Frontend deployment and hosting
+![Deployment](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/vercel.png)
+- Vercel – Frontend and Backend deployment
 
 ---
 
 ## 🔌 APIs Used
+
+![APIs](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/api.png)
 
 1. **Google Events API (SerpAPI)** – Generates local events near exchange universities.  
    [https://developers.google.com/maps/documentation/places](https://developers.google.com/events)
