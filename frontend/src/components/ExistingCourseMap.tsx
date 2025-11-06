@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChevronDown, ChevronUp } from "lucide-react";
+// Collapse controls removed
 
 
 type ChildProps = {
@@ -35,7 +35,7 @@ function ExistingCourseMap({
  const [selectedCount, setSelectedCount] = useState(0);
  const [selectedButtons, setSelectedButtons] = useState<{ [key: string]: boolean }>({});
  const [isDisabled, setIsDisabled] = useState(false);
- const [isExpanded, setIsExpanded] = useState(true);
+// Collapse removed: always expanded
  const maxCount = parseInt(courseArea[0]);
 
 
@@ -112,49 +112,37 @@ function ExistingCourseMap({
  // === UI ===
  return (
    <>
-     {courses.length > 0 && selectedCourseArea === courseArea[1] && (
-       <div className="col-lg-12 col-12 bg-white/80 backdrop-blur-md border border-[#102b72]/20 py-4 rounded-3xl shadow-md mb-4">
+    {courses.length > 0 && selectedCourseArea === courseArea[1] && (
+      <div className="col-lg-12 col-12 bg-white/80 backdrop-blur-md border border-blue-200 py-4 rounded-3xl shadow-md mb-4">
          {/* Header */}
          <div className="relative flex flex-col items-center justify-center text-center mb-4">
-           <h2 className="text-xl font-semibold mb-1 tracking-tight" style={{ color: "#102b72" }}>
+          <h2 className="text-xl font-semibold mb-1 tracking-tight text-blue-600">
              {courseArea[1]}
            </h2>
 
 
-           <p
-             className="text-sm transition-colors duration-300 font-medium"
-             style={{
-               color: "#102b72",
-               opacity: selectedCount > 0 ? 1 : 0.7,
-             }}
-           >
+          <p
+            className={`text-sm transition-colors duration-300 font-medium ${
+              selectedCount > 0 ? "text-blue-600" : "text-blue-500"
+            }`}
+            style={{ opacity: selectedCount > 0 ? 1 : 0.7 }}
+          >
              {courseArea[0] === "None"
                ? `${selectedCount} selected (No Limits)`
                : `${selectedCount}/${courseArea[0]} selected`}
            </p>
 
 
-           <div
-             className="absolute top-0 right-3 opacity-70 hover:opacity-100 transition"
-             style={{ color: "#102b72" }}
-           >
-             {isExpanded ? (
-               <ChevronUp onClick={() => setIsExpanded(false)} className="cursor-pointer" />
-             ) : (
-               <ChevronDown onClick={() => setIsExpanded(true)} className="cursor-pointer" />
-             )}
-           </div>
+          {/* Collapse removed: always expanded */}
          </div>
 
 
          <div className="w-full max-w-3xl mx-auto">
-            <div
-              className={`grid ${
-                courses.length > 1 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"
-              } gap-3 px-3 justify-center ${
-                isExpanded ? "visible" : "hidden"
-              }`}
-            >
+           <div
+             className={`grid ${
+               courses.length > 1 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1"
+             } gap-3 px-3 justify-center visible`}
+           >
               {courses.map((course: any) => {
                 const title = course["Course Title"];
                 const selected = selectedButtons[title];
@@ -162,17 +150,17 @@ function ExistingCourseMap({
                 return (
                   <button
                     key={title}
-                    className={`rounded-full px-5 py-3 text-sm font-semibold text-center transition-all duration-200 break-words leading-snug
-                      ${
-                        selected
-                          ? "bg-[#5E9CFF] text-white shadow-md"
-                          : "bg-white border border-[#102b72]/30 text-[#102b72] hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
-                      }
-                      ${
-                        isDisabled && !selected
-                          ? "opacity-40 cursor-not-allowed"
-                          : "cursor-pointer"
-                      }`}
+                    className={`h-full text-center rounded-full px-5 py-3 text-sm transition-all duration-200 font-semibold
+                    ${
+                      selected
+                        ? "bg-blue-400 text-white shadow-lg"
+                        : "bg-white border border-blue-200 hover:bg-blue-50 hover:border-blue-300 text-blue-500"
+                    }
+                    ${
+                      isDisabled && !selected
+                        ? "opacity-40 cursor-not-allowed"
+                        : "cursor-pointer"
+                    }`}
                     disabled={isDisabled && !selected}
                     onClick={() => {
                       setSelectedButtons((prev) => ({
@@ -182,7 +170,7 @@ function ExistingCourseMap({
                       setSelectedCount((prev) => (selected ? prev - 1 : prev + 1));
                     }}
                   >
-                    {title}
+                    <span className="block leading-snug whitespace-normal break-words">{title}</span>
                   </button>
                 );
               })}
@@ -192,7 +180,7 @@ function ExistingCourseMap({
          {/* Warning Message */}
          {selectedCount >= maxCount && (
            <div className="text-center mt-3 text-sm text-red-600">
-             You have selected the maximum number of courses
+             You have selected the maximum number of courses for this course area.
            </div>
          )}
        </div>

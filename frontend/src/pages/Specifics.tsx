@@ -23,7 +23,7 @@ import AccomodationSkeleton from "@/components/SpecificSchool/AccomodationSkelet
 import EventsSkeleton from "@/components/SpecificSchool/EventsSkeleton";
 const key = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
 import { toast } from "sonner";
-import { ArrowUpIcon, SearchX, FileX, Home, Calendar } from "lucide-react";
+import { ArrowUpIcon, SearchX, FileX, Home, Calendar, Send, MapPin, Car, Footprints, Bus, Route } from "lucide-react";
 
 /* ===========================
    TYPING ANIMATION
@@ -120,6 +120,7 @@ function getCountryCode(countryName?: string) {
     peru: "pe",
     philippines: "ph",
     portugal: "pt",
+    poland : "pl",
     qatar: "qa",
     russia: "ru",
     "russian federation": "ru",
@@ -321,6 +322,7 @@ export default function Specifics() {
   const [reviews, setReviews] = useState<any[]>([]);
   const [ratingInput, setRatingInput] = useState<number>(0);
   const [commentInput, setCommentInput] = useState<string>("");
+  const [showAllReviews, setShowAllReviews] = useState<boolean>(false);
 
   /* ========== Scroll listener (unchanged) ========== */
   useEffect(() => {
@@ -647,7 +649,10 @@ export default function Specifics() {
                 <button
                   className="font-semibold hover:scale-105 transition-transform px-8 py-2 text-lg bg-blue-600 text-white hover:bg-blue-700 rounded shadow-lg"
                 >
-                  Try Map
+                  <span className="inline-flex items-center gap-2">
+                    <MapPin className="w-5 h-5" />
+                    Map Now
+                  </span>
                 </button>
               </Link>
             </div>
@@ -686,7 +691,7 @@ export default function Specifics() {
                   data.mappable_basket?.map((basket: string, i: number) => (
                     <div key={i} className="flex">
                       <span
-                        className="px-4 py-2 rounded-lg text-sm font-medium border border-blue-200 bg-white hover:bg-blue-50 hover:border-blue-300 text-blue-600 transition-colors w-full text-center"
+                        className="px-4 py-2 rounded-xl text-sm font-semibold border border-blue-200 bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 text-blue-900 shadow-sm hover:shadow-md transition-colors w-full text-center"
                       >
                         {basket}
                       </span>
@@ -695,7 +700,7 @@ export default function Specifics() {
                 {(!data ||
                   !data.mappable_basket ||
                   data.mappable_basket.length === 0) && (
-                  <span className="text-sm italic text-slate-600">
+                  <span className="block w-full text-center text-sm italic text-slate-600">
                     No course areas available.
                   </span>
                 )}
@@ -704,7 +709,7 @@ export default function Specifics() {
               {data && data.mappable_basket?.length > 6 && (
                 <button
                   onClick={() => setShowAllBaskets((prev) => !prev)}
-                  className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full text-sm font-semibold hover:bg-blue-100 text-blue-600 transition-all"
+                  className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full text-sm font-semibold text-blue-600"
                   style={{
                     backgroundColor: "transparent",
                   }}
@@ -757,49 +762,67 @@ export default function Specifics() {
 
             {/* Existing Reviews */}
             {sortedReviews.length > 0 ? (
-              <div className="space-y-4">
-                {sortedReviews.map((r: any, i: number) => (
-                  <div
-                    key={i}
-                    className="bg-white border border-blue-200 p-4 rounded-lg"
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(
-                            r.name
-                          )}`}
-                          alt="Profile"
-                          className="w-6 h-6 rounded-full"
-                          decoding="async"
-                          width={24}
-                          height={24}
-                          onError={(e) => {
-                            (e.currentTarget as HTMLImageElement).src =
-                              "/images/university.jpg";
-                          }}
-                        />
-                        <span className="font-semibold text-slate-700">
-                          {r.name}
-                        </span>
-                        <span className="text-xs text-slate-600">
-                          {timeAgo(r.createdAt)}
-                        </span>
+              <div className="flex flex-col items-center">
+                <div className={`space-y-4 transition-all duration-500 overflow-hidden ${showAllReviews ? "max-h-[2000px] opacity-100" : "max-h-[260px] opacity-95"}`}>
+                  {sortedReviews.map((r: any, i: number) => (
+                    <div
+                      key={i}
+                      className="bg-white border border-blue-200 p-4 rounded-lg"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(
+                              r.name
+                            )}`}
+                            alt="Profile"
+                            className="w-6 h-6 rounded-full"
+                            decoding="async"
+                            width={24}
+                            height={24}
+                            onError={(e) => {
+                              (e.currentTarget as HTMLImageElement).src =
+                                "/images/university.jpg";
+                            }}
+                          />
+                          <span className="font-semibold text-slate-700">
+                            {r.name}
+                          </span>
+                          <span className="text-xs text-slate-600">
+                            {timeAgo(r.createdAt)}
+                          </span>
+                        </div>
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-300 rounded-lg font-semibold text-sm text-blue-900 shadow-sm">
+                          <StarRating rating={Number(r.rating) || 0} />
+                          <span>
+                            {(Number(r.rating) || 0).toFixed(1)}/5.0
+                          </span>
+                        </div>
                       </div>
-                      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-300 rounded-lg font-semibold text-sm text-blue-900 shadow-sm">
-                        <StarRating rating={Number(r.rating) || 0} />
-                        <span>
-                          {(Number(r.rating) || 0).toFixed(1)}/5.0
-                        </span>
-                      </div>
+                      {r.comment && (
+                        <p className="mt-2 text-slate-700">
+                          {r.comment}
+                        </p>
+                      )}
                     </div>
-                    {r.comment && (
-                      <p className="mt-2 text-slate-700">
-                        {r.comment}
-                      </p>
+                  ))}
+                </div>
+                {sortedReviews.length > 0 && (
+                  <button
+                    className="flex items-center gap-2 px-5 py-2 mt-5 rounded-full text-sm font-semibold text-blue-600"
+                    onClick={() => setShowAllReviews((prev) => !prev)}
+                  >
+                    {showAllReviews ? (
+                      <>
+                        Show less <ChevronUp size={16} />
+                      </>
+                    ) : (
+                      <>
+                        Show more <ChevronDown size={16} />
+                      </>
                     )}
-                  </div>
-                ))}
+                  </button>
+                )}
               </div>
             ) : (
               <p className="italic text-slate-600">
@@ -840,13 +863,16 @@ export default function Specifics() {
                   <Button
                     disabled={ratingInput === 0}
                     onClick={submitReview}
-                    className={`font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-all duration-200 ${
+                    className={`bg-blue-600 text-white font-bold px-6 py-2 rounded shadow-lg hover:shadow-xl hover:bg-blue-700 transition-all duration-300 ${
                       ratingInput === 0
-                        ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700 text-white"
+                        ? "!bg-gray-300 !text-gray-600 cursor-not-allowed"
+                        : ""
                     }`}
                   >
-                    Submit Review
+                    <span className="inline-flex items-center gap-2">
+                      <Send className="w-4 h-4" />
+                      Submit Review
+                    </span>
                   </Button>
                 </div>
               </div>
@@ -985,7 +1011,7 @@ export default function Specifics() {
 
             {/* Accommodations */}
             <div>
-              <CardTitle className="text-2xl font-extrabold mb-3 text-black">
+              <CardTitle className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent mb-3">
                 Nearby Accommodations
               </CardTitle>
 
@@ -999,7 +1025,7 @@ export default function Specifics() {
                           parseFloat(a.distance) <= (data.maxDistance ?? 20)
                       ).length === 0 ? (
                     <div className="flex flex-col items-center justify-center w-full py-12">
-                      <div className="text-center border border-primary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+                      <div className="text-center border border-secondary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
                         <div className="flex justify-center isolate">
                           {/* First stacked icon card */}
                           <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
@@ -1043,69 +1069,53 @@ export default function Specifics() {
                           </div>
                           <div className="flex flex-col justify-between flex-grow p-4">
                             <div>
-                              <h5 className="font-semibold text-lg mb-1 text-blue-600">
+                              <h5 className="font-semibold text-xl mb-1 text-blue-700">
                                 {a.name}
                               </h5>
-                              <p className="text-sm mb-3 text-slate-600">
-                                {a.distance}km from campus
-                              </p>
-                              <p className="text-sm mb-2 text-slate-700">
-                                Address: {a.formatted_address}
-                              </p>
-                              <div className="space-y-1 text-sm text-slate-700">
-                                <div>
-                                  🚗 Driving time:{" "}
-                                  {!a.DRIVE ||
-                                  String(a.DRIVE)
-                                    .toLowerCase()
-                                    .includes("nan") ? (
-                                    <span
-                                      style={{
-                                        color: "#b91c1c",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      N/A
-                                    </span>
-                                  ) : (
-                                    a.DRIVE
-                                  )}
+                              <div className="text-sm mb-2 text-slate-700 inline-flex items-center gap-2">
+                                <Route className="w-4 h-4 text-blue-600" />
+                                <span className="font-medium">{a.distance} km</span>
+                                <span className="text-slate-500">from campus</span>
+                              </div>
+                              <div className="text-sm mb-3 text-slate-700 inline-flex items-center gap-2 min-w-0">
+                                <MapPin className="w-4 h-4 text-rose-500" />
+                                <span className="whitespace-normal break-words">
+                                  {a.formatted_address}
+                                </span>
+                              </div>
+                              <div className="space-y-1.5 text-sm text-slate-700">
+                                <div className="inline-flex items-center gap-2">
+                                  <Car className="w-4 h-4 text-emerald-600" />
+                                  <span className="font-medium">Driving:</span>
+                                  <span className="text-slate-800">
+                                    {!a.DRIVE || String(a.DRIVE).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      a.DRIVE
+                                    )}
+                                  </span>
                                 </div>
-                                <div>
-                                  🚶 Walking time:{" "}
-                                  {!a.WALK ||
-                                  String(a.WALK)
-                                    .toLowerCase()
-                                    .includes("nan") ? (
-                                    <span
-                                      style={{
-                                        color: "#b91c1c",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      N/A
-                                    </span>
-                                  ) : (
-                                    a.WALK
-                                  )}
+                                <div className="inline-flex items-center gap-2">
+                                  <Footprints className="w-4 h-4 text-orange-600" />
+                                  <span className="font-medium">Walking:</span>
+                                  <span className="text-slate-800">
+                                    {!a.WALK || String(a.WALK).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      a.WALK
+                                    )}
+                                  </span>
                                 </div>
-                                <div>
-                                  🚌 Public transport:{" "}
-                                  {!a.TRANSIT ||
-                                  String(a.TRANSIT)
-                                    .toLowerCase()
-                                    .includes("nan") ? (
-                                    <span
-                                      style={{
-                                        color: "#b91c1c",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      N/A
-                                    </span>
-                                  ) : (
-                                    a.TRANSIT
-                                  )}
+                                <div className="inline-flex items-center gap-2">
+                                  <Bus className="w-4 h-4 text-indigo-600" />
+                                  <span className="font-medium">Transit:</span>
+                                  <span className="text-slate-800">
+                                    {!a.TRANSIT || String(a.TRANSIT).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      a.TRANSIT
+                                    )}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -1113,22 +1123,19 @@ export default function Specifics() {
                               <Button
                                 onClick={on_event_click(a)}
                                 asChild
-                                className="w-full text-sm font-semibold no-underline rounded-lg"
-                                style={{
-                                  backgroundColor: "#102b72",
-                                  color: "#ffffff",
-                                }}
+                                className="w-full text-sm font-bold rounded-lg shadow-lg hover:shadow-xl bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300"
                               >
                                 <a
                                   href="#"
                                   title="View on shared map"
                                   data-map-marker={a.name}
-                                  style={{
-                                    textDecoration: "none",
-                                    color: "#ffffff",
-                                  }}
+                                  className="no-underline"
+                                  style={{ textDecoration: "none" }}
                                 >
-                                  📍 View on Map
+                                  <span className="inline-flex items-center gap-2">
+                                    <MapPin className="w-4 h-4" />
+                                    View on Map
+                                  </span>
                                 </a>
                               </Button>
                             </div>
@@ -1143,7 +1150,7 @@ export default function Specifics() {
 
             {/* Events */}
             <div className="mt-10">
-              <CardTitle className="text-2xl font-extrabold mb-3 text-black">
+              <CardTitle className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent mb-3">
                 Nearby Events & Activities
               </CardTitle>
 
@@ -1157,7 +1164,7 @@ export default function Specifics() {
                           parseFloat(ev.distance) <= (data.maxDistance ?? 20)
                       ).length === 0 ? (
                     <div className="flex flex-col items-center justify-center w-full py-12">
-                      <div className="text-center border border-primary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+                      <div className="text-center border border-secondary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
                         <div className="flex justify-center isolate">
                           {/* First stacked icon card */}
                           <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
@@ -1201,69 +1208,53 @@ export default function Specifics() {
                           </div>
                           <div className="flex flex-col justify-between flex-grow p-4">
                             <div>
-                              <h4 className="font-semibold text-lg mb-1 text-blue-600">
+                              <h4 className="font-semibold text-xl mb-1 text-blue-700">
                                 {ev.title}
                               </h4>
-                              <p className="text-sm mb-3 text-slate-600">
-                                {ev.distance}km from campus
-                              </p>
-                              <p className="text-sm mb-2 text-slate-700">
-                                Address: {ev.address[0]}
-                              </p>
-                              <div className="space-y-1 text-sm text-slate-700">
-                                <div>
-                                  🚗 Driving time:{" "}
-                                  {!ev.DRIVE ||
-                                  String(ev.DRIVE)
-                                    .toLowerCase()
-                                    .includes("nan") ? (
-                                    <span
-                                      style={{
-                                        color: "#b91c1c",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      N/A
-                                    </span>
-                                  ) : (
-                                    ev.DRIVE
-                                  )}
+                              <div className="text-sm mb-2 text-slate-700 inline-flex items-center gap-2">
+                                <Route className="w-4 h-4 text-blue-600" />
+                                <span className="font-medium">{ev.distance} km</span>
+                                <span className="text-slate-500">from campus</span>
+                              </div>
+                              <div className="text-sm mb-3 text-slate-700 inline-flex items-center gap-2 min-w-0">
+                                <MapPin className="w-4 h-4 text-rose-500" />
+                                <span className="whitespace-normal break-words">
+                                  {ev.address[0]}
+                                </span>
+                              </div>
+                              <div className="space-y-1.5 text-sm text-slate-700">
+                                <div className="inline-flex items-center gap-2">
+                                  <Car className="w-4 h-4 text-emerald-600" />
+                                  <span className="font-medium">Driving:</span>
+                                  <span className="text-slate-800">
+                                    {!ev.DRIVE || String(ev.DRIVE).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      ev.DRIVE
+                                    )}
+                                  </span>
                                 </div>
-                                <div>
-                                  🚶 Walking time:{" "}
-                                  {!ev.WALK ||
-                                  String(ev.WALK)
-                                    .toLowerCase()
-                                    .includes("nan") ? (
-                                    <span
-                                      style={{
-                                        color: "#b91c1c",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      N/A
-                                    </span>
-                                  ) : (
-                                    ev.WALK
-                                  )}
+                                <div className="inline-flex items-center gap-2">
+                                  <Footprints className="w-4 h-4 text-orange-600" />
+                                  <span className="font-medium">Walking:</span>
+                                  <span className="text-slate-800">
+                                    {!ev.WALK || String(ev.WALK).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      ev.WALK
+                                    )}
+                                  </span>
                                 </div>
-                                <div>
-                                  🚌 Public transport:{" "}
-                                  {!ev.TRANSIT ||
-                                  String(ev.TRANSIT)
-                                    .toLowerCase()
-                                    .includes("nan") ? (
-                                    <span
-                                      style={{
-                                        color: "#b91c1c",
-                                        fontWeight: 600,
-                                      }}
-                                    >
-                                      N/A
-                                    </span>
-                                  ) : (
-                                    ev.TRANSIT
-                                  )}
+                                <div className="inline-flex items-center gap-2">
+                                  <Bus className="w-4 h-4 text-indigo-600" />
+                                  <span className="font-medium">Transit:</span>
+                                  <span className="text-slate-800">
+                                    {!ev.TRANSIT || String(ev.TRANSIT).toLowerCase().includes("nan") ? (
+                                      <span style={{ color: "#b91c1c", fontWeight: 600 }}>N/A</span>
+                                    ) : (
+                                      ev.TRANSIT
+                                    )}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -1271,22 +1262,19 @@ export default function Specifics() {
                               <Button
                                 onClick={on_event_click(ev)}
                                 asChild
-                                className="w-full text-sm font-semibold no-underline rounded-lg"
-                                style={{
-                                  backgroundColor: "#102b72",
-                                  color: "#ffffff",
-                                }}
+                                className="w-full text-sm font-bold rounded-lg shadow-lg hover:shadow-xl bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300"
                               >
                                 <a
                                   href="#"
                                   title="View on shared map"
                                   data-map-marker={ev.title}
-                                  style={{
-                                    textDecoration: "none",
-                                    color: "#ffffff",
-                                  }}
+                                  className="no-underline"
+                                  style={{ textDecoration: "none" }}
                                 >
-                                  🎯 View on Map
+                                  <span className="inline-flex items-center gap-2 text-de">
+                                    <MapPin className="w-4 h-4" />
+                                    View on Map
+                                  </span>
                                 </a>
                               </Button>
                             </div>
