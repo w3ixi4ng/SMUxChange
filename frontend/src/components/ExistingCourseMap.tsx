@@ -165,7 +165,7 @@ function ExistingCourseMap({
                     className={`rounded-full px-5 py-3 text-sm font-semibold text-center transition-all duration-200 break-words leading-snug
                       ${
                         selected
-                          ? "bg-[#102b72] text-white shadow-md"
+                          ? "bg-[#5E9CFF] text-white shadow-md"
                           : "bg-white border border-[#102b72]/30 text-[#102b72] hover:bg-[#102b72]/10 hover:border-[#102b72]/50"
                       }
                       ${
