@@ -35,7 +35,7 @@ SMUxChange is an all-in-one platform designed to help SMU students seamlessly pl
 
 SMU students face several challenges when planning their international exchanges:
 
-- **Complex Module Mapping:** The OASIS Exchange Course Mapping system is difficult to navigate and unintuitive for students seeking relevant information like GPA requirements, module mappings, or exchange destinations.
+- **Complex Module Mapping:** The OASIS Exchange Course Mapping System is difficult to navigate and unintuitive for students seeking relevant information like GPA requirements, module mappings, or exchange destinations.
 - **Uncertainty in degree requirements:** Because of the system’s complexity, students often struggle to determine which host universities and modules can actually help fulfill their SMU degree requirements. 
 - **Lack of authentic peer advice:** There is limited access to real student reviews on exchange university and not much information on destination tips and accommodations. As a result, students mainly get their information via word of mouth which is inefficient.
 
@@ -92,12 +92,12 @@ SMU students face several challenges when planning their international exchanges
 
 ![Backend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/backend_tech.png)
 - Node.js – Backend server runtime
-- Server.js - 
+- Server.js - Entry point of the backend server, handles routing and server setup
 
 **Database**
 
 ![Backend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/datastore.png)
-- Firebase Firestore (NoSQL) – Manages course mapping info, user credentials, and student reviews
+- Firebase Firestore (NoSQL) – Manages SMU course mapping information, SMU faculty details, exchange schools details, user credentials, and student reviews
 
 **Deployment**
 
