@@ -18,13 +18,13 @@ function ExistingMap({ mapId, map, setSavedMaps }: ChildProps) {
 
     return (
         <>
-            <div className="col-lg-4 col-md-6 col-sm-12 col-12 mb-2">
-                <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl hover:-translate-y-1">
+            <div className="col-lg-4 col-md-6 col-sm-12 col-12 mb-2 d-flex">
+                <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl hover:-translate-y-1 h-100 d-flex flex-column w-100">
                     <img src={`/images/university_pictures/${map.university}.jpg`} className="w-full h-48 object-cover" alt={map.university}
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).src = "/images/default_university.jpg";
                         }} />
-                    <div className="p-4">
+                    <div className="p-4 d-flex flex-column flex-grow-1">
                         <h5 className="text-center text-lg font-semibold mb-1" style={{ color: "#102b72" }}>{map.university}</h5>
                         <p className="text-center text-xs mb-3" style={{ color: "#102b72", opacity: 0.7 }}>{map.country}</p>
                         <div className="space-y-1.5 mb-3 overflow-y-auto">
@@ -39,7 +39,7 @@ function ExistingMap({ mapId, map, setSavedMaps }: ChildProps) {
                                 </div>
                             ))}
                         </div>
-                        <div className="flex flex-nowrap justify-between gap-2 mb-2">
+                        <div className="flex flex-nowrap justify-between gap-2 mb-2 mt-auto">
                             <div className="flex-1 min-w-0">
                                 <UpdateMapModal mapId={mapId} map={map} setSavedMaps={setSavedMaps} />
                             </div>
