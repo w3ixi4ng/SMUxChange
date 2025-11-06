@@ -26,9 +26,9 @@ SMUxChange is an all-in-one platform designed to help SMU students seamlessly pl
 
 SMU students face several challenges when planning their international exchanges:
 
-- **Complex Module Mapping:** The current OASIS Exchange Course Mapping system is unintuitive and difficult to navigate, making it challenging to identify which host university modules can be mapped back to fulfill degree requirements.
-- **Lack of Practical Information:** Limited access to authentic peer reviews, destination advice, and practical accommodation recommendations.
-- **No Centralized Sharing Platform:** No streamlined way for students to check, share, or receive updated exchange mapping information and advice within the community, making it harder to connect with seniors and peers about their experiences.
+- **Complex Module Mapping:** The OASIS Exchange Course Mapping system is difficult to navigate and unintuitive for students seeking relevant information like GPA requirements, module mappings, or exchange destinations.
+- **Uncertainty in degree requirements:** Because of the system’s complexity, students often struggle to determine which host universities and modules can actually help fulfill their SMU degree requirements. 
+- **Lack of authentic peer advice:** here is limited access to real student reviews on exchange university and not much information on destination tips and accommodations. As a result, students mainly get their information via word of mouth which is inefficient.
 
 **SMUxChange addresses these pain points by providing an intuitive, student-centered platform that streamlines the entire exchange planning process.**
 
