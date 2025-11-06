@@ -111,13 +111,13 @@ SMU students face several challenges when planning their international exchanges
 ![APIs](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/api.png)
 
 1. **Google Events API (SerpAPI)** – Generates local events near exchange universities.  
-   [https://developers.google.com/maps/documentation/places](https://developers.google.com/events)
+   [https://developers.google.com/events](https://developers.google.com/events)
 
 2. **Google Geocoding API** – Converts addresses into geographic coordinates for map plotting.  
-   [https://developers.google.com/maps/documentation/places](https://developers.google.com/maps/documentation/geocoding)
+   [https://developers.google.com/maps/documentation/geocoding](https://developers.google.com/maps/documentation/geocoding)
 
 3. **Google Routes API** – Calculates distances and travel times between locations.  
-   [https://developers.google.com/maps/documentation/places](https://developers.google.com/maps/documentation/routes)
+   [https://developers.google.com/maps/documentation/routes](https://developers.google.com/maps/documentation/routes)
 
 4. **Google Places API** – Finds nearby apartments and housing options.  
    [(https://developers.google.com/maps/documentation/places)](https://developers.google.com/maps/documentation/places)
