@@ -120,6 +120,7 @@ function getCountryCode(countryName?: string) {
     peru: "pe",
     philippines: "ph",
     portugal: "pt",
+    poland : "pl",
     qatar: "qa",
     russia: "ru",
     "russian federation": "ru",
