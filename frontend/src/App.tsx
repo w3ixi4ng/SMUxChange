@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <RouterView />
-      <Toaster richColors />
+      <Toaster richColors closeButton />
     </>
   );
 }

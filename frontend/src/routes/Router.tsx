@@ -3,7 +3,6 @@ import {
   Routes,
   Route,
   NavLink,
-  useLocation,
 } from "react-router-dom";
 import {
   House,
@@ -42,14 +41,12 @@ function RouterView() {
 }
 
 function NavbarContent() {
-  const location = useLocation();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [name, setName] = useState<string>(sessionStorage.getItem("name") || "");
-  const [isJumping, setIsJumping] = useState(false);
 
   const checkAdmin = async () => {
     try {
@@ -91,14 +88,6 @@ function NavbarContent() {
     };
   }, []);
 
-  // Trigger jump animation on route change
-  useEffect(() => {
-    setIsJumping(true);
-    const timer = setTimeout(() => {
-      setIsJumping(false);
-    }, 500); // Match the jump animation duration
-    return () => clearTimeout(timer);
-  }, [location.pathname]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -121,24 +110,12 @@ function NavbarContent() {
     <>
       {/* ===== Navigation Bar ===== */}
       <nav
-        className={`sticky z-50 w-full backdrop-blur-md shadow-sm border-b border-[#102b72]/30 transition-all duration-300 ${isJumping ? 'animate-jump-hover' : ''} relative`}
+        className="sticky z-50 w-full backdrop-blur-md shadow-sm border-b border-[#102b72]/30 relative"
         style={{
           fontFamily: 'inherit',
           backgroundColor: "#102b72",
         }}
       >
-        {/* Cartoon Tongue */}
-        {isJumping && (
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 animate-tongue pointer-events-none">
-            <svg width="60" height="40" viewBox="0 0 60 40" className="relative">
-              <ellipse cx="30" cy="20" rx="25" ry="15" fill="#ff6b9d" />
-              <ellipse cx="30" cy="18" rx="20" ry="10" fill="#ff8fab" />
-              {/* Tongue texture lines */}
-              <line x1="20" y1="20" x2="40" y2="20" stroke="#ff4d7a" strokeWidth="1" opacity="0.5" />
-              <line x1="15" y1="22" x2="45" y2="22" stroke="#ff4d7a" strokeWidth="1" opacity="0.5" />
-            </svg>
-          </div>
-        )}
         <div className="flex items-center justify-between w-full max-w-7xl mx-auto px-6 py-4">
           {/* Left side: Hamburger + Logo */}
           <div className="flex items-center gap-3">

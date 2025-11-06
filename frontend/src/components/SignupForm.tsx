@@ -15,6 +15,41 @@ import { initializeApp } from "firebase/app";
 import { toast } from "sonner";
 import { UserPlus } from "lucide-react";
 
+function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    setDisplayedText("");
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex < text.length) {
+        setDisplayedText(text.slice(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, speed);
+
+    return () => clearInterval(typingInterval);
+  }, [text, speed]);
+
+  // Cursor blinking effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 530);
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  return (
+    <span className="leading-none font-extrabold" style={{ fontFamily: 'inherit' }}>
+      {displayedText}
+      <span className={showCursor ? "opacity-100" : "opacity-0"}>|</span>
+    </span>
+  );
+}
+
 export function SignupForm({
   className,
   ...props
@@ -85,41 +120,6 @@ export function SignupForm({
       setError("");
     }
   }, [password, confirmPassword]);
-
-  function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }) {
-    const [displayedText, setDisplayedText] = useState("");
-    const [showCursor, setShowCursor] = useState(true);
-
-    useEffect(() => {
-      setDisplayedText("");
-      let currentIndex = 0;
-      const typingInterval = setInterval(() => {
-        if (currentIndex < text.length) {
-          setDisplayedText(text.slice(0, currentIndex + 1));
-          currentIndex++;
-        } else {
-          clearInterval(typingInterval);
-        }
-      }, speed);
-
-      return () => clearInterval(typingInterval);
-    }, [text, speed]);
-
-    // Cursor blinking effect
-    useEffect(() => {
-      const cursorInterval = setInterval(() => {
-        setShowCursor((prev) => !prev);
-      }, 530);
-      return () => clearInterval(cursorInterval);
-    }, []);
-
-    return (
-      <span className="leading-none font-extrabold" style={{ fontFamily: 'inherit' }}>
-        {displayedText}
-        <span className={showCursor ? "opacity-100" : "opacity-0"}>|</span>
-      </span>
-    );
-  }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

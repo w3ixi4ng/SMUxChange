@@ -31,6 +31,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         } as React.CSSProperties
       }
       {...props}
+      closeButton={true}
     />
   )
 }

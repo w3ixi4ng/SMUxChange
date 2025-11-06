@@ -58,28 +58,28 @@ export function QRModal({ map }: ChildProps) {
                     Share Map
                 </button>
             </DialogTrigger>
-            <DialogContent className="max-h-[90vh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 border-blue-200 [&_button[data-slot='dialog-close']]:text-blue-600 [&_button[data-slot='dialog-close']]:hover:bg-blue-100 [&_button[data-slot='dialog-close']]:hover:text-blue-700 max-w-[90vw]">
+            <DialogContent className="max-h-[90vh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 border-blue-200 [&_button[data-slot='dialog-close']]:text-blue-600 [&_button[data-slot='dialog-close']]:hover:bg-blue-100 [&_button[data-slot='dialog-close']]:hover:text-blue-700 max-w-[95vw] sm:max-w-[90vw] p-4 sm:p-6">
                 <DialogHeader>
-                    <div className="flex flex-col items-center gap-3 mb-2">
-                        <DialogTitle className="text-2xl font-extrabold text-center bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">
+                    <div className="flex flex-col items-center gap-2 sm:gap-3 mb-2">
+                        <DialogTitle className="text-xl sm:text-2xl font-extrabold text-center bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">
                             Share Your Map
                         </DialogTitle>
                     </div>
-                    <DialogDescription className="text-slate-600 text-base text-center">
+                    <DialogDescription className="text-slate-600 text-sm sm:text-base text-center px-2">
                         Scan the QR code below to access and share your module mapping.
                     </DialogDescription>
                 </DialogHeader>
                 
                 {/* QR Code Container */}
-                <div className="relative flex flex-col items-center justify-center my-6">
+                <div className="relative flex flex-col items-center justify-center my-4 sm:my-6">
                     {/* Decorative background circles */}
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-emerald-400/20 rounded-full blur-3xl scale-150"></div>
                     
                     {/* QR Code Frame */}
-                    <div className="relative bg-white rounded-3xl p-8 shadow-2xl border-2 border-blue-200 ring-4 ring-blue-100/50 max-w-full">
-                        <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-500 rounded-full shadow-lg"></div>
-                        <div className="absolute -bottom-2 -left-2 w-8 h-8 bg-blue-500 rounded-full shadow-lg"></div>
-                        <img src={qrCode || ""} alt="QR Code" className="w-64 h-64 mx-auto max-w-full" />
+                    <div className="relative bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl border-2 border-blue-200 ring-4 ring-blue-100/50 max-w-full">
+                        <div className="absolute -top-2 -right-2 w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full shadow-lg"></div>
+                        <div className="absolute -bottom-2 -left-2 w-6 h-6 sm:w-8 sm:h-8 bg-blue-500 rounded-full shadow-lg"></div>
+                        <img src={qrCode || ""} alt="QR Code" className="w-48 h-48 sm:w-64 sm:h-64 mx-auto max-w-full" />
                     </div>
                 </div>
 
@@ -89,25 +89,25 @@ export function QRModal({ map }: ChildProps) {
                         <Button
                             onClick={handleCopy}
                             disabled={!url}
-                            className="w-full flex items-center gap-3 justify-center font-semibold px-6 py-3 rounded-xl bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full flex items-center gap-2 sm:gap-3 justify-center font-semibold px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white text-blue-600 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                         >
                             {copied ? (
                                 <>
-                                    <Check className="w-5 h-5" />
+                                    <Check className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                                     <span>Copied!</span>
                                 </>
                             ) : (
                                 <>
-                                    <Copy className="w-5 h-5" />
-                                    <span className="truncate max-w-[380px]">{url || "Generating link..."}</span>
+                                    <Copy className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                                    <span className="truncate max-w-[200px] sm:max-w-[380px] text-xs sm:text-sm">{url || "Generating link..."}</span>
                                 </>
                             )}
                         </Button>
                     </div>
                 </div>
 
-                <DialogFooter className='d-flex justify-content-center mt-4'>
-                    <DialogCancel className="bg-white border-2 border-blue-200 hover:bg-blue-50 text-blue-600 hover:text-blue-700 font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                <DialogFooter className='flex justify-center items-center mt-4 w-full'>
+                    <DialogCancel className="bg-white border-2 border-blue-200 hover:bg-blue-50 text-blue-600 hover:text-blue-700 font-semibold px-4 sm:px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 text-sm sm:text-base mx-auto">
                         Close
                     </DialogCancel>
                 </DialogFooter>

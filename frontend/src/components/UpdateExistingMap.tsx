@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import ExistingCourseMap from "./ExistingCourseMap";
@@ -22,6 +22,8 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
   const [availableCourseAreasList, setAvailableCourseAreasList] = useState<string[]>([]);
   const [allElectives, setAllElectives] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const hasShownMaxToast = useRef(false);
+  const prevCountRef = useRef(0);
 
   const maxCount = 5;
 
@@ -95,7 +97,7 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
     loadAll();
   }, [map.faculty, map.major, map.track, map.secondMajor]);
 
-  // === Initialize user’s existing map ===
+  // === Initialize user's existing map ===
   useEffect(() => {
     if (map?.map) {
       setSelectedCourses(map.map);
@@ -107,6 +109,9 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
       setSelectedMapCourseAreas(
         Object.keys(map.map).filter((a) => map.map[a].courses?.length > 0)
       );
+      // Reset toast flag when map is initialized
+      hasShownMaxToast.current = false;
+      prevCountRef.current = initialCount;
     }
   }, [map]);
 
@@ -124,12 +129,29 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
   // === Count & Limit ===
   useEffect(() => {
     const count = Object.values(selectedCourses).reduce(
-      (acc: number, curr: any) => acc + curr.courses.length,
+      (acc: number, curr: any) => acc + (curr?.courses?.length || 0),
       0
     );
+    const prevCount = prevCountRef.current;
+    
+    // Only show toast when crossing the threshold from below maxCount to exactly maxCount
+    // and only if count has actually changed (prevents duplicate toasts)
+    if (count !== prevCount) {
+      if (count === maxCount && prevCount < maxCount && !hasShownMaxToast.current) {
+        toast.info("You have reached the maximum number of courses selected (5).");
+        hasShownMaxToast.current = true;
+      } else if (count < maxCount) {
+        // Reset the flag when count drops below maxCount
+        hasShownMaxToast.current = false;
+      } else if (count > maxCount) {
+        // If somehow count exceeds maxCount, reset flag
+        hasShownMaxToast.current = false;
+      }
+    }
+    
     setSelectedCount(count);
-    if (count >= maxCount)
-      toast("You have reached the maximum number of courses selected (5).");
+    // Update the previous count ref
+    prevCountRef.current = count;
   }, [selectedCourses]);
 
   const handleSelectedCoursesChange = (

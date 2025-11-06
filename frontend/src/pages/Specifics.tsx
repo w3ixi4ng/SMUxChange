@@ -396,29 +396,24 @@ export default function Specifics() {
      ========================================================= */
   async function submitReview() {
     try {
-      if (!currentUser?.uid) {
-        alert("Please log in to submit a review.");
-        return;
-      }
-      if (!ratingInput) {
-        alert("Please enter a rating (0–5).");
-        return;
-      }
+
 
       const payload = {
-        uid: currentUser.uid,
-        name: currentUser.name || "Anonymous",
+        uid: currentUser?.uid || "anonymous_user",
+        name: currentUser?.name || "anonymous_user",
         university: data?.host_university,
         rating: Number(ratingInput),
         comment: commentInput || "",
         createdAt: Date.now(), // client timestamp for UI sorting (backend also tracks updated_at)
       };
 
+      const loadingToast = toast.loading("Submitting review...");
       await axios.post(
         "https://smuxchange-backend.vercel.app/database/saveReview",
         payload
       );
-
+      // Dismiss loading toast before showing success
+      toast.dismiss(loadingToast);
       // reset inputs + refresh list
       setCommentInput("");
       await fetchReviews();
@@ -426,8 +421,10 @@ export default function Specifics() {
         description: "Your review has been submitted successfully.",
       });
     } catch (e) {
+      // Dismiss any existing loading toast on error
+      toast.dismiss();
       console.log("Error submitting review:", e);
-      toast.error("Failed to submit review.", {
+      toast.warning("Failed to submit review.", {
         description: "Error: " + (e as any).response?.data?.error,
       });
     }
@@ -766,7 +763,7 @@ export default function Specifics() {
                     key={i}
                     className="bg-white border border-blue-200 p-4 rounded-lg"
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <img
                           src={`https://avatar.iran.liara.run/username?username=${encodeURIComponent(
@@ -888,17 +885,29 @@ export default function Specifics() {
             </CardHeader>
 
             {new_obj && new_obj.type == "accomodation" &&(
-                <div className="mt-4 p-3 bg-blue-50 rounded-md text-blue-600 border border-blue-200">
-                    <strong>Currently Selected {new_obj.type}:</strong> {new_obj.name}<br/>
-                    <strong> Currently Selected Address: </strong> {new_obj.formatted_address}
+                <div className="mt-4 mx-auto max-w-2xl p-4 bg-blue-50 rounded-lg text-blue-600 border border-blue-200 shadow-sm">
+                    <div className="space-y-2">
+                        <div>
+                            <strong>Currently Selected Accommodation:</strong> {new_obj.name}
+                        </div>
+                        <div>
+                            <strong>Currently Selected Address:</strong> {new_obj.formatted_address}
+                        </div>
                     </div>
+                </div>
             )}
 
             {new_obj && new_obj.type == "event" &&(
-                 <div className="mt-4 p-3 bg-blue-50 rounded-md text-blue-600 border border-blue-200">
-                    <strong>Currently Selected {new_obj.type}</strong>: {new_obj.title}<br/>
-                    <strong>Currently Selected Address: </strong>{new_obj.address[0]}
+                 <div className="mt-4 mx-auto max-w-2xl p-4 bg-blue-50 rounded-lg text-blue-600 border border-blue-200 shadow-sm">
+                    <div className="space-y-2">
+                        <div>
+                            <strong>Currently Selected Event:</strong> {new_obj.title}
+                        </div>
+                        <div>
+                            <strong>Currently Selected Address:</strong> {new_obj.address[0]}
+                        </div>
                     </div>
+                </div>
             )}
 
 
@@ -990,7 +999,7 @@ export default function Specifics() {
                           parseFloat(a.distance) <= (data.maxDistance ?? 20)
                       ).length === 0 ? (
                     <div className="flex flex-col items-center justify-center w-full py-12">
-                      <div className="text-center border border-blue-200 border-dashed rounded-xl bg-white/90 backdrop-blur-sm p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+                      <div className="text-center border border-primary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
                         <div className="flex justify-center isolate">
                           {/* First stacked icon card */}
                           <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
@@ -1018,18 +1027,20 @@ export default function Specifics() {
                       .map((a, i) => (
                         <div
                           key={i}
-                         className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
-                            ${new_obj === a ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
+                         className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200 rounded-xl
+                            ${new_obj === a ? 'bg-white border-4 border-primary shadow shadow-primary/50' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
                         >
-                          <img
-                            src={a.icon}
-                            onError={(e) =>
-                              ((e.currentTarget as HTMLImageElement).src =
-                                "/images/accommodations_placeholder.jpg")
-                            }
-                            alt={a.name}
-                            className="w-full h-40 object-cover rounded-t-xl"
-                          />
+                          <div className="w-full h-40 rounded-t-xl overflow-hidden bg-slate-100">
+                            <img
+                              src={`/images/accom/accom${(i % 5) + 1}.jpg`}
+                              alt={a.name}
+                              className="w-full h-40 object-cover"
+                              onError={(e) => {
+                                ((e.currentTarget as HTMLImageElement).src = "/images/accommodations_placeholder.jpg");
+                              }}
+                              loading="lazy"
+                            />
+                          </div>
                           <div className="flex flex-col justify-between flex-grow p-4">
                             <div>
                               <h5 className="font-semibold text-lg mb-1 text-blue-600">
@@ -1146,7 +1157,7 @@ export default function Specifics() {
                           parseFloat(ev.distance) <= (data.maxDistance ?? 20)
                       ).length === 0 ? (
                     <div className="flex flex-col items-center justify-center w-full py-12">
-                      <div className="text-center border border-blue-200 border-dashed rounded-xl bg-white/90 backdrop-blur-sm p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
+                      <div className="text-center border border-primary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
                         <div className="flex justify-center isolate">
                           {/* First stacked icon card */}
                           <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
@@ -1175,13 +1186,19 @@ export default function Specifics() {
                         <div
                           key={i}
                           className={`rounded-xl card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
-                            ${new_obj === ev ? 'bg-white border border-5 text-white shadow border-primary rounded' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
+                            ${new_obj === ev ? 'bg-white border-4 border-primary shadow shadow-primary/50' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
                         >
-                          <img
-                            src={ev.thumbnail}
-                            alt={ev.title}
-                            className="h-40 object-cover rounded-t-xl"
-                          />
+                          <div className="w-full h-40 rounded-t-xl overflow-hidden bg-slate-100">
+                            <img
+                              src={ev.thumbnail}
+                              alt={ev.title}
+                              className="w-full h-40 object-cover"
+                              onError={(e) => {
+                                ((e.currentTarget as HTMLImageElement).src = ev.thumbnail);
+                              }}
+                              loading="lazy"
+                            />
+                          </div>
                           <div className="flex flex-col justify-between flex-grow p-4">
                             <div>
                               <h4 className="font-semibold text-lg mb-1 text-blue-600">
