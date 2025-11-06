@@ -183,7 +183,7 @@ function Home() {
 
         {/* === Quick Stats === */}
         {logoLoaded && (
-          <section className="relative px-4 sm:px-6 md:px-12 lg:px-24 pb-16 w-full overflow-x-hidden">
+          <section className="relative px-4 sm:px-6 md:px-12 lg:px-24 pb-16 w-full">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 { num: "300+", label: "Partner Schools", color: "from-blue-500 to-blue-600" },
