@@ -113,7 +113,7 @@ function ExistingCourseMap({
  return (
    <>
     {courses.length > 0 && selectedCourseArea === courseArea[1] && (
-      <div className="col-lg-12 col-12 bg-white/80 backdrop-blur-md border border-blue-200 py-4 rounded-3xl shadow-md mb-4">
+      <div className="col-lg-12 col-12 bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 border border-blue-200 py-4 rounded-3xl shadow-md mb-4">
          {/* Header */}
          <div className="relative flex flex-col items-center justify-center text-center mb-4">
           <h2 className="text-xl font-semibold mb-1 tracking-tight text-blue-600">

@@ -54,9 +54,11 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
                 </button>
             </DialogTrigger>
             <DialogContent className="max-w-[95vw] sm:max-w-[95vw] max-h-[90vh] overflow-y-auto bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 border-blue-200 [&_button[data-slot='dialog-close']]:text-blue-600 [&_button[data-slot='dialog-close']]:hover:bg-blue-100 [&_button[data-slot='dialog-close']]:hover:text-blue-700 pb-0">
-                <DialogHeader>
-                    <DialogTitle className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">Update Map</DialogTitle>
-                    <DialogDescription className="text-slate-600 text-base">
+                <DialogHeader className="text-center">
+                    <DialogTitle className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent mb-2">
+                        Update Your Map
+                    </DialogTitle>
+                    <DialogDescription className="text-slate-600 text-base mt-2">
                         Make changes to your map here. Click update when you're done.
                     </DialogDescription>
                 </DialogHeader>
@@ -118,14 +120,14 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
                 </div>
                 <UpdateExistingMap map={map} setSelectedCourses={setSelectedCourses} selectedCourses={selectedCourses} />
                 <DialogFooter className='flex flex-row sticky bottom-0 z-10 bg-transparent py-3 w-100 mx-auto gap-3 justify-center sm:justify-center'>
-                    <DialogCancel className="bg-white border-2 border-blue-200 hover:bg-blue-50 text-blue-600 hover:text-blue-700 font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">Cancel</DialogCancel>
+                    <DialogCancel className="bg-white border-2 border-blue-200 hover:bg-blue-50 text-blue-600 hover:text-blue-700 font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">Close</DialogCancel>
                     <DialogAction className="font-semibold bg-blue-600 text-white hover:bg-blue-700 px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300" onClick={() => {
                         updateMap();
                         toast.success("Map updated successfully", {
                             description: "The map has been updated.",
                         });
                         setSavedMaps((prev: any[]) => prev.map((m: any) => m.id === mapId ? { ...m, map: selectedCourses } : m));
-                    }}>Update Map</DialogAction>
+                    }}>Update</DialogAction>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

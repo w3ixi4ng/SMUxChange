@@ -23,7 +23,7 @@ import AccomodationSkeleton from "@/components/SpecificSchool/AccomodationSkelet
 import EventsSkeleton from "@/components/SpecificSchool/EventsSkeleton";
 const key = import.meta.env.VITE_APP_GOOGLE_MAPS_API_KEY;
 import { toast } from "sonner";
-import { ArrowUpIcon, SearchX, FileX, Home, Calendar, Send, MapPin, Car, Footprints, Bus, Route } from "lucide-react";
+import { ArrowUpIcon, Send, MapPin, Car, Footprints, Bus, Route } from "lucide-react";
 
 /* ===========================
    TYPING ANIMATION
@@ -56,7 +56,7 @@ function TypingAnimation({ text, speed = 100 }: { text: string; speed?: number }
   }, []);
 
   return (
-    <span className="text-black">
+    <span className="leading-none font-extrabold" style={{ fontFamily: 'inherit' }}>
       {displayedText}
       <span className={showCursor ? "opacity-100" : "opacity-0"}>|</span>
     </span>
@@ -257,6 +257,67 @@ export default function Specifics() {
 
   const [new_obj, set_new_obj] = useState<Record<string, any>>({});
 
+  // Scroll tracking for pagination dots
+  const [accomScrollIndex, setAccomScrollIndex] = useState(0);
+  const [eventsScrollIndex, setEventsScrollIndex] = useState(0);
+  const accomScrollRef = useRef<HTMLDivElement>(null);
+  const eventsScrollRef = useRef<HTMLDivElement>(null);
+
+  // Carousel pagination helpers
+  const CARD_WIDTH_PX = 288 + 16; // w-72 (288px) + gap-4 (16px)
+  const getFilteredAccommodations = () =>
+    accommodations.filter((a) => parseFloat(a.distance) <= (data.maxDistance ?? 20));
+  const getFilteredEvents = () =>
+    events.filter((ev) => parseFloat(ev.distance) <= (data.maxDistance ?? 20));
+  const getVisibleCount = (container: HTMLDivElement | null) =>
+    Math.max(1, Math.floor((container?.clientWidth || CARD_WIDTH_PX) / CARD_WIDTH_PX));
+  const getTotalPages = (itemsCount: number, container: HTMLDivElement | null) => {
+    const visible = getVisibleCount(container);
+    return Math.max(1, itemsCount - visible + 1);
+  };
+
+  // Mouse drag-to-scroll state (accommodations)
+  const [isAccomDragging, setIsAccomDragging] = useState(false);
+  const accomDragRef = useRef<{ startX: number; scrollLeft: number }>({ startX: 0, scrollLeft: 0 });
+  const onAccomMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const container = accomScrollRef.current;
+    if (!container) return;
+    setIsAccomDragging(true);
+    accomDragRef.current.startX = e.pageX - container.offsetLeft;
+    accomDragRef.current.scrollLeft = container.scrollLeft;
+  };
+  const onAccomMouseLeave = () => setIsAccomDragging(false);
+  const onAccomMouseUp = () => setIsAccomDragging(false);
+  const onAccomMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const container = accomScrollRef.current;
+    if (!container || !isAccomDragging) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = x - accomDragRef.current.startX;
+    container.scrollLeft = accomDragRef.current.scrollLeft - walk;
+  };
+
+  // Mouse drag-to-scroll state (events)
+  const [isEventsDragging, setIsEventsDragging] = useState(false);
+  const eventsDragRef = useRef<{ startX: number; scrollLeft: number }>({ startX: 0, scrollLeft: 0 });
+  const onEventsMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const container = eventsScrollRef.current;
+    if (!container) return;
+    setIsEventsDragging(true);
+    eventsDragRef.current.startX = e.pageX - container.offsetLeft;
+    eventsDragRef.current.scrollLeft = container.scrollLeft;
+  };
+  const onEventsMouseLeave = () => setIsEventsDragging(false);
+  const onEventsMouseUp = () => setIsEventsDragging(false);
+  const onEventsMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const container = eventsScrollRef.current;
+    if (!container || !isEventsDragging) return;
+    e.preventDefault();
+    const x = e.pageX - container.offsetLeft;
+    const walk = x - eventsDragRef.current.startX;
+    container.scrollLeft = eventsDragRef.current.scrollLeft - walk;
+  };
+
   async function get_cooridnates(address: string) {
     try {
       const response = await axios.get(
@@ -303,6 +364,23 @@ export default function Specifics() {
         }
     }
   }
+
+  // Scroll handlers for pagination dots
+  const handleAccomScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const scrollLeft = container.scrollLeft;
+    const totalPages = getTotalPages(getFilteredAccommodations().length, container);
+    const index = Math.min(totalPages - 1, Math.max(0, Math.round(scrollLeft / CARD_WIDTH_PX)));
+    setAccomScrollIndex(index);
+  };
+
+  const handleEventsScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const scrollLeft = container.scrollLeft;
+    const totalPages = getTotalPages(getFilteredEvents().length, container);
+    const index = Math.min(totalPages - 1, Math.max(0, Math.round(scrollLeft / CARD_WIDTH_PX)));
+    setEventsScrollIndex(index);
+  };
 
 
   useEffect(() => {
@@ -555,18 +633,61 @@ export default function Specifics() {
       <div className="container mx-auto px-6 py-5 space-y-10 relative z-10">
         <div id="top" />
         {/* === HEADER === */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-2">
+        <div className="flex flex-col md:flex-row justify-center items-center">
+          <div className="text-center">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 leading-none bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent" style={{ fontFamily: 'inherit' }}>
               {data && <TypingAnimation text={data.host_university} speed={100} />}
             </h1>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center gap-3">
               <img
                 src={`https://flagcdn.com/${getCountryCode(data?.country)}.svg`}
                 alt={data && data.country}
                 className="w-10 h-8 rounded-md animate-flag-wave"
               />
               <span className="text-slate-700 font-medium text-lg">{data && data.country}</span>
+            </div>
+            {/* Navigation Tabs */}
+            <div className="flex flex-wrap justify-center gap-3 mt-6">
+              <a
+                href="#about"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/80 backdrop-blur-md border border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 hover:scale-105 text-decoration-none"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('about')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              >
+                About
+              </a>
+              <a
+                href="#course-areas"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/80 backdrop-blur-md border border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 hover:scale-105 text-decoration-none"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('course-areas')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              >
+                Course Areas
+              </a>
+              <a
+                href="#reviews"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/80 backdrop-blur-md border border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 hover:scale-105 text-decoration-none"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              >
+                Student Reviews
+              </a>
+              <a
+                href="#explore"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/80 backdrop-blur-md border border-blue-200 text-blue-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-300 hover:scale-105 text-decoration-none"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('explore')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              >
+                Explore Nearby
+              </a>
             </div>
           </div>
         </div>
@@ -596,6 +717,7 @@ export default function Specifics() {
 
         {/* === DETAILS CARD === */}
         <Card 
+          id="about"
           ref={setRef("details-card")}
           data-scroll-id="details-card"
           className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl scroll-fade-in ${visible["details-card"] ? "visible" : ""}`}
@@ -664,6 +786,7 @@ export default function Specifics() {
 
         {/* === AVAILABLE COURSE AREAS (with show more/less) === */}
         <Card 
+          id="course-areas"
           ref={setRef("course-areas")}
           data-scroll-id="course-areas"
           className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl mt-10 scroll-fade-in ${visible["course-areas"] ? "visible" : ""}`}
@@ -675,35 +798,37 @@ export default function Specifics() {
               Available Course Areas
             </CardTitle>
             <CardDescription className="text-slate-600">
-              Course areas mapped for this university
+              Course areas mapped for this university.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col items-center">
-              <div
-                className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 transition-all duration-500 overflow-hidden ${
-                  showAllBaskets
-                    ? "max-h-[2000px] opacity-100"
-                    : "max-h-[260px] opacity-95"
-                }`}
-              >
-                {data &&
-                  data.mappable_basket?.map((basket: string, i: number) => (
-                    <div key={i} className="flex">
-                      <span
-                        className="px-4 py-2 rounded-xl text-sm font-semibold border border-blue-200 bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 text-blue-900 shadow-sm hover:shadow-md transition-colors w-full text-center"
-                      >
-                        {basket}
-                      </span>
-                    </div>
-                  ))}
-                {(!data ||
-                  !data.mappable_basket ||
-                  data.mappable_basket.length === 0) && (
-                  <span className="block w-full text-center text-sm italic text-slate-600">
-                    No course areas available.
-                  </span>
-                )}
+              <div className="w-full border-2 border-slate-300 rounded-xl p-3 bg-gradient-to-br from-slate-50 to-slate-100">
+                <div
+                  className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 transition-all duration-500 overflow-hidden ${
+                    showAllBaskets
+                      ? "max-h-[2000px] opacity-100"
+                      : "max-h-[260px] opacity-95"
+                  }`}
+                >
+                  {data &&
+                    data.mappable_basket?.map((basket: string, i: number) => (
+                      <div key={i} className="flex">
+                        <span
+                          className="px-4 py-2 rounded-xl text-sm font-semibold border border-blue-200 bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 text-blue-900 shadow-sm hover:shadow-md transition-colors w-full text-center"
+                        >
+                          {basket}
+                        </span>
+                      </div>
+                    ))}
+                  {(!data ||
+                    !data.mappable_basket ||
+                    data.mappable_basket.length === 0) && (
+                    <span className="block w-full md:col-span-3 text-center text-sm italic text-slate-600">
+                      No course areas available.
+                    </span>
+                  )}
+                </div>
               </div>
 
               {data && data.mappable_basket?.length > 6 && (
@@ -731,6 +856,7 @@ export default function Specifics() {
 
         {/* === STUDENT REVIEWS (includes IMPORTANT login-gated form) === */}
         <Card 
+          id="reviews"
           ref={setRef("reviews-card")}
           data-scroll-id="reviews-card"
           className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl mt-10 scroll-fade-in ${visible["reviews-card"] ? "visible" : ""}`}
@@ -767,7 +893,7 @@ export default function Specifics() {
                   {sortedReviews.map((r: any, i: number) => (
                     <div
                       key={i}
-                      className="bg-white border border-blue-200 p-4 rounded-lg"
+                      className="bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-slate-300 rounded-xl p-4 shadow-md"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div className="flex items-center gap-2">
@@ -832,7 +958,7 @@ export default function Specifics() {
 
             {/* IMPORTANT: Login-gated submit form */}
             {currentUser ? (
-              <div className="bg-white/95 border border-blue-200 p-6 rounded-2xl shadow-sm space-y-5 max-w-2xl mx-auto">
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 border-2 border-slate-300 rounded-xl p-4 shadow-md space-y-5 max-w-2xl mx-auto">
                 <h3 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">
                   Leave a Review
                 </h3>
@@ -866,7 +992,7 @@ export default function Specifics() {
                     className={`bg-blue-600 text-white font-bold px-6 py-2 rounded shadow-lg hover:shadow-xl hover:bg-blue-700 transition-all duration-300 ${
                       ratingInput === 0
                         ? "!bg-gray-300 !text-gray-600 cursor-not-allowed"
-                        : ""
+                        : "hover:scale-110 active:scale-105"
                     }`}
                   >
                     <span className="inline-flex items-center gap-2">
@@ -893,6 +1019,7 @@ export default function Specifics() {
         {/* === PLAN YOUR STAY & EXPLORE NEARBY === */}
 
         <Card 
+          id="explore"
           ref={setRef("plan-stay")}
           data-scroll-id="plan-stay"
           className={`bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl mt-10 scroll-fade-in ${visible["plan-stay"] ? "visible" : ""}`}
@@ -1004,7 +1131,7 @@ export default function Specifics() {
                     }))
                   }
                   className="w-full"
-                  style={{ accentColor: "#102b72" }}
+                  style={{ accentColor: "#2563eb" }}
                 />
               </div>
             </div>
@@ -1016,7 +1143,15 @@ export default function Specifics() {
               </CardTitle>
 
               <div className="w-full">
-                <div className="flex overflow-x-auto gap-4 pb-3 snap-x snap-proximity">
+                <div 
+                  ref={accomScrollRef}
+                  onScroll={handleAccomScroll}
+                  onMouseDown={onAccomMouseDown}
+                  onMouseLeave={onAccomMouseLeave}
+                  onMouseUp={onAccomMouseUp}
+                  onMouseMove={onAccomMouseMove}
+                  className="flex overflow-x-auto no-scrollbar gap-4 pb-3 snap-x snap-proximity border-2 border-slate-300 rounded-xl p-3 select-none cursor-grab active:cursor-grabbing bg-gradient-to-br from-slate-50 to-slate-100"
+                >
                   {isAccommodationsLoading ? (
                     <AccomodationSkeleton />
                   ) : accommodations
@@ -1024,25 +1159,9 @@ export default function Specifics() {
                         (a) =>
                           parseFloat(a.distance) <= (data.maxDistance ?? 20)
                       ).length === 0 ? (
-                    <div className="flex flex-col items-center justify-center w-full py-12">
-                      <div className="text-center border border-secondary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
-                        <div className="flex justify-center isolate">
-                          {/* First stacked icon card */}
-                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
-                            <SearchX className="w-5 h-5 text-slate-600" />
-                          </div>
-                          {/* Second stacked icon card (center) */}
-                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl z-10 shadow-lg group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
-                            <Home className="w-5 h-5 text-slate-600" />
-                          </div>
-                          {/* Third stacked icon card */}
-                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative right-2.5 top-1.5 rotate-6 shadow-lg group-hover:translate-x-5 group-hover:rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
-                            <FileX className="w-5 h-5 text-slate-600" />
-                          </div>
-                        </div>
-                        <h2 className="text-base text-slate-800 font-medium mt-6">No Accommodations Found</h2>
-                        <p className="text-sm text-slate-600 mt-1">Try adjusting the distance filter above.</p>
-                      </div>
+                    <div className="w-full text-center py-12">
+                      <span className="block text-sm italic text-slate-600">No accommodations found.</span>
+                      <span className="block text-sm italic text-slate-600 mt-1">Try adjusting the distance filter above.</span>
                     </div>
                   ) : (
                     accommodations
@@ -1054,7 +1173,7 @@ export default function Specifics() {
                         <div
                           key={i}
                          className={`card shrink-0 w-72 snap-center flex flex-col transition-all duration-200 rounded-xl
-                            ${new_obj === a ? 'bg-white border-4 border-primary shadow shadow-primary/50' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
+                            ${new_obj === a ? 'bg-white border-4 border-black shadow shadow-black/50' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <div className="w-full h-40 rounded-t-xl overflow-hidden bg-slate-100">
                             <img
@@ -1123,7 +1242,7 @@ export default function Specifics() {
                               <Button
                                 onClick={on_event_click(a)}
                                 asChild
-                                className="w-full text-sm font-bold rounded-lg shadow-lg hover:shadow-xl bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300"
+                                className="w-full text-sm font-bold rounded-lg shadow-lg hover:shadow-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all duration-300 hover:scale-110 active:scale-105"
                               >
                                 <a
                                   href="#"
@@ -1144,7 +1263,31 @@ export default function Specifics() {
                       ))
                   )}
                 </div>
-
+                {/* Pagination dots for accommodations (page-based) */}
+                {!isAccommodationsLoading && getFilteredAccommodations().length > 0 && (
+                  <div className="flex justify-center gap-2 mt-3">
+                    {Array.from({ length: getTotalPages(getFilteredAccommodations().length, accomScrollRef.current) }).map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            const container = accomScrollRef.current;
+                            if (container) {
+                              container.scrollTo({
+                                left: index * CARD_WIDTH_PX,
+                                behavior: 'smooth'
+                              });
+                            }
+                          }}
+                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                            index === accomScrollIndex
+                              ? 'bg-blue-600 w-6'
+                              : 'bg-blue-300 hover:bg-blue-400'
+                          }`}
+                          aria-label={`Go to accommodation ${index + 1}`}
+                        />
+                      ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1155,7 +1298,15 @@ export default function Specifics() {
               </CardTitle>
 
               <div className="w-full">
-                <div className="flex overflow-x-auto gap-4 pb-3 snap-x snap-proximity">
+                <div 
+                  ref={eventsScrollRef}
+                  onScroll={handleEventsScroll}
+                  onMouseDown={onEventsMouseDown}
+                  onMouseLeave={onEventsMouseLeave}
+                  onMouseUp={onEventsMouseUp}
+                  onMouseMove={onEventsMouseMove}
+                  className="flex overflow-x-auto no-scrollbar gap-4 pb-3 snap-x snap-proximity border-2 border-slate-300 rounded-xl p-3 select-none cursor-grab active:cursor-grabbing bg-gradient-to-br from-slate-50 to-slate-100"
+                >
                   {isEventsLoading ? (
                     <EventsSkeleton />
                   ) : events
@@ -1163,25 +1314,9 @@ export default function Specifics() {
                         (ev) =>
                           parseFloat(ev.distance) <= (data.maxDistance ?? 20)
                       ).length === 0 ? (
-                    <div className="flex flex-col items-center justify-center w-full py-12">
-                      <div className="text-center border border-secondary rounded-xl bg-white p-14 w-full max-w-[620px] group transition duration-500 hover:duration-200">
-                        <div className="flex justify-center isolate">
-                          {/* First stacked icon card */}
-                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative left-2.5 top-1.5 -rotate-6 shadow shadow-lg group-hover:-translate-x-5 group-hover:-rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
-                            <SearchX className="w-5 h-5 text-slate-600" />
-                          </div>
-                          {/* Second stacked icon card (center) */}
-                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl z-10 shadow-lg group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
-                            <Calendar className="w-5 h-5 text-slate-600" />
-                          </div>
-                          {/* Third stacked icon card */}
-                          <div className="size-12 bg-white grid place-items-center ring-1 ring-black/[0.08] rounded-xl relative right-2.5 top-1.5 rotate-6 shadow-lg group-hover:translate-x-5 group-hover:rotate-12 group-hover:-translate-y-0.5 transition duration-500 group-hover:duration-200">
-                            <FileX className="w-5 h-5 text-slate-600" />
-                          </div>
-                        </div>
-                        <h2 className="text-base text-slate-800 font-medium mt-6">No Events Found</h2>
-                        <p className="text-sm text-slate-600 mt-1">Try adjusting the distance filter above.</p>
-                      </div>
+                    <div className="w-full text-center py-12">
+                      <span className="block text-sm italic text-slate-600">No events found.</span>
+                      <span className="block text-sm italic text-slate-600 mt-1">Try adjusting the distance filter above.</span>
                     </div>
                   ) : (
                     events
@@ -1193,7 +1328,7 @@ export default function Specifics() {
                         <div
                           key={i}
                           className={`rounded-xl card shrink-0 w-72 snap-center flex flex-col transition-all duration-200
-                            ${new_obj === ev ? 'bg-white border-4 border-primary shadow shadow-primary/50' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
+                            ${new_obj === ev ? 'bg-white border-4 border-black shadow shadow-black/50' : 'bg-white border border-blue-200 hover:shadow-md hover:-translate-y-1'}`}
                         >
                           <div className="w-full h-40 rounded-t-xl overflow-hidden bg-slate-100">
                             <img
@@ -1262,7 +1397,7 @@ export default function Specifics() {
                               <Button
                                 onClick={on_event_click(ev)}
                                 asChild
-                                className="w-full text-sm font-bold rounded-lg shadow-lg hover:shadow-xl bg-blue-600 hover:bg-blue-700 text-white transition-all duration-300"
+                                className="w-full text-sm font-bold rounded-lg shadow-lg hover:shadow-xl bg-emerald-600 hover:bg-emerald-700 text-white transition-all duration-300 hover:scale-110 active:scale-105"
                               >
                                 <a
                                   href="#"
@@ -1283,7 +1418,31 @@ export default function Specifics() {
                       ))
                   )}
                 </div>
-
+                {/* Pagination dots for events (page-based) */}
+                {!isEventsLoading && getFilteredEvents().length > 0 && (
+                  <div className="flex justify-center gap-2 mt-3">
+                    {Array.from({ length: getTotalPages(getFilteredEvents().length, eventsScrollRef.current) }).map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            const container = eventsScrollRef.current;
+                            if (container) {
+                              container.scrollTo({
+                                left: index * CARD_WIDTH_PX,
+                                behavior: 'smooth'
+                              });
+                            }
+                          }}
+                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                            index === eventsScrollIndex
+                              ? 'bg-blue-600 w-6'
+                              : 'bg-blue-300 hover:bg-blue-400'
+                          }`}
+                          aria-label={`Go to event ${index + 1}`}
+                        />
+                      ))}
+                  </div>
+                )}
               </div>
             </div>
           </CardContent>
