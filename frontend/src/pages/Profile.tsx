@@ -346,7 +346,7 @@ function Profile() {
             </div>
           </Modal.Body>
 
-          <Modal.Footer>u
+          <Modal.Footer>
             {errorMessage.length > 0 && (
               <div className="col-12 mb-2 text-center">
                 {errorMessage.map((error) => (
