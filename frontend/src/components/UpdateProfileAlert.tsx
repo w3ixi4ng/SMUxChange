@@ -87,7 +87,7 @@ export function UpdateProfileAlert({ uid, name, faculty, major, track, secondMaj
                 </AlertDialogHeader>
                 <AlertDialogFooter className='d-flex justify-content-center'>
                     <AlertDialogCancel className="bg-white border border-blue-200 hover:bg-blue-50 text-blue-600 hover:text-blue-700 font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">Cancel</AlertDialogCancel>
-                    <AlertDialogAction className="group relative overflow-hidden bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 hover:from-blue-700 hover:via-emerald-600 hover:to-blue-700 text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-all duration-300" onClick={() => {
+                    <AlertDialogAction className="bg-blue-600 text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-700" onClick={() => {
                         saveProfile(uid || "", name, faculty, major, track, secondMajor);
                     }}>
                         Update

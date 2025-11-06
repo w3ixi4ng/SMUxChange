@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ChevronDown, ChevronUp } from "lucide-react"; //  removed Infinity import (unused)
+// Collapse controls removed
 
 
 type ChildProps = {
@@ -57,11 +57,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
         }
     }, [selectedCount, selectedTotalCount, maxTotalCount]);
 
-    const [isExpanded, setIsExpanded] = useState(true);
-
-    useEffect(() => {
-        setIsExpanded(true);
-    }, [courseArea]);
+    // Collapse removed: always expanded
 
     useEffect(() => {
         if (onSelectedCoursesChange) {
@@ -114,20 +110,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
                 : `${selectedCount}/${courseArea[0]} selected`}
             </p>
 
-            {/* Chevron toggle positioned at top-right for aesthetic balance */}
-            <div className="absolute top-0 right-3 opacity-70 hover:opacity-100 transition text-blue-600">
-                {isExpanded ? (
-                <ChevronUp
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="cursor-pointer"
-                />
-                ) : (
-                <ChevronDown
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="cursor-pointer"
-                />
-                )}
-            </div>
+            {/* Collapse removed: always expanded */}
             </div>
 
         {/* === Pill Container (flex-based for natural wrapping) === */}
@@ -137,7 +120,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
             courses.length > 1
               ? "grid grid-cols-1 sm:grid-cols-2 gap-3"
               : "flex justify-center"
-          } px-3 ${isExpanded ? "visible" : "hidden"}`}
+          } px-3 visible`}
         >
         {courses.map((course: any) => {
             const title = course["Course Title"];
@@ -191,7 +174,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
           {/* Shown only when user hits max course count */}
           {selectedCount >= maxCount && (
             <div className="text-center mt-3 text-sm text-red-600">
-              You have selected the maximum number of courses
+              You have selected the maximum number of courses for this course area.
             </div>
           )}
         </div>
