@@ -296,10 +296,10 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
         }`}
       >
         {/* LEFT PANEL — Your Map (30%) */}
-        <div className="bg-white/80 backdrop-blur-lg border border-indigo-100 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8">
-          <div className="flex items-center gap-2 mb-6">
-            <BookOpen className="w-6 h-6 align-middle" style={{ color: "#102b72" }} />
-            <h2 className="text-2xl font-semibold" style={{ color: "#102b72" }}>Your Map</h2>
+        <div className="bg-white/80 backdrop-blur-lg border border-blue-200 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8">
+          <div className="flex items-center justify-center gap-2 mb-6 text-center">
+            <BookOpen className="w-6 h-6 text-blue-600" />
+            <h2 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">Your Map</h2>
           </div>
 
           {saveMapDisabled && (
@@ -308,42 +308,11 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
             </div>
           )}
 
-          <p className="mb-6" style={{ color: "#102b72" }}>{selectedCount}/{maxCount} selected</p>
+          <p className="mb-6 text-center" style={{ color: "#102b72" }}>{selectedCount}/{maxCount} selected</p>
 
-          {/* Empty state message */}
-          {selectedCount === 0 ? (
-            <div className="text-center py-12">
-              <div className="flex flex-col items-center gap-3">
-                <BookOpen className="w-12 h-12" style={{ color: "#102b72", opacity: 0.5 }} />
-                <p className="italic text-lg" style={{ color: "#102b72", opacity: 0.7 }}>No courses selected</p>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-6">
-              {Object.keys(selectedCourses).map((area) => (
-                selectedCourses[area].courses.length > 0 && (
-                  <div key={area} className="bg-white border border-indigo-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-                    <h3 className="font-semibold text-lg mb-4 pb-2 border-b border-[#102b72]/20" style={{ color: "#102b72" }}>
-                      {area}
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedCourses[area].courses.map((course: string) => (
-                        <span
-                          key={course}
-                          className="px-3 py-1.5 rounded-lg text-sm border border-indigo-200 hover:bg-indigo-50 transition-colors text-slate-700"
-                        >
-                          {course}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )
-              ))}
-            </div>
-          )}
-
+          {/* Save button (moved above selected courses for easier access) */}
           {uid != "" ? (
-            <div className="text-center mt-8">
+            <div className="text-center mb-6">
               <button onClick={() => {
                 saveMap();
                 toast.success("Map saved successfully", {
@@ -372,11 +341,46 @@ function MapResults({ university, country, faculty, major, track, secondMajor }:
               to save map.
             </p>
           )}
+
+          {/* Empty state message */}
+          {selectedCount === 0 ? (
+            <div className="text-center py-12">
+              <div className="flex flex-col items-center gap-3">
+                <BookOpen className="w-12 h-12" style={{ color: "#102b72", opacity: 0.5 }} />
+                <p className="italic text-lg" style={{ color: "#102b72", opacity: 0.7 }}>No courses selected</p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {Object.keys(selectedCourses).map((area) => (
+                selectedCourses[area].courses.length > 0 && (
+                  <div key={area} className="space-y-2 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                    <p className="font-semibold text-sm uppercase tracking-wide text-slate-600 mb-2">
+                      {area}
+                    </p>
+                    <div className="flex flex-wrap gap-2 pl-1">
+                      {selectedCourses[area].courses.map((course: string) => (
+                        <span
+                          key={course}
+                          className="px-3 py-1.5 rounded-lg text-sm border border-indigo-200 hover:bg-blue-100 hover:border-indigo-300 transition-colors text-slate-700 bg-white"
+                        >
+                          {course}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )
+              ))}
+            </div>
+          )}
         </div>
 
         {/* RIGHT PANEL — Available Courses (70%) */}
         <div className="bg-white/80 backdrop-blur-lg border border-indigo-100 rounded-3xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
-          <h2 className="text-xl mb-4 font-semibold text-center" style={{ color: "#102b72" }}>Available Courses</h2>
+          <div className="flex items-center justify-center gap-2 mb-4 text-center">
+            <BookOpen className="w-6 h-6 text-blue-600" />
+            <h2 className="text-xl font-semibold" style={{ color: "#102b72" }}>Available Courses</h2>
+          </div>
           <div className="text-center mb-4">
             <select
               className="w-full mx-auto form-select bg-white border border-[#102b72]/30 rounded-lg hover:bg-gray-50 focus:bg-gray-100 focus:ring-2 focus:ring-[#102b72] transition"

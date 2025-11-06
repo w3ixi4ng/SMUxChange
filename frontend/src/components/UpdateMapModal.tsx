@@ -57,11 +57,11 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
                 <DialogHeader>
                     <DialogTitle className="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">Update Map</DialogTitle>
                     <DialogDescription className="text-slate-600 text-base">
-                        Make changes to your map here. Click save when you're done.
+                        Make changes to your map here. Click update when you're done.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="container mx-auto my-6 bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl shadow-lg p-8 mb-8">
-                    <div className="flex items-center gap-2 mb-6">
+                    <div className="flex items-center justify-center gap-2 mb-6 text-center">
                         <GraduationCap className="w-6 h-6 text-blue-600" />
                         <h2 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">Mapped For</h2>
                     </div>

@@ -40,9 +40,23 @@ function SchoolCard({ school }: ChildProps) {
         <>
             <div className="col-lg-4 col-md-6 col-12 mb-4">
                 <div className="card h-100 border-0 transition-all duration-300 hover:scale-105 hover:shadow-xl bg-white/80 backdrop-blur-md rounded-3xl shadow-lg border border-blue-200">
-                    <img src={`/images/university_pictures/${school['host_university']}.jpg`}
-                        className="card-img-top" alt={`${school['host_university']}`}
-                        style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '.5rem' }} />
+                    <div className="position-relative">
+                        <img src={`/images/university_pictures/${school['host_university']}.jpg`}
+                            className="card-img-top" alt={`${school['host_university']}`}
+                            style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '.5rem' }} />
+                        <span
+                            className="position-absolute top-0 end-0 m-2 px-3 py-1 rounded-pill shadow-sm"
+                            style={{
+                                border: '1px solid #bfdbfe', /* blue-200 */
+                                backgroundColor: 'rgba(255,255,255,0.9)',
+                                color: '#334155', /* slate-700 */
+                                fontSize: '0.75rem',
+                                lineHeight: '1rem'
+                            }}
+                        >
+                            {school['country']}
+                        </span>
+                    </div>
                     <div className="card-body d-flex flex-column justify-content-between">
                         <div className="">
                             <h6 className="text-uppercase fw-bold mb-1" style={{ color: "#102b72" }}>{school['host_university']}</h6>
