@@ -467,6 +467,7 @@ function NavbarContent() {
         <Routes>
           {!isAdmin && (
             <>
+              <Route path="/index.html" element={<Home />} />
               <Route path="/" element={<Home />} />
               <Route path="/information" element={<Information />} />
               <Route path="/mappable" element={<Mappable />} />
