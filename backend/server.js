@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
 // Import route files
-import photoRoutes from './routes/api_functions/photos.js';
 import eventsRoutes from './routes/api_functions/events.js';
 import distanceRoutes from './routes/api_functions/distance.js';
 import databaseRoutes from './routes/database_functions/database.js';
@@ -40,7 +39,6 @@ app.use(cors({
 app.use(express.static(path.join(__dirname, '../'))); // Serve files from parent directory
 
 // Use route files
-app.use('/api/photos', photoRoutes);
 app.use('/api/events', eventsRoutes);
 app.use('/api/distance', distanceRoutes);
 app.use('/api/apartments', apartmentRoutes);

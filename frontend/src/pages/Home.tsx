@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import ThreeDLogo from "@/components/ThreeDLogo";
-import WelcomeAnimation from "@/components/WelcomeAnimation";
 import { useEffect, useState } from "react";
 import { ArrowUp, Globe2 } from "lucide-react";
 
@@ -91,7 +90,6 @@ function Home() {
   // Scroll constant
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
-  const [showWelcome, setShowWelcome] = useState(false);
   const [videoErrors, setVideoErrors] = useState<Record<number, boolean>>({});
 
   const features = [
@@ -129,36 +127,10 @@ function Home() {
     window.scrollTo(0, 0);
   }, []);
 
-  // Check if first visit
-  useEffect(() => {
-    const hasVisited = localStorage.getItem('hasVisitedSMUxChange');
-    if (!hasVisited) {
-      setShowWelcome(true);
-      localStorage.setItem('hasVisitedSMUxChange', 'true');
-    }
-  }, []);
-
-  // Disable scroll when welcome animation is showing
-  useEffect(() => {
-    if (showWelcome) {
-      // Disable scroll
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Re-enable scroll
-      document.body.style.overflow = '';
-    }
-
-    // Cleanup on unmount
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [showWelcome]);
+  // Welcome animation removed
 
   return (
     <div id="top" className="overflow-x-hidden">
-      {showWelcome && (
-        <WelcomeAnimation onClose={() => setShowWelcome(false)} />
-      )}
       <div className="relative w-full min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 overflow-x-hidden">
         {/* === Hero Section === */}
         <section className="relative flex flex-col items-center justify-center px-4 sm:px-6 mb-5 w-full">
@@ -231,7 +203,7 @@ function Home() {
 
         {/* === Key Features Section === */}
         {logoLoaded && (
-          <section className="relative py-20 px-4 sm:px-6 md:px-12 lg:px-24 bg-blue-900 w-full overflow-x-hidden">
+          <section className="relative py-20 px-4 sm:px-6 md:px-12 lg:px-24 bg-gradient-to-r from-blue-900 to-teal-900 w-full overflow-x-hidden">
             <div className="max-w-7xl mx-auto">
               {/* Section Header */}
               <div className="text-center mb-16">

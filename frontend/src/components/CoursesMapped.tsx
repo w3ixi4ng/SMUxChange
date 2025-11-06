@@ -88,7 +88,7 @@ function CoursesMapped({ courseArea, university, onSelectedCoursesChange, select
     
       {courses.length > 0 && selectedCourseArea === courseArea[1] && (
         // Outer container: light card with blue borders
-        <div className="col-lg-12 col-12 bg-white/80 backdrop-blur-md border border-blue-200 py-4 rounded-3xl shadow-md mb-4">
+        <div className="col-lg-12 col-12 bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50 border border-blue-200 py-4 rounded-3xl shadow-md mb-4">
             {/* === Header Section (centered & highlighted) === */}
             <div className="relative flex flex-col items-center justify-center text-center mb-4">
             {/* Title centered */}
