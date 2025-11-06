@@ -79,6 +79,7 @@ SMU students face several challenges when planning their international exchanges
 ## 🛠️ Tech Stack
 
 **Frontend**
+
 ![Frontend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/frontend_tech.png)
 - ReactJS with TypeScript – Type-safe component-based UI
 - Bootstrap 5 – Responsive design framework
@@ -88,15 +89,18 @@ SMU students face several challenges when planning their international exchanges
 - CSS – Custom styles/animations for unique branding
 
 **Backend**
+
 ![Backend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/backend_tech.png)
 - Node.js – Backend server runtime
 - Server.js - 
 
 **Database**
+
 ![Backend](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/datastore.png)
 - Firebase Firestore (NoSQL) – Manages course mapping info, user credentials, and student reviews
 
 **Deployment**
+
 ![Deployment](https://github.com/w3ixi4ng/SMUxChange/blob/main/readme_images/vercel.png)
 - Vercel – Frontend and Backend deployment
 
