@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
-import { BookOpen, Save, AlertCircle } from "lucide-react";
+import { BookOpen, Save, AlertCircle, Globe, GraduationCap, MapPin } from "lucide-react";
 
 
 export function ShareMap() {
@@ -83,109 +83,121 @@ export function ShareMap() {
         }
     }
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
 
 
     return (
-        <div className=" overflow-hidden relative w-full min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-            {/* Subtle overlay for depth */}
-            <div className="absolute inset-0 bg-white/20 backdrop-blur-[1px]"></div>
+        <div className="overflow-hidden relative w-full min-h-screen bg-gradient-to-br from-blue-50 via-emerald-50 to-cyan-50">
+            {/* === Subtle gradient + grid overlay === */}
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,rgba(16,43,114,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
             <div className="relative z-10 container mx-auto px-4 py-10">
-                {/* Page Header */}
-                <div className="text-center mb-10">
-                <span className="inline-block ml-2"><img src="/images/share.gif" alt="Share" className="w-35 h-35 border-2 border-[#102b72]/30 rounded-lg" /></span>
-                <h1 className="text-4xl font-bold mb-2" style={{ color: "#102b72" }}>Shared Course Map</h1>
-                    <p className="text-sm" style={{ color: "#102b72", opacity: 0.7 }}>
+                {/* Page Header - More Welcoming */}
+                <div className="text-center mb-12">
+                    <span className="inline-block ml-2 animate-gif-pulse">
+                        <img src="/images/share.gif" alt="Share" className="w-35 h-35 border-2 border-blue-300 rounded-lg shadow-lg" />
+                    </span>
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 leading-none bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">
+                        Shared Course Map
+                    </h1>
+                    <p className="text-xl md:text-2xl text-slate-700 font-medium max-w-3xl mx-auto">
                         Review and save this course mapping to your profile
                     </p>
                 </div>
 
                 {/* Map Information Card */}
-                <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border rounded-2xl shadow-lg p-8 mb-8" style={{ borderColor: "rgba(16,43,114,0.2)" }}>
+                <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 mb-8">
                     <div className="flex items-center gap-2 mb-6">
-                        <h2 className="text-2xl font-semibold" style={{ color: "#102b72" }}>Mapped For</h2>
+                        <MapPin className="w-6 h-6 text-blue-600" />
+                        <h2 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">
+                            Mapped For
+                        </h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-1">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                             <div className="flex items-center gap-2 mb-2">
-                                <p className="font-semibold text-sm uppercase tracking-wide" style={{ color: "#102b72", opacity: 0.7 }}>Country</p>
+                                <Globe className="w-4 h-4 text-blue-600" />
+                                <p className="font-semibold text-sm uppercase tracking-wide text-slate-600">Country</p>
                             </div>
-                            <p className="text-lg font-medium pl-6" style={{ color: "#102b72" }}>{map.country}</p>
+                            <p className="text-lg font-medium pl-6 text-slate-800">{map.country}</p>
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                             <div className="flex items-center gap-2 mb-2">
-                                <p className="font-semibold text-sm uppercase tracking-wide" style={{ color: "#102b72", opacity: 0.7 }}>University</p>
+                                <GraduationCap className="w-4 h-4 text-blue-600" />
+                                <p className="font-semibold text-sm uppercase tracking-wide text-slate-600">University</p>
                             </div>
-                            <p className="text-lg font-medium pl-6" style={{ color: "#102b72" }}>{map.university}</p>
+                            <p className="text-lg font-medium pl-6 text-slate-800">{map.university}</p>
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                             <div className="flex items-center gap-2 mb-2">
-                                <p className="font-semibold text-sm uppercase tracking-wide" style={{ color: "#102b72", opacity: 0.7 }}>Faculty</p>
+                                <BookOpen className="w-4 h-4 text-blue-600" />
+                                <p className="font-semibold text-sm uppercase tracking-wide text-slate-600">Faculty</p>
                             </div>
-                            <p className="text-lg font-medium pl-6" style={{ color: "#102b72" }}>{map.faculty}</p>
+                            <p className="text-lg font-medium pl-6 text-slate-800">{map.faculty}</p>
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                             <div className="flex items-center gap-2 mb-2">
-                                <p className="font-semibold text-sm uppercase tracking-wide" style={{ color: "#102b72", opacity: 0.7 }}>Major</p>
+                                <BookOpen className="w-4 h-4 text-blue-600" />
+                                <p className="font-semibold text-sm uppercase tracking-wide text-slate-600">Major</p>
                             </div>
-                            <p className="text-lg font-medium pl-6" style={{ color: "#102b72" }}>{map.major}</p>
+                            <p className="text-lg font-medium pl-6 text-slate-800">{map.major}</p>
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                             <div className="flex items-center gap-2 mb-2">
-                                <p className="font-semibold text-sm uppercase tracking-wide" style={{ color: "#102b72", opacity: 0.7 }}>Track</p>
+                                <BookOpen className="w-4 h-4 text-blue-600" />
+                                <p className="font-semibold text-sm uppercase tracking-wide text-slate-600">Track</p>
                             </div>
-                            <p className="text-lg font-medium pl-6" style={{ color: "#102b72" }}>{map.track ? map.track : <span style={{ opacity: 0.5 }}>None</span>}</p>
+                            <p className="text-lg font-medium pl-6 text-slate-800">{map.track ? map.track : <span className="text-slate-400">None</span>}</p>
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
                             <div className="flex items-center gap-2 mb-2">
-                                <p className="font-semibold text-sm uppercase tracking-wide" style={{ color: "#102b72", opacity: 0.7 }}>Second Major</p>
+                                <BookOpen className="w-4 h-4 text-blue-600" />
+                                <p className="font-semibold text-sm uppercase tracking-wide text-slate-600">Second Major</p>
                             </div>
-                            <p className="text-lg font-medium pl-6" style={{ color: "#102b72" }}>{map.secondMajor ? map.secondMajor : <span style={{ opacity: 0.5 }}>None</span>}</p>
+                            <p className="text-lg font-medium pl-6 text-slate-800">{map.secondMajor ? map.secondMajor : <span className="text-slate-400">None</span>}</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Mapped Courses Card */}
-                <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border rounded-2xl shadow-lg p-8 mb-8" style={{ borderColor: "rgba(16,43,114,0.2)" }}>
+                <div className="max-w-5xl mx-auto bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 mb-8">
                     <div className="flex items-center gap-2 mb-6">
-                        <BookOpen className="w-6 h-6" style={{ color: "#102b72" }} />
-                        <h2 className="text-2xl font-semibold" style={{ color: "#102b72" }}>Mapped Courses</h2>
+                        <BookOpen className="w-6 h-6 text-blue-600" />
+                        <h2 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">
+                            Mapped Courses
+                        </h2>
                     </div>
 
                     {Object.keys(map.map).length === 0 || Object.keys(map.map).every((area) => map.map[area].courses.length === 0) ? (
                         <div className="text-center py-12">
                             <div className="flex flex-col items-center gap-3">
-                                <BookOpen className="w-12 h-12" style={{ color: "#102b72", opacity: 0.5 }} />
-                                <p className="italic text-lg" style={{ color: "#102b72", opacity: 0.7 }}>No courses mapped</p>
+                                <BookOpen className="w-12 h-12 text-slate-400" />
+                                <p className="italic text-lg text-slate-600">No courses mapped</p>
                             </div>
                         </div>
                     ) : (
                         <div className="space-y-6">
                             {Object.keys(map.map).map((area) => (
                                 map.map[area].courses.length > 0 && (
-                                    <div key={area} className="bg-white rounded-xl p-5 border" style={{ borderColor: "rgba(16,43,114,0.2)" }}>
-                                        <h3 className="font-semibold text-lg mb-4 pb-2 border-b" style={{ color: "#102b72", borderColor: "rgba(16,43,114,0.2)" }}>
+                                    <div key={area} className="bg-white rounded-xl p-5 border border-blue-200 hover:shadow-md transition-all duration-200">
+                                        <h3 className="font-semibold text-lg mb-4 pb-2 border-b border-blue-200 text-slate-800">
                                             {area}
                                         </h3>
                                         <div className="flex flex-wrap gap-2">
                                             {map.map[area].courses.map((course: string) => (
                                                 <span
                                                     key={course}
-                                                    className="px-3 py-1.5 bg-white rounded-lg text-sm border transition-colors"
-                                                    style={{ 
-                                                        color: "#102b72", 
-                                                        borderColor: "rgba(16,43,114,0.3)",
-                                                        backgroundColor: "white"
-                                                    }}
-                                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = "rgba(16,43,114,0.1)"}
-                                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = "white"}
+                                                    className="px-3 py-1.5 bg-white rounded-lg text-sm border border-indigo-200 hover:bg-indigo-50 transition-colors text-slate-700"
                                                 >
                                                     {course}
                                                 </span>
@@ -200,41 +212,51 @@ export function ShareMap() {
 
                 {/* Save Button Section */}
                 <div className="max-w-5xl mx-auto text-center">
-                    <button
-                        disabled={!uid || uid === "" || saveMapDisabled}
-                        onClick={saveMap}
-                        className={`inline-flex items-center gap-2 font-semibold hover:scale-105 transition-transform px-8 py-3 text-lg rounded-full shadow-lg ${(!uid || uid === "" || saveMapDisabled)
-                            ? "opacity-50 cursor-not-allowed"
-                            : "cursor-pointer"
+                    {uid && uid !== "" ? (
+                        <button
+                            disabled={saveMapDisabled}
+                            onClick={saveMap}
+                            className={`group relative overflow-hidden font-bold px-8 py-3 text-lg rounded-2xl shadow-2xl transition-all duration-300 ${
+                                saveMapDisabled
+                                    ? "opacity-50 cursor-not-allowed bg-gray-400 text-white"
+                                    : "bg-gradient-to-br from-blue-600 to-emerald-600 text-white hover:shadow-blue-500/50 hover:scale-105"
                             }`}
-                        style={{
-                            backgroundColor: (!uid || uid === "" || saveMapDisabled) ? "#102b72" : "#102b72",
-                            color: "white"
-                        }}
-                        onMouseEnter={(e) => {
-                            if (!(!uid || uid === "" || saveMapDisabled)) {
-                                e.currentTarget.style.backgroundColor = "#0d2259";
-                            }
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = "#102b72";
-                        }}
-                    >
-                        <Save className="w-5 h-5" />
-                        Save Map
-                    </button>
-
-                    {(!uid || uid === "") && (
-                        <div className="mt-4 flex items-center justify-center gap-2" style={{ color: "#dc2626" }}>
-                            <AlertCircle/> 
-                            <p className="text-lg"> Please login to save this map to your profile</p>
+                        >
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                                <Save className="w-5 h-5" />
+                                Save Map
+                            </span>
+                            {!saveMapDisabled && (
+                                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                            )}
+                        </button>
+                    ) : (
+                        <div className="space-y-4">
+                            <button
+                                disabled
+                                className="opacity-50 cursor-not-allowed group relative overflow-hidden font-bold px-8 py-3 text-lg rounded-2xl shadow-2xl transition-all duration-300 bg-gradient-to-br from-blue-600 to-emerald-600 text-white"
+                            >
+                                <span className="relative z-10 flex items-center justify-center gap-2">
+                                    <Save className="w-5 h-5" />
+                                    Save Map
+                                </span>
+                            </button>
+                            <p className="italic text-center text-slate-600">
+                                <Link
+                                    to="/login"
+                                    className="underline font-semibold text-blue-600 hover:text-blue-700"
+                                >
+                                    Login
+                                </Link>{" "}
+                                to save map.
+                            </p>
                         </div>
                     )}
 
                     {saveMapDisabled && uid && uid !== "" && (
-                        <div className="mt-4 flex items-center justify-center gap-2" style={{ color: "#dc2626" }}>
-                            <AlertCircle/> 
-                            <p className="text-lg"> You have reached the maximum number of maps allowed. Delete your existing maps to save more.</p>
+                        <div className="mt-4 flex items-center justify-center gap-2 text-amber-700 bg-amber-100 border border-amber-300 rounded-lg p-3 max-w-md mx-auto">
+                            <AlertCircle className="w-5 h-5" />
+                            <p className="text-sm">You have reached the maximum number of maps allowed. Delete your existing maps to save more.</p>
                         </div>
                     )}
                 </div>

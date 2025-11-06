@@ -174,10 +174,10 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
       {/* === GRID STRUCTURE === */}
       <div className="grid lg:grid-cols-[32%_68%] gap-8 items-stretch w-full min-h-[650px] transition-all duration-300">
         {/* LEFT PANEL */}
-        <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg p-8 flex flex-col justify-start min-h-[600px]">
+        <div className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 flex flex-col justify-start min-h-[600px]">
           <div className="flex items-center gap-2 mb-6">
-            <BookOpen className="w-6 h-6 text-[#102b72]" />
-            <h2 className="text-2xl font-semibold text-[#102b72]">Your Map</h2>
+            <BookOpen className="w-6 h-6 text-blue-600" />
+            <h2 className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 via-emerald-500 to-blue-600 bg-clip-text text-transparent">Your Map</h2>
           </div>
 
           <p className="mb-6 text-[#102b72]">
@@ -201,17 +201,16 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
                   selectedCourses[area].courses.length > 0 && (
                     <div
                       key={area}
-                      className="bg-white border border-[#102b72]/20 rounded-xl p-5"
+                      className="bg-white border border-blue-200 rounded-xl p-5 hover:shadow-md transition-all duration-200"
                     >
-                      <h3 className="font-semibold text-lg mb-4 pb-2 border-b border-[#102b72]/20 text-[#102b72]">
+                      <h3 className="font-semibold text-lg mb-4 pb-2 border-b border-blue-200 text-slate-800">
                         {area}
                       </h3>
                       <div className="flex flex-wrap gap-2">
                         {selectedCourses[area].courses.map((c: any) => (
                           <span
                             key={c}
-                            className="px-3 py-1.5 rounded-lg text-sm border border-[#5E9CFF]/40 hover:bg-[#5E9CFF]/15 transition-colors"
-                            style={{ color: "#102b72", backgroundColor: "white" }}
+                            className="px-3 py-1.5 rounded-lg text-sm border border-indigo-200 hover:bg-indigo-50 transition-colors text-slate-700 bg-white"
                           >
                             {c}
                           </span>
@@ -225,7 +224,7 @@ function UpdateExistingMap({ map, setSelectedCourses, selectedCourses }: ChildPr
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="bg-white/80 backdrop-blur-md border border-[#102b72]/20 rounded-2xl shadow-lg p-8 flex flex-col justify-start min-h-[600px]">
+        <div className="bg-white/80 backdrop-blur-md border border-blue-200 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 flex flex-col justify-start min-h-[600px]">
           <h2 className="text-xl mb-4 font-semibold text-center text-[#102b72]">
             Available Courses
           </h2>

@@ -67,48 +67,48 @@ export function UpdateMapModal({ mapId, map, setSavedMaps}: ChildProps) {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-1">
-                            <p className="mb-1 fw-bold text-blue-600">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                            <p className="font-semibold text-sm uppercase tracking-wide text-slate-600 mb-2">
                                 <Globe className="w-4 h-4 d-inline align-middle me-2" />
                                 Country
                             </p>
                             <p className="text-lg font-medium pl-6 text-slate-700">{map.country}</p>
                         </div>
 
-                        <div className="space-y-1">
-                            <p className="mb-1 fw-bold text-blue-600">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                            <p className="font-semibold text-sm uppercase tracking-wide text-slate-600 mb-2">
                                 <School className="w-4 h-4 d-inline align-middle me-2" />
                                 University
                             </p>
                             <p className="text-lg font-medium pl-6 text-slate-700">{map.university}</p>
                         </div>
 
-                        <div className="space-y-1">
-                            <p className="mb-1 fw-bold text-blue-600">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                            <p className="font-semibold text-sm uppercase tracking-wide text-slate-600 mb-2">
                                 <BookOpen className="w-4 h-4 d-inline align-middle me-2" />
                                 Faculty
                             </p>
                             <p className="text-lg font-medium pl-6 text-slate-700">{map.faculty}</p>
                         </div>
 
-                        <div className="space-y-1">
-                            <p className="mb-1 fw-bold text-blue-600">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                            <p className="font-semibold text-sm uppercase tracking-wide text-slate-600 mb-2">
                                 <GraduationCap className="w-4 h-4 d-inline align-middle me-2" />
                                 Major
                             </p>
                             <p className="text-lg font-medium pl-6 text-slate-700">{map.major}</p>
                         </div>
 
-                        <div className="space-y-1">
-                            <p className="mb-1 fw-bold text-blue-600">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                            <p className="font-semibold text-sm uppercase tracking-wide text-slate-600 mb-2">
                                 <Map className="w-4 h-4 d-inline align-middle me-2" />
                                 Track
                             </p>
                             <p className="text-lg font-medium pl-6 text-slate-700" style={{ opacity: map.track ? 1 : 0.5 }}>{map.track ? map.track : "None"}</p>
                         </div>
 
-                        <div className="space-y-1">
-                            <p className="mb-1 fw-bold text-blue-600">
+                        <div className="space-y-1 p-4 bg-gradient-to-br from-blue-50 to-emerald-50 rounded-xl border border-blue-200 hover:shadow-md transition-all duration-200">
+                            <p className="font-semibold text-sm uppercase tracking-wide text-slate-600 mb-2">
                                 <GraduationCap className="w-4 h-4 d-inline align-middle me-2" />
                                 Second Major
                             </p>
