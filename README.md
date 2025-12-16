@@ -14,21 +14,6 @@ Welcome to the SMuxChange repository. A streamlined, student-centric platform de
 
 ---
 
-## 📶 Installation
-
-**Note:** 
-- Backend is fully hosted on vercel, hence localhost only require frontend to be run.
-- Recommend direct use of application via our website!
-
-Open a terminal and run the following commands to set up and start :
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
----
-
 ## 📋 Table of Contents
 - [Overview](#overview)
 - [Problem Statement](#problem-statement)
